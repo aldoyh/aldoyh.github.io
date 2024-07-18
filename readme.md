@@ -1,13 +1,6 @@
-# [kamranahmed.info](kamranahmed.info)
-My personal blog created using [github-pages-blog-action](https://github.com/kamranahmedse/github-pages-blog-action)
+# [blogg.doy.tech](https://blog.doy.tech)
 
-## Setting up your Blog
+# My Blog Made Outta Obsidian
 
-* Clone this repository
-* Remove the markdown files in the [posts](https://github.com/kamranahmedse/kamranahmedse.github.io/tree/master/posts) directory and place your own markdown files.
-* If you have any static assets such as your resume PDF or anything, place it inside the [static directory](https://github.com/kamranahmedse/kamranahmedse.github.io/tree/master/static). The contents of this folder will simply be copied to the root of your blog website.
-* Update [about.md](https://github.com/kamranahmedse/kamranahmedse.github.io/blob/master/about.md) to place your own introduction.
-* Update [site.json](https://github.com/kamranahmedse/kamranahmedse.github.io/blob/master/site.json) and populate your own details.
-* Push the repository to your github profile under `[yourusername].github.io`
-* Go to repository pages settings at `Settings > Pages` and change settings if required.
-* Visit your website at `yourusername.github.io` 🎊
+This is my blog made out of Obsidian. I have been using Obsidian for a while now and I am loving it. I have been using it for my personal notes, for my work notes, for my blog posts and for my book notes. I have been using it for everything and I am loving it.
+
