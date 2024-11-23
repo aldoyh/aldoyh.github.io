@@ -6,7 +6,8 @@ permalink: /blog/2024/07/18/get-better-note-taker
 
 Find the time to go through the top stories at hacker news or the relevant subreddits (e.g. /r/programming, /r/php, /r/javascript etc) on reddit, trending projects on Github (may be using some browser extension). Once again, follow the known-faces of your craft on twitter and on Github.
 
-Have some side project
+## Have some side project
+
 Side projects are great when it comes to experimenting the new stuff or the stuff that you don't know about. Keep some little time reserved for your side projects, either over the weekend or on daily basis. It could be anything i.e. something opensource or start that foolish idea that you have always wanted to start using the tools that you may never have worked with. This will help you get two-fold benefits; if it works, well in good, if it doesn't; never mind you learnt something new.
 
 Don't lose your sanity

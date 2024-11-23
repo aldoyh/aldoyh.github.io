@@ -1,29 +1,29 @@
 {
-  "title": "Kamran Ahmed",
-  "subtitle": "Lead engineer at tradeling — tech guy with an entrepreneurial spirit and knack for getting things done",
+  "title": "Hasan Al Doy",
+  "subtitle": "Software Engineer Guru",
   "owner": {
-    "name": "Kamran Ahmed",
-    "email": "kamranahmed.se@gmail.com"
+    "name": "Hasan Al Doy",
+    "email": "aldoyh@gmail.com"
   },
   "social": {
-    "github": "kamranahmedse",
-    "medium": "kamranahmedse",
-    "twitter": "kamranahmedse"
+    "github": "aldoyh",
+    "medium": "aldoyh",
+    "twitter": "aldoyh"
   },
   "newsletter": {
     "showTwitterBanner": true,
-    "currentCount": "2,000",
+    "currentCount": "42,000",
     "revueUsername": "roadmapsh"
   },
   "seo": {
-    "title": "Kamran Ahmed",
+    "title": "Hasan Al Doy",
     "description": "Blog of a Software Engineer",
-    "author": "Kamran Ahmed",
+    "author": "Hasan Al Doy",
     "keywords": [
       "blog",
       "developer blog",
       "engineering blog"
     ]
   },
-  "cname": "kamranahmed.info"
+  "cname": "aldoyh.github.io"
 }

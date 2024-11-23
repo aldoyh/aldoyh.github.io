@@ -1,12 +1,37 @@
 <p class="about__head">
-    Engineering Manager at <a href="https://tradeling.com" target="_blank">tradeling</a>. Tech guy with an
-    entrepreneurial spirit and knack for getting things done. Currently building <a href="https://roadmap.sh">roadmap.sh</a>.
+    Content Exchange Manager & Distributed Systems Engineer<br />
+    Radio Bahrain, Bahrain
 </p>
 
-I'm an experienced developer with a demonstrated history of working on large scale enterprise solutions. Additionally, I have a strong penchant to build and manage high-functioning development teams using my strong problem-solving and people skills.
+<p class="about__body">
+    I am a Content Exchange Manager & Distributed Systems Engineer at Radio Bahrain, Bahrain. I am a professional with 10 years of experience in the field of Information Technology. I have worked on various projects:
+</p>
 
-Over my 8+ years of experience, I have heavily focused my attention on full-stack development, fostering agile practices, patterns of enterprise application architecture, managing complexity in the systems, delivering solutions that are future proof, maintainable, and easily scalable, building and growing teams and mentoring the developers. I'm a quick learner who has a strong interest in emerging technologies and exceptional analytical/problem-solving skills.
+<ul class="about__list">
+    <li>Content Exchange Manager</li>
+    <li>Distributed Systems Engineer</li>
+    <li>Information Technology</li>
+</ul>
 
-Moreover, I try to make a positive impact and lift the tech community globally with my open-source work and educational material. I am quite active on GitHub where I have accumulated around 250k stars on my projects and one of my projects is among the top ten most starred projects on GitHub. GitHub recently recognized my OpenSource and community contributions and selected me as a "GitHub Star". Also, I love teaching and educating others; I recently started my YouTube channel which has around 85k subscribers at the moment.
+<div class="about__footer">
+    <a href="https://www.linkedin.com/aldoyh" target="_blank" class="about__footer-link">LinkedIn</a>
+    <a href="https://www.github.com/aldoyh" target="_blank" class="about__footer-link">GitHub</a>
+</div>
 
-Feel free to reach out if you would like to learn more about me or just say hi; I love stumbling across the messages from the strangers in my inbox.
+<section class="about__section">
+<h2 class="about__section-title">Skills</h2>
+<ul class="about__section-list">
+<li>Content Exchange</li>
+<li>Distributed Systems</li>
+<li>Information Technology</li>
+</ul>
+<h2 class="about__section-title">Experience</h2>
+<ul class="about__section-list">
+<li>{{ date('Y') - 2000 }} years of experience</li>
+<li>Various projects</li>
+</ul>
+</section>
+
+<footer class="about__footer" style="margin-top: 10em; border-top: solid; font-weight: 600;">
+    <p class="about__footer-text">© 2024 Aldoy, Hasan {{ site.title }} 🔌 These pages where Sun Hydrated from Bahrain 🇧🇭 with Love ♥️ </p> 
+</footer>
