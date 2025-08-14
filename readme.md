@@ -29,7 +29,7 @@
 
 ![Hugo Modules Banner](https://hugomods.com/images/banners/home.svg)
 
-**Apache Royale Penguin 🐧**  
+**Apache Royale Penguin 🐧**
 **Wandering the Arabian Desert**
 
 - Born in [R.A.K.](https://visitrasalkhaimah.com), raised in the greatest Island [Kingdom of Bahrain](https://bahrain.com)
@@ -94,10 +94,10 @@
 ## Todoist Stats
 
 <!-- TODO-IST:START -->
-🏆 **9,742** Karma Points  
-🌸 Completed **0** tasks today  
-✅ Completed **758** tasks so far  
-⏳ Longest streak is **5** days  
+🏆 **9,742** Karma Points
+🌸 Completed **0** tasks today
+✅ Completed **758** tasks so far
+⏳ Longest streak is **5** days
 📅 Last updated: **Thursday, August 31, 2023**
 <!-- TODO-IST:END -->
 
@@ -122,14 +122,14 @@ I have accepted **2,131** completions in 20 different coding languages using Cod
 
 ---
 
-This personal profile represents my role as a **sole developer**.  
+This personal profile represents my role as a **sole developer**.
 Hand-crafted by Bahrain's 🇧🇭 Finest Web Artisans ⦿ inspired by @doytech | version 2.2024.05.19
 
 > صفحة شخصية لأعمالي الشخصية والإحترافية في كل من القطاع العام والخاص، المهم ليس فيما ستأخذ بل من أين أخذته؟ **حفاظك على المُلكية الفكرية لغيرك هي كافية لحماية حقوقك.**
 
 ---
 
-This profile was inspired by several others:  
-[awesome-README](https://github.com/elangosundar/awesome-README-templates)  
-[todoist-readme](https://github.com/abhisheknaiidu/todoist-readme)  
+This profile was inspired by several others:
+[awesome-README](https://github.com/elangosundar/awesome-README-templates)
+[todoist-readme](https://github.com/abhisheknaiidu/todoist-readme)
 [benjaminsampica](https://github.com/benjaminsampica/benjaminsampica)
