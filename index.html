@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hasan Al Doy</title>
+  <link rel="stylesheet" href="static/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-toast-plugin/dist/jquery.toast.min.css">
+</head>
+<body>
+  <header>
+    <h1 id="site-title"></h1>
+    <p id="site-subtitle"></p>
+    <nav><a href="posts.html">All Posts</a></nav>
+  </header>
+  <section id="recent-posts">
+    <h2>Latest Posts</h2>
+    <ul id="posts-list"></ul>
+  </section>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery-toast-plugin/dist/jquery.toast.min.js"></script>
+  <script>
+    // Load site configuration
+    fetch('site.json')
+      .then(res => res.json())
+      .then(config => {
+        document.getElementById('site-title').textContent = config.title;
+        document.getElementById('site-subtitle').textContent = config.subtitle;
+        document.title = config.title;
+      });
+    // Load posts and display latest three
+    fetch('posts.json')
+      .then(res => res.json())
+      .then(posts => {
+        const list = document.getElementById('posts-list');
+        posts.slice(0, 3).forEach(p => {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = 'posts/' + p.slug + '.html';
+          a.textContent = p.title;
+          li.appendChild(a);
+          list.appendChild(li);
+        });
+        $.toast({
+          heading: 'Welcome',
+          text: 'Latest posts loaded!',
+          icon: 'success',
+          loader: true,
+          loaderBg: '#9EC600',
+          position: 'top-right',
+          hideAfter: 3000
+        });
+      });
+  </script>
+</body>
+</html>

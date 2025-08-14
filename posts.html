@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Posts - Hasan Al Doy</title>
+  <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+  <header>
+    <h1 id="posts-title">All Posts</h1>
+    <nav><a href="index.html">Home</a></nav>
+  </header>
+  <section>
+    <ul id="all-posts"></ul>
+  </section>
+  <script>
+    // Optionally load site.json for dynamic title
+    fetch('site.json')
+      .then(res => res.json())
+      .then(config => {
+        document.title = 'All Posts - ' + config.title;
+        document.getElementById('posts-title').textContent = 'All Posts';
+      });
+    fetch('posts.json')
+      .then(res => res.json())
+      .then(posts => {
+        const list = document.getElementById('all-posts');
+        posts.forEach(p => {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = 'posts/' + p.slug + '.html';
+          a.textContent = p.title;
+          li.appendChild(a);
+          list.appendChild(li);
+        });
+      });
+  </script>
+</body>
+</html>
