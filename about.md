@@ -33,5 +33,5 @@
 </section>
 
 <footer class="about__footer" style="margin-top: 10em; border-top: solid; font-weight: 600;">
-    <p class="about__footer-text">© 2024 Aldoy, Hasan {{ site.title }} 🔌 These pages where Sun Hydrated from Bahrain 🇧🇭 with Love ♥️ </p> 
+    <p class="about__footer-text">© 2024 Aldoy, Hasan {{ site.title }} 🔌 These pages where Sun Hydrated from Bahrain 🇧🇭 with Love ♥️ </p>
 </footer>
