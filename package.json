@@ -1,0 +1,20 @@
+{
+  "name": "aldoyh-blog",
+  "version": "1.0.0",
+  "description": "Personal blog by Hasan Al Doy",
+  "main": "index.js",
+  "scripts": {
+    "build": "node scripts/generate-posts.js",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": [
+    "blog",
+    "github-pages"
+  ],
+  "author": "Hasan Al Doy",
+  "license": "MIT",
+  "dependencies": {
+    "marked": "^11.1.1",
+    "gray-matter": "^4.0.3"
+  }
+}

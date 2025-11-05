@@ -3,3 +3,6 @@ Thumbs.db
 .idea
 .aider*
 .env
+node_modules/
+posts/*.html
+package-lock.json
