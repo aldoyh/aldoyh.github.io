@@ -47,57 +47,6 @@
     </div>
   </footer>
 
-  <script src="../static/utils.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script>
-    // Utility to get slug from URL
-    function getSlug() {
-      const match = window.location.pathname.match(/\/posts\/([\w-]+)\.html$/);
-      return match ? match[1] : null;
-    }
-
-    async function loadPost() {
-      const slug = getSlug();
-      if (!slug) {
-        document.getElementById('post-content').innerHTML = '<p class="error-message">Invalid post URL.</p>';
-        return;
-      }
-      try {
-        // Load site config
-        const configRes = await fetch('../site.json');
-        const config = await configRes.json();
-        document.getElementById('site-title').textContent = config.title;
-        document.getElementById('site-subtitle').textContent = config.subtitle;
-
-        // Load posts metadata
-        const postsRes = await fetch('../posts.json');
-        const posts = await postsRes.json();
-        const post = posts.find(p => p.slug === slug);
-        if (!post) throw new Error('Post not found');
-
-        document.title = post.title + ' - ' + config.title;
-        document.getElementById('post-title').textContent = post.title;
-        document.getElementById('post-title-main').textContent = post.title;
-        if (post.date) {
-          document.getElementById('post-meta').innerHTML = `<time dateTime="${post.date}">${new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>`;
-        }
-
-        // Load markdown content
-        const mdRes = await fetch(`./${slug}.md`);
-        if (!mdRes.ok) throw new Error('Markdown file not found');
-        const markdown = await mdRes.text();
-        document.getElementById('post-content').innerHTML = marked.parse(markdown);
-      } catch (err) {
-        document.getElementById('post-content').innerHTML = `<p class="error-message">${err.message}</p>`;
-      }
-    }
-
-    document.getElementById('year').textContent = new Date().getFullYear();
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', loadPost);
-    } else {
-      loadPost();
-    }
-  </script>
+  <!-- JavaScript removed. PHP now handles post rendering. -->
 </body>
 </html>
