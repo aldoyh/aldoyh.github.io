@@ -1,0 +1,11 @@
+{
+  "name": "aldoyh-github-io",
+  "version": "1.0.0",
+  "description": "Personal blog and portfolio static site",
+  "main": "index.js",
+  "scripts": {
+    "generate:posts": "node scripts/generate_post_pages.js"
+  },
+  "author": "Hasan Al Doy",
+  "license": "MIT"
+}

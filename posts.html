@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="All blog posts">
+  <meta name="theme-color" content="#ffffff">
+  <title>All Posts - Hasan Al Doy</title>
+  <link rel="stylesheet" href="static/style.css">
+  <link rel="canonical" href="https://aldoyh.github.io/posts.html">
+</head>
+<body>
+  <a href="#main-content" class="sr-only">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="header-container">
+      <div class="header-content">
+        <h1 id="page-title" class="site-title">All Posts</h1>
+      <!-- JavaScript removed. PHP now handles post rendering. -->
+        li.appendChild(article);
+        list.appendChild(li);
+      });
+    }
+
+    function formatDate(date) {
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    }
+
+    function setupSearch() {
+      const searchInput = document.getElementById('search-posts');
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+
+        if (query === '') {
+          appState.filteredPosts = [...appState.allPosts];
+        } else {
+          appState.filteredPosts = appState.allPosts.filter(post =>
+            post.title.toLowerCase().includes(query)
+          );
+        }
+
+        displayAllPosts();
+      });
+    }
+
+    function showError(message) {
+      const section = document.querySelector('.all-posts-section');
+      section.innerHTML = `<p class="error-message">${message}</p>`;
+    }
+
+    // Set current year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializePage);
+    } else {
+      initializePage();
+    }
+  </script>
+</body>
+</html>
