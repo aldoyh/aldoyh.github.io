@@ -3,38 +3,182 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="All blog posts">
+  <meta name="theme-color" content="#ffffff">
   <title>All Posts - Hasan Al Doy</title>
   <link rel="stylesheet" href="static/style.css">
+  <link rel="canonical" href="https://aldoyh.github.io/posts.html">
 </head>
 <body>
-  <header>
-    <h1 id="posts-title">All Posts</h1>
-    <nav><a href="index.html">Home</a></nav>
+  <a href="#main-content" class="sr-only">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="header-container">
+      <div class="header-content">
+        <h1 id="page-title" class="site-title">All Posts</h1>
+      </div>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="index.html" class="nav-link">Home</a>
+      </nav>
+    </div>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <span aria-hidden="true">🌙</span>
+    </button>
   </header>
-  <section>
-    <ul id="all-posts"></ul>
-  </section>
+
+  <main id="main-content" class="container">
+    <section class="all-posts-section">
+      <div class="search-container">
+        <input
+          type="search"
+          id="search-posts"
+          class="search-input"
+          placeholder="Search posts..."
+          aria-label="Search posts"
+        >
+      </div>
+
+      <div class="posts-stats" id="posts-stats" aria-live="polite">
+        <span id="post-count">Loading...</span>
+      </div>
+
+      <ul id="all-posts" class="posts-list" role="list"></ul>
+
+      <div id="no-results" class="no-results" style="display: none;">
+        <p>No posts found matching your search.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-content">
+      <p>&copy; <span id="year"></span> Hasan Al Doy. All rights reserved.</p>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="https://github.com/aldoyh" rel="noopener noreferrer" target="_blank">GitHub</a>
+        <a href="https://twitter.com" rel="noopener noreferrer" target="_blank">Twitter</a>
+        <a href="mailto:contact@example.com">Email</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="static/utils.js" defer></script>
   <script>
-    // Optionally load site.json for dynamic title
-    fetch('site.json')
-      .then(res => res.json())
-      .then(config => {
-        document.title = 'All Posts - ' + config.title;
-        document.getElementById('posts-title').textContent = 'All Posts';
+    const appState = {
+      allPosts: [],
+      filteredPosts: []
+    };
+
+    async function initializePage() {
+      try {
+        const siteRes = await fetch('site.json');
+        if (!siteRes.ok) throw new Error('Failed to load site config');
+        const siteConfig = await siteRes.json();
+
+        document.title = 'All Posts - ' + siteConfig.title;
+
+        const postsRes = await fetch('posts.json');
+        if (!postsRes.ok) throw new Error('Failed to load posts');
+        appState.allPosts = await postsRes.json();
+        appState.filteredPosts = [...appState.allPosts];
+
+        displayAllPosts();
+        setupSearch();
+      } catch (error) {
+        console.error('Error initializing page:', error);
+        showError('Failed to load posts');
+      }
+    }
+
+    function displayAllPosts(posts = appState.filteredPosts) {
+      const list = document.getElementById('all-posts');
+      const noResults = document.getElementById('no-results');
+      const statsDiv = document.getElementById('posts-stats');
+
+      list.innerHTML = '';
+
+      if (posts.length === 0) {
+        list.style.display = 'none';
+        noResults.style.display = 'block';
+        statsDiv.textContent = '';
+        return;
+      }
+
+      list.style.display = '';
+      noResults.style.display = 'none';
+      statsDiv.innerHTML = `<span id="post-count">${posts.length} post${posts.length !== 1 ? 's' : ''}</span>`;
+
+      posts.forEach(post => {
+        const li = document.createElement('li');
+        li.className = 'post-item';
+
+        const article = document.createElement('article');
+        article.className = 'post-article';
+
+        const titleLink = document.createElement('a');
+        titleLink.href = 'posts/' + post.slug + '.html';
+        titleLink.className = 'post-link';
+        titleLink.textContent = post.title;
+
+        const titleHeading = document.createElement('h3');
+        titleHeading.className = 'post-title';
+        titleHeading.appendChild(titleLink);
+
+        const meta = document.createElement('div');
+        meta.className = 'post-meta';
+
+        if (post.date) {
+          const dateSpan = document.createElement('time');
+          dateSpan.dateTime = post.date;
+          dateSpan.textContent = formatDate(new Date(post.date));
+          meta.appendChild(dateSpan);
+        }
+
+        article.appendChild(titleHeading);
+        article.appendChild(meta);
+        li.appendChild(article);
+        list.appendChild(li);
       });
-    fetch('posts.json')
-      .then(res => res.json())
-      .then(posts => {
-        const list = document.getElementById('all-posts');
-        posts.forEach(p => {
-          const li = document.createElement('li');
-          const a = document.createElement('a');
-          a.href = 'posts/' + p.slug + '.html';
-          a.textContent = p.title;
-          li.appendChild(a);
-          list.appendChild(li);
-        });
+    }
+
+    function formatDate(date) {
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
       });
+    }
+
+    function setupSearch() {
+      const searchInput = document.getElementById('search-posts');
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+
+        if (query === '') {
+          appState.filteredPosts = [...appState.allPosts];
+        } else {
+          appState.filteredPosts = appState.allPosts.filter(post =>
+            post.title.toLowerCase().includes(query)
+          );
+        }
+
+        displayAllPosts();
+      });
+    }
+
+    function showError(message) {
+      const section = document.querySelector('.all-posts-section');
+      section.innerHTML = `<p class="error-message">${message}</p>`;
+    }
+
+    // Set current year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializePage);
+    } else {
+      initializePage();
+    }
   </script>
 </body>
 </html>

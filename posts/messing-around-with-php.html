@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Blog post">
+  <meta name="theme-color" content="#ffffff">
+  <title id="post-title">Loading...</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="canonical" href="https://aldoyh.github.io/">
+</head>
+<body>
+  <a href="#main-content" class="sr-only">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="header-container">
+      <div class="header-content">
+        <h1 id="site-title" class="site-title"></h1>
+        <p id="site-subtitle" class="site-subtitle"></p>
+      </div>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="../index.html" class="nav-link">Home</a>
+        <a href="../posts.html" class="nav-link">All Posts</a>
+      </nav>
+    </div>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <span aria-hidden="true">🌙</span>
+    </button>
+  </header>
+
+  <main id="main-content" class="container">
+    <article class="post-article">
+      <h2 id="post-title-main" class="post-title">Loading...</h2>
+      <div id="post-meta" class="post-meta"></div>
+      <div id="post-content" class="markdown-body"></div>
+    </article>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-content">
+      <p>&copy; <span id="year"></span> Hasan Al Doy. All rights reserved.</p>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="https://github.com/aldoyh" rel="noopener noreferrer" target="_blank">GitHub</a>
+        <a href="https://twitter.com" rel="noopener noreferrer" target="_blank">Twitter</a>
+        <a href="mailto:contact@example.com">Email</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="../static/utils.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    // Utility to get slug from URL
+    function getSlug() {
+      const match = window.location.pathname.match(/\/posts\/([\w-]+)\.html$/);
+      return match ? match[1] : null;
+    }
+
+    async function loadPost() {
+      const slug = getSlug();
+      if (!slug) {
+        document.getElementById('post-content').innerHTML = '<p class="error-message">Invalid post URL.</p>';
+        return;
+      }
+      try {
+        // Load site config
+        const configRes = await fetch('../site.json');
+        const config = await configRes.json();
+        document.getElementById('site-title').textContent = config.title;
+        document.getElementById('site-subtitle').textContent = config.subtitle;
+
+        // Load posts metadata
+        const postsRes = await fetch('../posts.json');
+        const posts = await postsRes.json();
+        const post = posts.find(p => p.slug === slug);
+        if (!post) throw new Error('Post not found');
+
+        document.title = post.title + ' - ' + config.title;
+        document.getElementById('post-title').textContent = post.title;
+        document.getElementById('post-title-main').textContent = post.title;
+        if (post.date) {
+          document.getElementById('post-meta').innerHTML = `<time dateTime="${post.date}">${new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>`;
+        }
+
+        // Load markdown content
+        const mdRes = await fetch(`./${slug}.md`);
+        if (!mdRes.ok) throw new Error('Markdown file not found');
+        const markdown = await mdRes.text();
+        document.getElementById('post-content').innerHTML = marked.parse(markdown);
+      } catch (err) {
+        document.getElementById('post-content').innerHTML = `<p class="error-message">${err.message}</p>`;
+      }
+    }
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadPost);
+    } else {
+      loadPost();
+    }
+  </script>
+</body>
+</html>

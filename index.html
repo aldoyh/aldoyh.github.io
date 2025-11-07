@@ -3,54 +3,140 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Personal blog and portfolio">
+  <meta name="theme-color" content="#ffffff">
   <title>Hasan Al Doy</title>
   <link rel="stylesheet" href="static/style.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-toast-plugin/dist/jquery.toast.min.css">
+  <link rel="canonical" href="https://aldoyh.github.io/">
 </head>
 <body>
-  <header>
-    <h1 id="site-title"></h1>
-    <p id="site-subtitle"></p>
-    <nav><a href="posts.html">All Posts</a></nav>
+  <a href="#main-content" class="sr-only">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="header-container">
+      <div class="header-content">
+        <h1 id="site-title" class="site-title"></h1>
+        <p id="site-subtitle" class="site-subtitle"></p>
+      </div>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="#recent-posts" class="nav-link">Latest</a>
+        <a href="posts.html" class="nav-link">All Posts</a>
+      </nav>
+    </div>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <span aria-hidden="true">🌙</span>
+    </button>
   </header>
-  <section id="recent-posts">
-    <h2>Latest Posts</h2>
-    <ul id="posts-list"></ul>
-  </section>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jquery-toast-plugin/dist/jquery.toast.min.js"></script>
+
+  <main id="main-content" class="container">
+    <section id="recent-posts" class="recent-posts">
+      <div class="section-header">
+        <h2>Latest Posts</h2>
+        <a href="posts.html" class="view-all-link">View all →</a>
+      </div>
+      <ul id="posts-list" class="posts-list" role="list"></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-content">
+      <p>&copy; <span id="year"></span> Hasan Al Doy. All rights reserved.</p>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="https://github.com/aldoyh" rel="noopener noreferrer" target="_blank">GitHub</a>
+        <a href="https://twitter.com" rel="noopener noreferrer" target="_blank">Twitter</a>
+        <a href="mailto:contact@example.com">Email</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="static/utils.js" defer></script>
   <script>
-    // Load site configuration
-    fetch('site.json')
-      .then(res => res.json())
-      .then(config => {
-        document.getElementById('site-title').textContent = config.title;
-        document.getElementById('site-subtitle').textContent = config.subtitle;
-        document.title = config.title;
+    // Initialize page
+    const appState = {
+      siteConfig: null,
+      posts: []
+    };
+
+    async function initializePage() {
+      try {
+        // Load site configuration
+        const configRes = await fetch('site.json');
+        if (!configRes.ok) throw new Error('Failed to load site config');
+        appState.siteConfig = await configRes.json();
+
+        document.getElementById('site-title').textContent = appState.siteConfig.title;
+        document.getElementById('site-subtitle').textContent = appState.siteConfig.subtitle;
+        document.title = appState.siteConfig.title;
+
+        // Load posts
+        const postsRes = await fetch('posts.json');
+        if (!postsRes.ok) throw new Error('Failed to load posts');
+        appState.posts = await postsRes.json();
+
+        // Display latest three posts
+        displayLatestPosts();
+      } catch (error) {
+        console.error('Error initializing page:', error);
+        showError('Failed to load content');
+      }
+    }
+
+    function displayLatestPosts() {
+      const list = document.getElementById('posts-list');
+      list.innerHTML = '';
+
+      const latestPosts = appState.posts.slice(0, 3);
+      if (latestPosts.length === 0) {
+        list.innerHTML = '<li>No posts yet.</li>';
+        return;
+      }
+
+      latestPosts.forEach(post => {
+        const li = document.createElement('li');
+        li.className = 'post-item';
+
+        const a = document.createElement('a');
+        a.href = 'posts/' + post.slug + '.html';
+        a.className = 'post-link';
+        a.textContent = post.title;
+
+        const meta = document.createElement('div');
+        meta.className = 'post-meta';
+        if (post.date) {
+          const dateSpan = document.createElement('time');
+          dateSpan.dateTime = post.date;
+          dateSpan.textContent = formatDate(new Date(post.date));
+          meta.appendChild(dateSpan);
+        }
+
+        li.appendChild(a);
+        if (post.date) li.appendChild(meta);
+        list.appendChild(li);
       });
-    // Load posts and display latest three
-    fetch('posts.json')
-      .then(res => res.json())
-      .then(posts => {
-        const list = document.getElementById('posts-list');
-        posts.slice(0, 3).forEach(p => {
-          const li = document.createElement('li');
-          const a = document.createElement('a');
-          a.href = 'posts/' + p.slug + '.html';
-          a.textContent = p.title;
-          li.appendChild(a);
-          list.appendChild(li);
-        });
-        $.toast({
-          heading: 'Welcome',
-          text: 'Latest posts loaded!',
-          icon: 'success',
-          loader: true,
-          loaderBg: '#9EC600',
-          position: 'top-right',
-          hideAfter: 3000
-        });
+    }
+
+    function formatDate(date) {
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
       });
+    }
+
+    function showError(message) {
+      const section = document.getElementById('recent-posts');
+      section.innerHTML = `<p class="error-message">${message}</p>`;
+    }
+
+    // Set current year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializePage);
+    } else {
+      initializePage();
+    }
   </script>
 </body>
 </html>

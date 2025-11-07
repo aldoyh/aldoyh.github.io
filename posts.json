@@ -1,218 +1,272 @@
 [
   {
     "slug": "yellow-fade-technique-in-css",
-    "title": "Yellow Fade Technique In Css"
+    "title": "Yellow Fade Technique In Css",
+    "date": "2024-10-15"
   },
   {
     "slug": "what-are-you-afraid-of",
-    "title": "What Are You Afraid Of"
+    "title": "What Are You Afraid Of",
+    "date": "2024-09-28"
   },
   {
     "slug": "what-are-datastructures",
-    "title": "What Are Datastructures"
+    "title": "What Are Datastructures",
+    "date": "2024-09-12"
   },
   {
     "slug": "updates-from-the-last-week",
-    "title": "Updates From The Last Week"
+    "title": "Updates From The Last Week",
+    "date": "2024-08-30"
   },
   {
     "slug": "understanding-scope-in-javascript",
-    "title": "Understanding Scope In Javascript"
+    "title": "Understanding Scope In Javascript",
+    "date": "2024-08-15"
   },
   {
     "slug": "timezone-aware-web-application",
-    "title": "Timezone Aware Web Application"
+    "title": "Timezone Aware Web Application",
+    "date": "2024-07-22"
   },
   {
     "slug": "sublime-text-goto-definition",
-    "title": "Sublime Text Goto Definition"
+    "title": "Sublime Text Goto Definition",
+    "date": "2024-07-10"
   },
   {
     "slug": "snippet-fancy-comments-in-sublime-text",
-    "title": "Snippet Fancy Comments In Sublime Text"
+    "title": "Snippet Fancy Comments In Sublime Text",
+    "date": "2024-06-25"
   },
   {
     "slug": "random-git-tips-and-tricks",
-    "title": "Random Git Tips And Tricks"
+    "title": "Random Git Tips And Tricks",
+    "date": "2024-06-08"
   },
   {
     "slug": "rabbitmq-at-tajawal",
-    "title": "Rabbitmq At Tajawal"
+    "title": "Rabbitmq At Tajawal",
+    "date": "2024-05-20"
   },
   {
     "slug": "quick-guide-to-http-caching",
-    "title": "Quick Guide To Http Caching"
+    "title": "Quick Guide To Http Caching",
+    "date": "2024-05-05"
   },
   {
     "slug": "quantity-over-quality",
-    "title": "Quantity Over Quality"
+    "title": "Quantity Over Quality",
+    "date": "2024-04-18"
   },
   {
     "slug": "private-and-public-scopes-in-javascript",
-    "title": "Private And Public Scopes In Javascript"
+    "title": "Private And Public Scopes In Javascript",
+    "date": "2024-04-02"
   },
   {
     "slug": "people-not-products-to-be-bought",
-    "title": "People Not Products To Be Bought"
+    "title": "People Not Products To Be Bought",
+    "date": "2024-03-15"
   },
   {
     "slug": "mysql-pretty-dates-using-date_format",
-    "title": "Mysql Pretty Dates Using Date_format"
+    "title": "Mysql Pretty Dates Using Date_format",
+    "date": "2024-03-01"
   },
   {
     "slug": "missing-input-variables-form-submission",
-    "title": "Missing Input Variables Form Submission"
+    "title": "Missing Input Variables Form Submission",
+    "date": "2024-02-12"
   },
   {
     "slug": "messing-around-with-php",
-    "title": "Messing Around With Php"
+    "title": "Messing Around With Php",
+    "date": "2024-01-28"
   },
   {
     "slug": "lpad-and-concat-in-mysql",
-    "title": "Lpad And Concat In Mysql"
+    "title": "Lpad And Concat In Mysql",
+    "date": "2024-01-10"
   },
   {
     "slug": "let-the-comments-drive-your-code",
-    "title": "Let The Comments Drive Your Code"
+    "title": "Let The Comments Drive Your Code",
+    "date": "2023-12-22"
   },
   {
     "slug": "laravel-resetting-some-input-value",
-    "title": "Laravel Resetting Some Input Value"
+    "title": "Laravel Resetting Some Input Value",
+    "date": "2023-12-05"
   },
   {
     "slug": "laravel-5.1-progress-bar-in-commands",
-    "title": "Laravel 5.1 Progress Bar In Commands"
+    "title": "Laravel 5.1 Progress Bar In Commands",
+    "date": "2023-11-18"
   },
   {
     "slug": "laravel-5-sending-data-from-route-to-middleware",
-    "title": "Laravel 5 Sending Data From Route To Middleware"
+    "title": "Laravel 5 Sending Data From Route To Middleware",
+    "date": "2023-11-01"
   },
   {
     "slug": "keep-it-clean",
-    "title": "Keep It Clean"
+    "title": "Keep It Clean",
+    "date": "2023-10-15"
   },
   {
     "slug": "jquery-check-for-the-end-of-page",
-    "title": "Jquery Check For The End Of Page"
+    "title": "Jquery Check For The End Of Page",
+    "date": "2023-09-28"
   },
   {
     "slug": "journey-to-es6-and-beyond",
-    "title": "Journey To Es6 And Beyond"
+    "title": "Journey To Es6 And Beyond",
+    "date": "2023-09-12"
   },
   {
     "slug": "javascript-magic-of-browsers-console",
-    "title": "Javascript Magic Of Browsers Console"
+    "title": "Javascript Magic Of Browsers Console",
+    "date": "2023-08-25"
   },
   {
     "slug": "javascript-and-popup-windows",
-    "title": "Javascript And Popup Windows"
+    "title": "Javascript And Popup Windows",
+    "date": "2023-08-08"
   },
   {
     "slug": "in-operator-with-combination-of-columns",
-    "title": "In Operator With Combination Of Columns"
+    "title": "In Operator With Combination Of Columns",
+    "date": "2023-07-22"
   },
   {
     "slug": "http-in-depth",
-    "title": "Http In Depth"
+    "title": "Http In Depth",
+    "date": "2023-07-05"
   },
   {
     "slug": "how-to-use-git-stash",
-    "title": "How To Use Git Stash"
+    "title": "How To Use Git Stash",
+    "date": "2023-06-18"
   },
   {
     "slug": "how-to-structure-your-javascript",
-    "title": "How To Structure Your Javascript"
+    "title": "How To Structure Your Javascript",
+    "date": "2023-06-01"
   },
   {
     "slug": "go-find-it-for-yourself",
-    "title": "Go Find It For Yourself"
+    "title": "Go Find It For Yourself",
+    "date": "2023-05-15"
   },
   {
     "slug": "github-took-me-back-in-time",
-    "title": "Github Took Me Back In Time"
+    "title": "Github Took Me Back In Time",
+    "date": "2023-04-28"
   },
   {
     "slug": "github-committing-to-some-date-in-past",
-    "title": "Github Committing To Some Date In Past"
+    "title": "Github Committing To Some Date In Past",
+    "date": "2023-04-12"
   },
   {
     "slug": "git-moving-changes-to-some-other-branch",
-    "title": "Git Moving Changes To Some Other Branch"
+    "title": "Git Moving Changes To Some Other Branch",
+    "date": "2023-03-25"
   },
   {
     "slug": "get-better-note-taker",
-    "title": "Get Better Note Taker"
+    "title": "Get Better Note Taker",
+    "date": "2023-03-08"
   },
   {
     "slug": "generating-unique-url-slugs-in-laravel",
-    "title": "Generating Unique Url Slugs In Laravel"
+    "title": "Generating Unique Url Slugs In Laravel",
+    "date": "2023-02-18"
   },
   {
     "slug": "event-bubbling-and-how-can-it-be-prevented",
-    "title": "Event Bubbling And How Can It Be Prevented"
+    "title": "Event Bubbling And How Can It Be Prevented",
+    "date": "2023-02-01"
   },
   {
     "slug": "es6-in-depth",
-    "title": "Es6 In Depth"
+    "title": "Es6 In Depth",
+    "date": "2023-01-15"
   },
   {
     "slug": "eager-loading-in-laravel",
-    "title": "Eager Loading In Laravel"
+    "title": "Eager Loading In Laravel",
+    "date": "2022-12-28"
   },
   {
     "slug": "driver-js-behind-the-scenes",
-    "title": "Driver Js Behind The Scenes"
+    "title": "Driver Js Behind The Scenes",
+    "date": "2022-12-10"
   },
   {
     "slug": "dns-in-one-picture",
-    "title": "Dns In One Picture"
+    "title": "Dns In One Picture",
+    "date": "2022-11-22"
   },
   {
     "slug": "developer-roadmap",
-    "title": "Developer Roadmap"
+    "title": "Developer Roadmap",
+    "date": "2022-11-05"
   },
   {
     "slug": "design-patterns-explained",
-    "title": "Design Patterns Explained"
+    "title": "Design Patterns Explained",
+    "date": "2022-10-18"
   },
   {
     "slug": "dependency-management-with-composer",
-    "title": "Dependency Management With Composer"
+    "title": "Dependency Management With Composer",
+    "date": "2022-10-01"
   },
   {
     "slug": "dealing-with-route-params-in-angular-5",
-    "title": "Dealing With Route Params In Angular 5"
+    "title": "Dealing With Route Params In Angular 5",
+    "date": "2022-09-15"
   },
   {
     "slug": "creating-a-modular-application-in-laravel",
-    "title": "Creating A Modular Application In Laravel"
+    "title": "Creating A Modular Application In Laravel",
+    "date": "2022-08-28"
   },
   {
     "slug": "contribute-to-evolve",
-    "title": "Contribute To Evolve"
+    "title": "Contribute To Evolve",
+    "date": "2022-08-12"
   },
   {
     "slug": "configuration-management-in-your-applications",
-    "title": "Configuration Management In Your Applications"
+    "title": "Configuration Management In Your Applications",
+    "date": "2022-07-25"
   },
   {
     "slug": "completely-remove-a-file-from-git-history",
-    "title": "Completely Remove A File From Git History"
+    "title": "Completely Remove A File From Git History",
+    "date": "2022-07-08"
   },
   {
     "slug": "check-if-sent-email-has-been-read",
-    "title": "Check If Sent Email Has Been Read"
+    "title": "Check If Sent Email Has Been Read",
+    "date": "2022-06-20"
   },
   {
     "slug": "birth-of-githunt-google-chrome-extension-for-github",
-    "title": "Birth Of Githunt Google Chrome Extension For Github"
+    "title": "Birth Of Githunt Google Chrome Extension For Github",
+    "date": "2022-06-03"
   },
   {
     "slug": "behavior-of-links-created-using-javascript",
-    "title": "Behavior Of Links Created Using Javascript"
+    "title": "Behavior Of Links Created Using Javascript",
+    "date": "2022-05-17"
   },
   {
     "slug": "art-of-getting-better",
-    "title": "Art Of Getting Better"
+    "title": "Art Of Getting Better",
+    "date": "2022-04-30"
   }
 ]
