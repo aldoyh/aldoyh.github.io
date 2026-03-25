@@ -1,0 +1,10 @@
+{
+  "publishes": {
+    "waxen-portal-8sgp": {
+      "siteUrl": "https://waxen-portal-8sgp.here.now/",
+      "claimToken": "5ee1da2edff8bcd8771140a2723dc07664d4d14186c226d0ebcfadda04915c1e",
+      "claimUrl": "https://here.now/claim?slug=waxen-portal-8sgp&token=5ee1da2edff8bcd8771140a2723dc07664d4d14186c226d0ebcfadda04915c1e",
+      "expiresAt": "2026-03-26T03:34:38.745Z"
+    }
+  }
+}

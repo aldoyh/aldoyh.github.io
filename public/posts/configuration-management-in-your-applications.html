@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Blog post">
+  <meta name="theme-color" content="#ffffff">
+  <title id="post-title">Internal Application Configuration</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="canonical" href="https://aldoyh.github.io/">
+</head>
+<body>
+  <a href="#main-content" class="sr-only">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="header-container">
+      <div class="header-content">
+        <h1 id="site-title" class="site-title"></h1>
+        <p id="site-subtitle" class="site-subtitle"></p>
+      </div>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="../index.html" class="nav-link">Home</a>
+        <a href="../posts.html" class="nav-link">All Posts</a>
+      </nav>
+    </div>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <span aria-hidden="true">🌙</span>
+    </button>
+  </header>
+
+  <main id="main-content" class="container">
+    <article class="post-article">
+      <h2 id="post-title-main" class="post-title">Internal Application Configuration</h2>
+      <div id="post-meta" class="post-meta">Posted on 2016-04-02</div>
+      <div id="post-content" class="markdown-body"><p>Before you go about reading this article, note that I am not going to write a full-blown configuration loader in this article and the point of this article is just to give you a gist of how you can make one or about the pattern you can use for the application configuration. </p>
+<p>You might have noticed this configuration management pattern in some popular frameworks such as Laravel or Lumen where they have a bunch of <a href="https://github.com/laravel/laravel/tree/master/config">configuration files</a> placed in a directory and each of the files is doing nothing but returning an array consisting of configuration variables. And then they expose some magical functions to retrieve any of the configuration.</p>
+<p>I recently created an SDK for an API where I used the similar approach for the configuration management and the take away is if you <code>return</code> some <em>variable</em> from a file and include the file on the right side of the assignment operator, the variable will get assigned with the content of what you returned from the file.</p>
+<p>For example if you have a file that looks like below</p>
+<pre><code class="language-php">// config/app.php
+
+return [
+    &#39;appName&#39; =&gt; &#39;Witchcraft&#39;,
+    &#39;version&#39; =&gt; &#39;1.0&#39;,
+    &#39;baseUrl&#39; =&gt; &#39;http://witch-craft.dev&#39;,
+
+    &#39;leaderWitch&#39; =&gt; [
+        &#39;witchName&#39; 	=&gt; &#39;Jane Doe&#39;,
+	&#39;spellsCount&#39; 	=&gt; 20,
+
+	&#39;favorite_spell&#39; =&gt; [
+             &#39;name&#39; =&gt; &#39;Voodoo&#39;,
+	     &#39;spell&#39; =&gt; &#39;Aagra bagra boo, bagra agra shoo&#39;
+	],
+	&#39;spells&#39; =&gt; [
+	    // ...
+	]
+    ]
+];
+</code></pre>
+<p>You can get the above configuration array in a variable simply by doing</p>
+<pre><code class="language-php">$appConfig = include &#39;config/app.php&#39;;
+var_dump($appConfig);	// The array from config/app.php file above
+</code></pre>
+<p>And then you can mould this array however you want to get the configuration. <a href="https://github.com/laravel/framework/blob/master/src/Illuminate/Foundation/Bootstrap/LoadConfiguration.php#L57">Laravel</a> and <a href="https://github.com/laravel/lumen-framework/blob/5.2/src/Application.php#L569">Lumen</a> are both using the same technique for loading configuration data. </p>
+<p>As far as the configuration loader is concerned, you can create a helper, for example, that loads the configuration data for you i.e. maybe something like</p>
+<pre><code class="language-php">/**
+ * Loads the data from configuration files
+ * @param  string $fileName
+ * @return array
+ */
+public function load($fileName)
+{
+    $filePath = basePath() . &#39;/config/&#39; . $fileName . &#39;.php&#39;;
+
+    if (is_file($filePath)) {
+        return include $filePath; // Will return the array from file
+    }
+
+    return [];
+}
+</code></pre>
+<p>and then use <a href="https://github.com/maciejczyzewski/bottomline/blob/master/src/__/collections/get.php">something like this</a> to access the configuration by dot notation. </p>
+<p>And that wraps it up folks, do you have better way to suggest? How do you manage configuration of your application? Do share it with me in the comments section below.</p>
+</div>
+    </article>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-content">
+      <p>&copy; <span id="year"></span> Hasan Al Doy. All rights reserved.</p>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="https://github.com/aldoyh" rel="noopener noreferrer" target="_blank">GitHub</a>
+        <a href="https://twitter.com" rel="noopener noreferrer" target="_blank">Twitter</a>
+        <a href="mailto:contact@example.com">Email</a>
+      </nav>
+    </div>
+  </footer>
+
+  
+</body></html>

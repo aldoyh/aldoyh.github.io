@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Blog post">
+  <meta name="theme-color" content="#ffffff">
+  <title id="post-title">Generating unique URL slugs in Laravel</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="canonical" href="https://aldoyh.github.io/">
+</head>
+<body>
+  <a href="#main-content" class="sr-only">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="header-container">
+      <div class="header-content">
+        <h1 id="site-title" class="site-title"></h1>
+        <p id="site-subtitle" class="site-subtitle"></p>
+      </div>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="../index.html" class="nav-link">Home</a>
+        <a href="../posts.html" class="nav-link">All Posts</a>
+      </nav>
+    </div>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <span aria-hidden="true">🌙</span>
+    </button>
+  </header>
+
+  <main id="main-content" class="container">
+    <article class="post-article">
+      <h2 id="post-title-main" class="post-title">Generating unique URL slugs in Laravel</h2>
+      <div id="post-meta" class="post-meta">Posted on 2015-01-27</div>
+      <div id="post-content" class="markdown-body"><p>In one of the projects I have been working upon, I decided to use slugs for URLs, instead of IDs because it allowed me to generate user-friendly URLs and to improve the SEO of the content. </p>
+<p>In my case, there were two places where I decided to do this i.e. </p>
+<ul>
+<li><p>When a user registers himself through social registration process, I decided to generate a temporary username off of the user&#39;s first and last names using this method, sort of like they do on SoundCloud.</p>
+</li>
+<li><p>After a user creates a <em>Tip</em>, use that tip&#39;s title to generate unique slug for it.</p>
+</li>
+</ul>
+<p>Below is the super simple function that I used, which you can adapt to your own needs.</p>
+<pre><code class="language-php">function generateSlug( $tipTitle ) {
+
+    $slug = Str::slug( $tipTitle );
+    $slugs = $this-&gt;whereRaw(&quot;slug REGEXP &#39;^{$slug}(-[0-9]*)?<div id="post-content" class="markdown-body"></div>#39;&quot;);
+
+    if ($slugs-&gt;count() === 0) {
+        return $slug;
+    }
+
+    // Get the last matching slug
+    $lastSlug = $slugs-&gt;orderBy(&#39;slug&#39;, &#39;desc&#39;)-&gt;first()-&gt;slug;
+
+    // Strip the number off of the last slug, if any
+    $lastSlugNumber = intval(str_replace($slug . &#39;-&#39;, &#39;&#39;, $lastSlug));
+
+    // Increment/append the counter and return the slug we generated
+    return $slug . &#39;-&#39; . ($lastSlugNumber + 1);
+}
+</code></pre>
+<p>What&#39;s happening here is self explanatory, however if you have any problems understanding, feel free to leave a comment below. Also, you should note that I have used MySQL in this case, check you RDBMS&#39; manual for the implementation of regular expressions.</p>
+</div>
+    </article>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-content">
+      <p>&copy; <span id="year"></span> Hasan Al Doy. All rights reserved.</p>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="https://github.com/aldoyh" rel="noopener noreferrer" target="_blank">GitHub</a>
+        <a href="https://twitter.com" rel="noopener noreferrer" target="_blank">Twitter</a>
+        <a href="mailto:contact@example.com">Email</a>
+      </nav>
+    </div>
+  </footer>
+
+  
+</body></html>

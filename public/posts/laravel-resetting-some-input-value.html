@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Blog post">
+  <meta name="theme-color" content="#ffffff">
+  <title id="post-title">Laravel - Resetting some `Input` value</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="canonical" href="https://aldoyh.github.io/">
+</head>
+<body>
+  <a href="#main-content" class="sr-only">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="header-container">
+      <div class="header-content">
+        <h1 id="site-title" class="site-title"></h1>
+        <p id="site-subtitle" class="site-subtitle"></p>
+      </div>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="../index.html" class="nav-link">Home</a>
+        <a href="../posts.html" class="nav-link">All Posts</a>
+      </nav>
+    </div>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <span aria-hidden="true">🌙</span>
+    </button>
+  </header>
+
+  <main id="main-content" class="container">
+    <article class="post-article">
+      <h2 id="post-title-main" class="post-title">Laravel - Resetting some `Input` value</h2>
+      <div id="post-meta" class="post-meta">Posted on 2014-07-25</div>
+      <div id="post-content" class="markdown-body"><p>I have recently started working in Laravel 4.2 and I must say it is really well <a href="http://laravel.com/docs">documented</a>. At <a href="http://ssidecisions.com">Strategic Systems International</a>, currently I am a part of the team working at a Large scale Health Care System built on top of Laravel.</p>
+<p>Today, I faced an issue in which some wasn&#39;t working as required. I looked through the code and sooner, I found out that the problem was due to some unnecessary hidden field that was being submitted along with the form when saving the data. <code>Input</code> class was being used throughout the action of controller. Now, I had to reset this unnessary hidden field from the <code>Input</code>. Now there were several ways to do so. First option was to reset this hidden field value through Javascript before form submission, but JS might be turned off in user’s browser. Other option was to handle this in the action (function) that was handling the saving process. At first, I thought to do it this way:</p>
+<pre><code class="language-php">// Get all the form data except the hidden field
+$data = Input::except(&#39;foobar&#39;)
+// Now use $data instead of Input
+</code></pre>
+<p>Considering the size of that action that was handling the saving process, sooner I realized that it would be a bad bad idea to adopt this approach. </p>
+<p>I headed to the <a href="http://laravel.com/docs/requests">Laravel docs for <code>Input</code></a> but strangely there was nothing that I could find regarding resetting values from the <code>Input</code>. I searched through the google and finally found it in the <a href="http://three.laravel.com/docs/input">Laravel 3 docs</a>. Here is how I implemented this:</p>
+<pre><code class="language-php">// Merge the Input array with my custom array.
+Input::merge(array( &#39;foobar&#39; =&gt; null ));
+</code></pre>
+<p>and that did the trick.</p>
+</div>
+    </article>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-content">
+      <p>&copy; <span id="year"></span> Hasan Al Doy. All rights reserved.</p>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="https://github.com/aldoyh" rel="noopener noreferrer" target="_blank">GitHub</a>
+        <a href="https://twitter.com" rel="noopener noreferrer" target="_blank">Twitter</a>
+        <a href="mailto:contact@example.com">Email</a>
+      </nav>
+    </div>
+  </footer>
+
+  
+</body></html>

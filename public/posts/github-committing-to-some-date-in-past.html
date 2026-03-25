@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Blog post">
+  <meta name="theme-color" content="#ffffff">
+  <title id="post-title">Git - Committing to some date in past</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="canonical" href="https://aldoyh.github.io/">
+</head>
+<body>
+  <a href="#main-content" class="sr-only">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="header-container">
+      <div class="header-content">
+        <h1 id="site-title" class="site-title"></h1>
+        <p id="site-subtitle" class="site-subtitle"></p>
+      </div>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="../index.html" class="nav-link">Home</a>
+        <a href="../posts.html" class="nav-link">All Posts</a>
+      </nav>
+    </div>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <span aria-hidden="true">🌙</span>
+    </button>
+  </header>
+
+  <main id="main-content" class="container">
+    <article class="post-article">
+      <h2 id="post-title-main" class="post-title">Git - Committing to some date in past</h2>
+      <div id="post-meta" class="post-meta">Posted on 2014-10-04</div>
+      <div id="post-content" class="markdown-body"><p>Sometimes it may happen that you might want to commit to some previous date e.g. you did something yesterday and forgot to commit the changes and now you don’t want to make this commit to today but to yesterday. In that case you may use the following</p>
+<pre><code class="language-bash">git commit --date=&quot;`date --date=&#39;n day ago&#39;`&quot; -am &quot;Commit Message&quot;
+</code></pre>
+<p>Here <em>n</em> in the <em>n day ago</em> is to be replaced with the number of days to in the past and <em>Commit Message</em>
+is of course the commit message.</p>
+</div>
+    </article>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-content">
+      <p>&copy; <span id="year"></span> Hasan Al Doy. All rights reserved.</p>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="https://github.com/aldoyh" rel="noopener noreferrer" target="_blank">GitHub</a>
+        <a href="https://twitter.com" rel="noopener noreferrer" target="_blank">Twitter</a>
+        <a href="mailto:contact@example.com">Email</a>
+      </nav>
+    </div>
+  </footer>
+
+  
+</body></html>
