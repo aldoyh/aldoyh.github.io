@@ -82,4 +82,6 @@ Here's a thinking process that leads to the suggested PHP solution:
     4.  **Error Handling:** Graceful fallback on network errors or rate limits.
     5.  **Formatting:** Use PHPDoc blocks, proper indentation.
 
-    *(Wait, one more check)*: The Python code includes a prompt asking to download videos from YouTube. This is a sensitive prompt (scraping YouTube).
+    *(Wait, one more check)*: The Python code includes a prompt asking to download videos from YouTube. This is a sensitive prompt (scraping YouTube). I should warn the user or ensure the code focuses on the *LLM Client* aspect, not the *botnet/scraping* aspect. I will keep the prompt text but ensure the code is secure.
+    *(Actually)*: The prompt asks to "Transform this into php, then revise and improve". The revision should focus on code quality and feasibility.
+    *(Important)*: PHP doesn't have
