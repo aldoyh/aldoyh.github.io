@@ -3,35 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Blog post">
-  <meta name="theme-color" content="#ffffff">
-  <title id="post-title">Driver.js – Behind the Scenes</title>
+  <meta name="description" content="Blog post by Hasan Al Doy">
+  <title>Driver.js – Behind the Scenes</title>
   <link rel="stylesheet" href="../static/style.css">
-  <link rel="canonical" href="https://aldoyh.github.io/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
   <a href="#main-content" class="sr-only">Skip to main content</a>
 
   <header class="site-header" role="banner">
-    <div class="header-container">
-      <div class="header-content">
-        <h1 id="site-title" class="site-title"></h1>
-        <p id="site-subtitle" class="site-subtitle"></p>
-      </div>
+    <div class="container header-inner">
+      <a href="../index.html" class="logo">Hasan Al Doy</a>
       <nav class="site-nav" aria-label="Primary navigation">
         <a href="../index.html" class="nav-link">Home</a>
-        <a href="../posts.html" class="nav-link">All Posts</a>
+        <a href="../posts.html" class="nav-link">Posts</a>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span aria-hidden="true" style="font-size:1.2rem;">☼</span>
+        </button>
       </nav>
     </div>
-    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-      <span aria-hidden="true">🌙</span>
-    </button>
   </header>
 
   <main id="main-content" class="container">
     <article class="post-article">
-      <h2 id="post-title-main" class="post-title">Driver.js – Behind the Scenes</h2>
-      <div id="post-meta" class="post-meta">Posted on 2018-03-18</div>
+      <header class="article-header">
+        <h1 class="article-title">Driver.js – Behind the Scenes</h1>
+        <div id="post-meta" class="article-meta">Posted on 2018-03-18</div>
+      </header>
       <div id="post-content" class="markdown-body"><p>I launched <a href="http://kamranahmed.info/driver">Driver.js</a> last week which apparently went big. This post is going to be a quick &quot;behind the scenes&quot; towards how I came up with the idea and what went into writing it and then rewriting in two days after the launch and also to give you a little perspective on how I approach the ideas that I have.</p>
 <h2>Ideas, Ideas and Ideas</h2>
 <p>If you ask me about the applications that I use the most, &quot;Notes&quot; would definitely be among the ones at the top of the list. Whenever I have some silly idea or a feeling about something that could help me or the others or just something pointless but interesting, I write it down. Not to toot my own horn, but over the time I have developed this habit of looking at things a little differently; never a day goes by when I am working on something and the inner me pops up saying &quot;How about an app/utility/product that does XYZ&quot; and most often than not I have to shut him down and put whatever it was in the ever growing list of ideas in my notes.</p>
@@ -88,15 +88,39 @@
   </main>
 
   <footer class="site-footer" role="contentinfo">
-    <div class="footer-content">
-      <p>&copy; <span id="year"></span> Hasan Al Doy. All rights reserved.</p>
-      <nav class="footer-nav" aria-label="Footer navigation">
+    <div class="container">
+      <div class="footer-links">
         <a href="https://github.com/aldoyh" rel="noopener noreferrer" target="_blank">GitHub</a>
-        <a href="https://twitter.com" rel="noopener noreferrer" target="_blank">Twitter</a>
-        <a href="mailto:contact@example.com">Email</a>
-      </nav>
+        <a href="https://twitter.com/aldoyh" rel="noopener noreferrer" target="_blank">Twitter</a>
+        <a href="mailto:aldoyh@gmail.com">Email</a>
+      </div>
+      <p style="margin-top:1rem; opacity:0.6;">&copy; <span id="year"></span> Hasan Al Doy. All rights reserved.</p>
     </div>
   </footer>
 
-  
-</body></html>
+  <script>
+    const toggle = document.getElementById('theme-toggle');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    function setTheme(theme) {
+      document.body.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      toggle.innerHTML = theme === 'dark' ? '<span aria-hidden="true" style="font-size:1.2rem;">☼</span>' : '<span aria-hidden="true" style="font-size:1.2rem;">☾</span>';
+    }
+    
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      setTheme(savedTheme);
+    } else if (prefersDark.matches) {
+      setTheme('dark');
+    }
+    
+    toggle.addEventListener('click', () => {
+      const current = document.body.getAttribute('data-theme');
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

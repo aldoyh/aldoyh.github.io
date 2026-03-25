@@ -3,481 +3,87 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Personal blog and portfolio">
+  <meta name="description" content="Personal blog and portfolio of Hasan Al Doy">
   <meta name="theme-color" content="#ffffff">
   <title>All Posts - Hasan Al Doy</title>
   <link rel="stylesheet" href="static/style.css">
   <link rel="canonical" href="https://aldoyh.github.io/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
   <a href="#main-content" class="sr-only">Skip to main content</a>
 
   <header class="site-header" role="banner">
-    <div class="header-container">
-      <div class="header-content">
-        <h1 id="site-title" class="site-title"></h1>
-        <p id="site-subtitle" class="site-subtitle"></p>
-      </div>
+    <div class="container header-inner">
+      <a href="index.html" class="logo">Hasan Al Doy</a>
       <nav class="site-nav" aria-label="Primary navigation">
-        <a href="#recent-posts" class="nav-link">Latest</a>
-        <a href="posts.html" class="nav-link">All Posts</a>
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="posts.html" class="nav-link">Posts</a>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span aria-hidden="true" style="font-size:1.2rem;">☼</span>
+        </button>
       </nav>
     </div>
-    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-      <span aria-hidden="true">🌙</span>
-    </button>
   </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1 class="hero-title">Software Engineer Guru</h1>
+      <p class="hero-subtitle">Sharing insights on web development, engineering, and architecture.</p>
+    </div>
+  </section>
 
   <main id="main-content" class="container">
     <section id="recent-posts" class="recent-posts">
       <div class="section-header">
-        <h2>All Posts</h2>
+        <h2 class="section-title">Latest Articles</h2>
         
       </div>
-      <ul id="posts-list" class="posts-list" role="list"><li>
-    <article class="post-preview">
-      <a href="posts/get-better-note-taker.html">
-        <h3 class="post-title">Get Better Note Taker</h3>
-      </a>
-      <div class="post-meta"><time>2024-07-18</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/dns-in-one-picture.html">
-        <h3 class="post-title">"DNS in One Picture"</h3>
-      </a>
-      <div class="post-meta"><time>2018-12-04</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/rabbitmq-at-tajawal.html">
-        <h3 class="post-title">"RabbitMQ at Tajawal"</h3>
-      </a>
-      <div class="post-meta"><time>2018-09-11</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/driver-js-behind-the-scenes.html">
-        <h3 class="post-title">Driver.js – Behind the Scenes</h3>
-      </a>
-      <div class="post-meta"><time>2018-03-18</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/dealing-with-route-params-in-angular-5.html">
-        <h3 class="post-title">Dealing with route params in Angular-5</h3>
-      </a>
-      <div class="post-meta"><time>2018-02-28</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/keep-it-clean.html">
-        <h3 class="post-title">Keep it clean while you Code</h3>
-      </a>
-      <div class="post-meta"><time>2018-01-23</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/what-are-datastructures.html">
-        <h3 class="post-title">"What are Data Structures?"</h3>
-      </a>
-      <div class="post-meta"><time>2017-12-04</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/journey-to-es6-and-beyond.html">
-        <h3 class="post-title">JavaScript — Mocha to ES8 and Beyond</h3>
-      </a>
-      <div class="post-meta"><time>2017-10-27</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/developer-roadmap.html">
-        <h3 class="post-title">Roadmap to becoming a Web Developer in 2017</h3>
-      </a>
-      <div class="post-meta"><time>2017-03-15</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/quick-guide-to-http-caching.html">
-        <h3 class="post-title">Web Cache - Everything you need to know</h3>
-      </a>
-      <div class="post-meta"><time>2017-03-14</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/design-patterns-explained.html">
-        <h3 class="post-title">Design Patterns for Humans</h3>
-      </a>
-      <div class="post-meta"><time>2017-02-01</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/what-are-you-afraid-of.html">
-        <h3 class="post-title">What are you afraid of?</h3>
-      </a>
-      <div class="post-meta"><time>2016-10-21</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/art-of-getting-better.html">
-        <h3 class="post-title">Get Better</h3>
-      </a>
-      <div class="post-meta"><time>2016-09-14</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/http-in-depth.html">
-        <h3 class="post-title">Journey to HTTP/2</h3>
-      </a>
-      <div class="post-meta"><time>2016-08-13</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/es6-in-depth.html">
-        <h3 class="post-title">ES6 Succinctly</h3>
-      </a>
-      <div class="post-meta"><time>2016-04-04</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/configuration-management-in-your-applications.html">
-        <h3 class="post-title">Internal Application Configuration</h3>
-      </a>
-      <div class="post-meta"><time>2016-04-02</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/birth-of-githunt-google-chrome-extension-for-github.html">
-        <h3 class="post-title">Githunt - A Google Chrome extension for Github</h3>
-      </a>
-      <div class="post-meta"><time>2016-03-27</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/updates-from-the-last-week.html">
-        <h3 class="post-title">Updates from the last Week</h3>
-      </a>
-      <div class="post-meta"><time>2016-03-06</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/yellow-fade-technique-in-css.html">
-        <h3 class="post-title">CSS - Yellow Fade Technique</h3>
-      </a>
-      <div class="post-meta"><time>2016-01-30</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/let-the-comments-drive-your-code.html">
-        <h3 class="post-title">Let the comments drive your code</h3>
-      </a>
-      <div class="post-meta"><time>2016-01-21</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/creating-a-modular-application-in-laravel.html">
-        <h3 class="post-title">Creating a Modular Application in Laravel 5.1</h3>
-      </a>
-      <div class="post-meta"><time>2015-12-03</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/laravel-5.1-progress-bar-in-commands.html">
-        <h3 class="post-title">Laravel 5.1 - Showing progress bars in commands</h3>
-      </a>
-      <div class="post-meta"><time>2015-11-29</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/check-if-sent-email-has-been-read.html">
-        <h3 class="post-title">Check if sent email has been read</h3>
-      </a>
-      <div class="post-meta"><time>2015-11-06</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/sublime-text-goto-definition.html">
-        <h3 class="post-title">Sublime Text - Goto Definition</h3>
-      </a>
-      <div class="post-meta"><time>2015-09-15</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/snippet-fancy-comments-in-sublime-text.html">
-        <h3 class="post-title">Snippet - Fancy comments in Sublime Text</h3>
-      </a>
-      <div class="post-meta"><time>2015-08-15</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/random-git-tips-and-tricks.html">
-        <h3 class="post-title">Random git tips</h3>
-      </a>
-      <div class="post-meta"><time>2015-07-20</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/in-operator-with-combination-of-columns.html">
-        <h3 class="post-title">SQL - `IN` operator with combination of columns</h3>
-      </a>
-      <div class="post-meta"><time>2015-06-02</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/people-not-products-to-be-bought.html">
-        <h3 class="post-title">People are not products to be bought!</h3>
-      </a>
-      <div class="post-meta"><time>2015-05-30</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/laravel-5-sending-data-from-route-to-middleware.html">
-        <h3 class="post-title">Laravel 5 - Sending data from route to middleware</h3>
-      </a>
-      <div class="post-meta"><time>2015-03-15</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/missing-input-variables-form-submission.html">
-        <h3 class="post-title">Missing input variables upon form submission</h3>
-      </a>
-      <div class="post-meta"><time>2015-02-10</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/messing-around-with-php.html">
-        <h3 class="post-title">Messing around with PHP</h3>
-      </a>
-      <div class="post-meta"><time>2015-01-30</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/generating-unique-url-slugs-in-laravel.html">
-        <h3 class="post-title">Generating unique URL slugs in Laravel</h3>
-      </a>
-      <div class="post-meta"><time>2015-01-27</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/timezone-aware-web-application.html">
-        <h3 class="post-title">Timezone aware web application</h3>
-      </a>
-      <div class="post-meta"><time>2015-01-20</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/private-and-public-scopes-in-javascript.html">
-        <h3 class="post-title">Private and Public properties and methods in Javascript</h3>
-      </a>
-      <div class="post-meta"><time>2015-01-03</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/understanding-scope-in-javascript.html">
-        <h3 class="post-title">Understanding scope in Javascript</h3>
-      </a>
-      <div class="post-meta"><time>2015-01-02</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/github-took-me-back-in-time.html">
-        <h3 class="post-title">Github took me back in time</h3>
-      </a>
-      <div class="post-meta"><time>2015-01-01</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/completely-remove-a-file-from-git-history.html">
-        <h3 class="post-title">How to completely remove a file from git history</h3>
-      </a>
-      <div class="post-meta"><time>2014-12-25</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/eager-loading-in-laravel.html">
-        <h3 class="post-title">Eager Loading in Laravel</h3>
-      </a>
-      <div class="post-meta"><time>2014-12-07</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/javascript-and-popup-windows.html">
-        <h3 class="post-title">Javascript - Dealing with popup windows</h3>
-      </a>
-      <div class="post-meta"><time>2014-12-03</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/dependency-management-with-composer.html">
-        <h3 class="post-title">Dependency management with Composer</h3>
-      </a>
-      <div class="post-meta"><time>2014-11-03</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/how-to-use-git-stash.html">
-        <h3 class="post-title">Basic usage of `git stash`</h3>
-      </a>
-      <div class="post-meta"><time>2014-10-07</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/github-committing-to-some-date-in-past.html">
-        <h3 class="post-title">Git - Committing to some date in past</h3>
-      </a>
-      <div class="post-meta"><time>2014-10-04</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/quantity-over-quality.html">
-        <h3 class="post-title">Quantity over Quality!...What?</h3>
-      </a>
-      <div class="post-meta"><time>2014-09-27</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/git-moving-changes-to-some-other-branch.html">
-        <h3 class="post-title">Git - Moving changes from one branch to another</h3>
-      </a>
-      <div class="post-meta"><time>2014-09-23</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/javascript-magic-of-browsers-console.html">
-        <h3 class="post-title">Javascript - Use console like a pro</h3>
-      </a>
-      <div class="post-meta"><time>2014-09-21</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/go-find-it-for-yourself.html">
-        <h3 class="post-title">Go find it for yourself</h3>
-      </a>
-      <div class="post-meta"><time>2014-09-16</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/contribute-to-evolve.html">
-        <h3 class="post-title">Github - Contribute to evolve</h3>
-      </a>
-      <div class="post-meta"><time>2014-09-09</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/behavior-of-links-created-using-javascript.html">
-        <h3 class="post-title">Behavior of links created using Javascript</h3>
-      </a>
-      <div class="post-meta"><time>2014-09-03</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/event-bubbling-and-how-can-it-be-prevented.html">
-        <h3 class="post-title">Event Bubbling - Dealing with the child’s parent</h3>
-      </a>
-      <div class="post-meta"><time>2014-08-18</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/how-to-structure-your-javascript.html">
-        <h3 class="post-title">How to structure your Javascript</h3>
-      </a>
-      <div class="post-meta"><time>2014-08-07</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/laravel-resetting-some-input-value.html">
-        <h3 class="post-title">Laravel - Resetting some `Input` value</h3>
-      </a>
-      <div class="post-meta"><time>2014-07-25</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/mysql-pretty-dates-using-date_format.html">
-        <h3 class="post-title">MySQL - Pretty dates using date_format()</h3>
-      </a>
-      <div class="post-meta"><time>2014-06-10</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/jquery-check-for-the-end-of-page.html">
-        <h3 class="post-title">Jquery - Check for the end of page</h3>
-      </a>
-      <div class="post-meta"><time>2014-05-15</time></div>
-    </article>
-  </li>
-<li>
-    <article class="post-preview">
-      <a href="posts/lpad-and-concat-in-mysql.html">
-        <h3 class="post-title">LPAD() and CONCAT() in MySQL</h3>
-      </a>
-      <div class="post-meta"><time>2014-05-14</time></div>
-    </article>
-  </li></ul>
+      <ul id="posts-list" class="posts-list" role="list">--><!--
+        
+      -->
     </section>
   </main>
 
   <footer class="site-footer" role="contentinfo">
-    <div class="footer-content">
-      <p>&copy; <span id="year"></span> Hasan Al Doy. All rights reserved.</p>
-      <nav class="footer-nav" aria-label="Footer navigation">
+    <div class="container">
+      <div class="footer-links">
         <a href="https://github.com/aldoyh" rel="noopener noreferrer" target="_blank">GitHub</a>
-        <a href="https://twitter.com" rel="noopener noreferrer" target="_blank">Twitter</a>
-        <a href="mailto:contact@example.com">Email</a>
-      </nav>
+        <a href="https://twitter.com/aldoyh" rel="noopener noreferrer" target="_blank">Twitter</a>
+        <a href="mailto:aldoyh@gmail.com">Email</a>
+      </div>
+      <p style="margin-top:1rem; opacity:0.6;">&copy; <span id="year"></span> Hasan Al Doy. All rights reserved.</p>
     </div>
   </footer>
 
-  </body></html>
+  <script>
+    // Dark mode logic
+    const toggle = document.getElementById('theme-toggle');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const html = document.documentElement;
+    
+    function setTheme(theme) {
+      document.body.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      toggle.innerHTML = theme === 'dark' ? '<span aria-hidden="true" style="font-size:1.2rem;">☼</span>' : '<span aria-hidden="true" style="font-size:1.2rem;">☾</span>';
+    }
+    
+    // Init
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      setTheme(savedTheme);
+    } else if (prefersDark.matches) {
+      setTheme('dark');
+    }
+    
+    toggle.addEventListener('click', () => {
+      const current = document.body.getAttribute('data-theme');
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

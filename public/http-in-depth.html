@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>AETHER | Http In Depth</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries,typography"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary-fixed-dim": "#f8acff",
+                        "on-primary": "#450086",
+                        "on-secondary-fixed-variant": "#004884",
+                        "error": "#ffb4ab",
+                        "secondary-fixed": "#d4e3ff",
+                        "on-primary-container": "#3c0076",
+                        "secondary-fixed-dim": "#a4c9ff",
+                        "surface-dim": "#131318",
+                        "surface-bright": "#39383e",
+                        "tertiary-fixed": "#ffd6ff",
+                        "tertiary-container": "#d164e2",
+                        "primary-fixed": "#eedcff",
+                        "on-tertiary": "#570067",
+                        "outline-variant": "#494454",
+                        "on-primary-fixed": "#290055",
+                        "on-background": "#e4e1e9",
+                        "on-tertiary-fixed": "#350040",
+                        "surface-tint": "#d8b9ff",
+                        "on-tertiary-fixed-variant": "#7b0190",
+                        "primary-fixed-dim": "#d8b9ff",
+                        "on-surface": "#e4e1e9",
+                        "surface-container-highest": "#35343a",
+                        "secondary": "#a4c9ff",
+                        "primary-container": "#ae71ff",
+                        "on-primary-fixed-variant": "#6300bb",
+                        "primary": "#d8b9ff",
+                        "surface-container": "#1f1f24",
+                        "on-error": "#690005",
+                        "on-error-container": "#ffdad6",
+                        "inverse-primary": "#7d2dd9",
+                        "on-surface-variant": "#cbc3d7",
+                        "on-secondary-fixed": "#001c39",
+                        "tertiary": "#f8acff",
+                        "surface": "#131318",
+                        "surface-variant": "#35343a",
+                        "surface-container-high": "#2a292f",
+                        "on-tertiary-container": "#4c005a",
+                        "secondary-container": "#036ec6",
+                        "inverse-surface": "#e4e1e9",
+                        "inverse-on-surface": "#303035",
+                        "surface-container-low": "#1b1b20",
+                        "outline": "#958ea0",
+                        "on-secondary": "#00315d",
+                        "error-container": "#93000a",
+                        "background": "#131318",
+                        "surface-container-lowest": "#0e0e13",
+                        "on-secondary-container": "#eaf0ff"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background-color: #131318;
+            color: #e4e1e9;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(31, 31, 36, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .atmospheric-glow {
+            background: radial-gradient(circle at center, rgba(216, 185, 255, 0.08) 0%, transparent 70%);
+        }
+        .primary-gradient-text {
+            background: linear-gradient(135deg, #d8b9ff 0%, #ae71ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Prose customization for dark theme */
+        .prose h1, .prose h2, .prose h3, .prose h4 {
+            color: #d8b9ff; /* primary */
+            font-family: 'Space Grotesk', sans-serif;
+            text-transform: uppercase;
+        }
+        
+        .prose {
+             color: #e4e1e9;
+        }
+        
+        .prose strong {
+            color: #f8acff; /* tertiary */
+        }
+        
+        .prose a {
+            color: #a4c9ff; /* secondary */
+        }
+    </style>
+</head>
+<body class="bg-surface selection:bg-primary/30 selection:text-primary">
+    <!-- TopAppBar -->
+    <header class="fixed top-0 w-full z-50 bg-[#131318]/80 backdrop-blur-xl border-b border-[#494454]/15 flex justify-between items-center px-8 h-20 w-full max-w-none shadow-[0_8px_32px_rgba(139,92,246,0.1)]">
+        <div class="flex items-center gap-4">
+            <a href="/" class="flex items-center gap-4 text-decoration-none">
+                <img alt="AETHER Logo" class="h-10 w-10 drop-shadow-[0_0_8px_rgba(216,185,255,0.8)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEY0nGvQkgAw8TgWqVAURbjLSQfWwYUGw3yoF7xpdTCB6-3vlnkGHXvgRGNffKrwC_ztEdd_cDdMySuIc7yOSb8WHjZdYT7LfwzQMc1DU2YPCnuZ-WFsmJPvBQsg217Q54ziyXF4l94OMuA9W3g_71hK2AVdcIHwlnFSq8xy5uUXdkA_oIRHp6GwXF1MQXEi2E9v1OyhntdqYAH4MIDdSUUUH9Wdv-BsMW6n5L7m2NhprnSRhxyeree3cWI4dPtt2cZZ79yyKgu6rf"/>
+                <span class="text-2xl font-bold tracking-tighter text-[#d8b9ff] drop-shadow-[0_0_8px_rgba(216,185,255,0.8)] font-headline uppercase">AETHER</span>
+            </a>
+        </div>
+        <nav class="hidden md:flex gap-12 font-headline tracking-widest uppercase text-sm">
+            <a class="text-[#d8b9ff] border-b-2 border-[#d8b9ff] pb-1" href="/">Essays</a>
+            <a class="text-[#e4e1e9]/60 hover:text-[#e4e1e9] transition-all duration-300" href="#">Archive</a>
+            <a class="text-[#e4e1e9]/60 hover:text-[#e4e1e9] transition-all duration-300" href="#">Gallery</a>
+        </nav>
+        <div class="flex items-center gap-6">
+            <button class="text-[#e4e1e9]/60 hover:bg-[#35343a]/50 p-2 rounded-full transition-all duration-300 active:scale-90">
+                <span class="material-symbols-outlined" data-icon="blur_on">blur_on</span>
+            </button>
+            <button class="text-[#e4e1e9]/60 hover:bg-[#35343a]/50 p-2 rounded-full transition-all duration-300 active:scale-90">
+                <span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- SideNavBar (Contextual) -->
+    <aside class="fixed left-0 top-0 h-full w-64 z-40 bg-[#0e0e13]/90 backdrop-blur-2xl border-r border-[#494454]/15 hidden lg:flex flex-col pt-24 pb-8">
+        <div class="px-8 mb-12">
+            <h2 class="text-[#d8b9ff] font-bold font-headline tracking-tighter text-xl">AETHER_LOG</h2>
+            <p class="font-['Space_Grotesk'] text-[10px] uppercase text-[#e4e1e9]/40 tracking-widest mt-1">v2.0.4</p>
+        </div>
+        <nav class="flex flex-col gap-2">
+            <a class="flex items-center gap-4 px-8 py-4 text-[#d8b9ff] bg-[#35343a] rounded-r-full border-l-4 border-[#d8b9ff] transition-transform duration-200" href="/">
+                <span class="material-symbols-outlined text-lg" data-icon="auto_awesome">auto_awesome</span>
+                <span class="font-headline text-xs uppercase tracking-widest">Home</span>
+            </a>
+            <a class="flex items-center gap-4 px-8 py-4 text-[#e4e1e9]/40 hover:text-[#e4e1e9]/80 hover:translate-x-1 transition-all duration-200" href="#">
+                <span class="material-symbols-outlined text-lg" data-icon="terminal">terminal</span>
+                <span class="font-headline text-xs uppercase tracking-widest">Research</span>
+            </a>
+            <a class="flex items-center gap-4 px-8 py-4 text-[#e4e1e9]/40 hover:text-[#e4e1e9]/80 hover:translate-x-1 transition-all duration-200" href="#">
+                <span class="material-symbols-outlined text-lg" data-icon="layers">layers</span>
+                <span class="font-headline text-xs uppercase tracking-widest">Interface</span>
+            </a>
+            <a class="flex items-center gap-4 px-8 py-4 text-[#e4e1e9]/40 hover:text-[#e4e1e9]/80 hover:translate-x-1 transition-all duration-200" href="#">
+                <span class="material-symbols-outlined text-lg" data-icon="info">info</span>
+                <span class="font-headline text-xs uppercase tracking-widest">About</span>
+            </a>
+        </nav>
+        <div class="mt-auto px-8">
+            <div class="w-12 h-12 rounded-full border border-outline-variant/30 p-1">
+                <img alt="User avatar" class="w-full h-full rounded-full object-cover grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiDIfW09dB3OLUPZAsUMDxY3YgXV5qZelN_CFbN4ehR9Um3TwW04ZdvTA1njFQpJ0pJCGa0aZ_G8hXBh68JYBKpXcPzq9omJ-ockmgDNWswfiVw9zx-7nk0AJLhNh-hu5ZDcsMVQELs2goCd6hxJRiarNvbspzJwMyGATXcKGTvtWUGaZG4zAl2lrFZFvf0uU_Wh8YQXKvvcg4FzCw9djs25llRkFArqEvnszfJLpXc6SR4Fh9firyjdWST9gmCi6W0eI1kmkW8DMj"/>
+            </div>
+        </div>
+    </aside>
+
+    <main class="lg:ml-64 pt-20">
+        <!-- Article Hero Section -->
+        <section class="relative min-h-[40vh] flex flex-col justify-center px-8 md:px-20 overflow-hidden bg-surface-container-low/30 border-b border-[#494454]/15">
+            <div class="absolute inset-0 atmospheric-glow pointer-events-none"></div>
+            <div class="absolute -top-20 -right-20 w-64 h-64 bg-primary/5 blur-[80px] rounded-full"></div>
+            <div class="max-w-4xl relative z-10 pt-10">
+                <div class="flex gap-4 mb-6">
+                    <span class="font-headline text-[10px] text-primary px-3 py-1 rounded-full border border-primary/20 bg-primary/5 uppercase tracking-widest">Thought</span>
+                    <span class="font-headline text-[10px] text-on-surface/40 uppercase tracking-widest">Oct 2024</span>
+                </div>
+                <h1 class="text-4xl md:text-6xl font-headline font-bold tracking-tighter leading-tight mb-8 primary-gradient-text">
+                    Http In Depth
+                </h1>
+                <div class="h-[2px] w-24 bg-gradient-to-r from-primary to-transparent"></div>
+            </div>
+        </section>
+
+        <!-- Article Content -->
+        <article class="py-20 px-8 md:px-20">
+            <div class="prose prose-invert prose-lg max-w-4xl mx-auto glass-panel p-8 md:p-12 rounded-2xl border border-white/5">
+                <hr>
+<h2>title: Journey to HTTP/2
+date: 2016-08-13
+permalink: /blog/2016/08/13/http-in-depth/</h2>
+<p>It has been quite some time since I last wrote through my blog and the reason is not being able to find enough time to put into it. I finally got some time today and thought to put some of it writing about HTTP.</p>
+<p>HTTP is the protocol that every web developer should know as it powers the whole web and knowing it is definitely going to help you develop better applications. </p>
+<p>In this article, I am going to be discussing what HTTP is, how it came to be, where it is today and how did we get here.</p>
+<h2>What is HTTP?</h2>
+<p>First things first, what is HTTP? HTTP is the <code>TCP/IP</code> based application layer communication protocol which standardizes how the client and server communicate with each other. It defines how the content is requested and transmitted across the internet. By application layer protocol, I mean it&#39;s just an abstraction layer that standardizes how the hosts (clients and servers) communicate and itself it depends upon <code>TCP/IP</code> to get request and response between the client and server. By default TCP port <code>80</code> is used but other ports can be used as well. HTTPS, however, uses port <code>443</code>.</p>
+<h2><code>HTTP/0.9</code> - The One Liner (1991)</h2>
+<p>The first documented version of HTTP was <a href="https://www.w3.org/Protocols/HTTP/AsImplemented.html"><code>HTTP/0.9</code></a> which was put forward in 1991. It was the simplest protocol ever; having a single method called <code>GET</code>. If a client had to access some webpage on the server, it would have made the simple request like below</p>
+<pre><code>GET /index.html
+</code></pre>
+<p>And the response from server would have looked as follows</p>
+<pre><code class="language-html">(response body)
+(connection closed)
+</code></pre>
+<p>That is, the server would get the request, reply with the HTML in response and as soon as the content has been transferred, the connection will be closed. There were </p>
+<ul>
+<li>No headers</li>
+<li><code>GET</code> was the only allowed method </li>
+<li>Response had to be HTML</li>
+</ul>
+<p>As you can see, the protocol really had nothing more than being a stepping stone for what was to come.</p>
+<h2><code>HTTP/1.0</code> - 1996</h2>
+<p>In 1996, the next version of HTTP i.e. <code>HTTP/1.0</code> evolved that vastly improved over the original version. </p>
+<p>Unlike <code>HTTP/0.9</code> which was only designed for HTML response, <code>HTTP/1.0</code> could now deal with other response formats i.e. images, video files, plain text or any other content type as well. It added more methods (i.e. <code>POST</code> and <code>HEAD</code>), request/response formats got changed, HTTP headers got added to both the request and responses, status codes were added to identify the response, character set support was introduced, multi-part types, authorization, caching, content encoding and more was included.</p>
+<p>Here is how a sample <code>HTTP/1.0</code> request and response might have looked like:</p>
+<pre><code>GET / HTTP/1.0
+Host: kamranahmed.info
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5)
+Accept: */*
+</code></pre>
+<p>As you can see, alongside the request, client has also sent it&#39;s personal information, required response type etc. While in <code>HTTP/0.9</code> client could never send such information because there were no headers.</p>
+<p>Example response to the request above may have looked like below</p>
+<pre><code>HTTP/1.0 200 OK 
+Content-Type: text/plain
+Content-Length: 137582
+Expires: Thu, 05 Dec 1997 16:00:00 GMT
+Last-Modified: Wed, 5 August 1996 15:55:28 GMT
+Server: Apache 0.84
+
+(response body)
+(connection closed)
+</code></pre>
+<p>In the very beginning of the response there is <code>HTTP/1.0</code> (HTTP followed by the version number), then there is the status code <code>200</code> followed by the reason phrase (or description of the status code, if you will). </p>
+<p>In this newer version, request and response headers were still kept as <code>ASCII</code> encoded, but the response body could have been of any type i.e. image, video, HTML, plain text or any other content type. So, now that server could send any content type to the client; not so long after the introduction, the term &quot;Hyper Text&quot; in <code>HTTP</code> became misnomer. <code>HMTP</code> or Hypermedia transfer protocol might have made more sense but, I guess, we are stuck with the name for life.</p>
+<p>One of the major drawbacks of <code>HTTP/1.0</code> were you couldn&#39;t have multiple requests per connection. That is, whenever a client will need something from the server, it will have to open a new TCP connection and after that single request has been fulfilled, connection will be closed. And for any next requirement, it will have to be on a new connection. Why is it bad? Well, let&#39;s assume that you visit a webpage having <code>10</code> images, <code>5</code> stylesheets and <code>5</code> javascript files, totalling to <code>20</code> items that needs to fetched when request to that webpage is made. Since the server closes the connection as soon as the request has been fulfilled, there will be a series of <code>20</code> separate connections where each of the items will be served one by one on their separate connections. This large number of connections results in a serious performance hit as requiring a new <code>TCP</code> connection imposes a significant performance penalty because of three-way handshake followed by slow-start.</p>
+<p><strong>Three-way Handshake</strong> </p>
+<p>Three-way handshake in it&#39;s simples form is that all the <code>TCP</code> connections begin with a three-way handshake in which the client and the server share a series of packets before starting to share the application data. </p>
+<ul>
+<li><code>SYN</code> - Client picks up a random number, let&#39;s say <code>x</code>, and sends it to the server.</li>
+<li><code>SYN ACK</code> - Server acknowledges the request by sending an <code>ACK</code> packet back to the client which is made up of a random number, let&#39;s say <code>y</code> picked up by server and the number <code>x+1</code> where <code>x</code> is the number that was sent by the client</li>
+<li><code>ACK</code> - Client increments the number <code>y</code> received from the server and sends an <code>ACK</code> packet back with the number <code>y+1</code></li>
+</ul>
+<p>Once the three-way handshake is completed, the data sharing between the client and server may begin. It should be noted that the client may start sending the application data as soon as it dispatches the last <code>ACK</code> packet but the server will still have to wait for the <code>ACK</code> packet to be recieved in order to fulfill the request.</p>
+<p><img src="http://i.imgur.com/uERG2G2.png" alt=""></p>
+<blockquote>
+<p>Please note that there is a minor issue with the image, the last <code>ACK</code> packet sent by the client to end the handshake contains only <code>y+1</code> i.e. it should have been <code>ACK:y+1</code> instead of <code>ACK: x+1, y+1</code> </p>
+</blockquote>
+<p>However, some implementations of <code>HTTP/1.0</code> tried to overcome this issue by introducing a new header called <code>Connection: keep-alive</code> which was meant to tell the server &quot;Hey server, do not close this connection, I need it again&quot;. But still, it wasn&#39;t that widely supported and the problem still persisted.</p>
+<p>Apart from being connectionless, <code>HTTP</code> also is a stateless protocol i.e. server doesn&#39;t maintain the information about the client and so each of the requests has to have the information necessary for the server to fulfill the request on it&#39;s own without any association with any old requests. And so this adds fuel to the fire i.e. apart from the large number of connections that the client has to open, it also has to send some redundant data on the wire causing increased bandwidth usage.</p>
+<h2><code>HTTP/1.1</code> - 1999</h2>
+<p>After merely 3 years of <code>HTTP/1.0</code>, the next version i.e. <code>HTTP/1.1</code> was released in 1999; which made alot of improvements over it&#39;s predecessor. The major improvements over <code>HTTP/1.0</code> included</p>
+<ul>
+<li><p><strong>New HTTP methods</strong> were added, which introduced <code>PUT</code>, <code>PATCH</code>, <code>OPTIONS</code>, <code>DELETE</code></p>
+</li>
+<li><p><strong>Hostname Identification</strong> In <code>HTTP/1.0</code> <code>Host</code> header wasn&#39;t required but <code>HTTP/1.1</code> made it required.</p>
+</li>
+<li><p><strong>Persistent Connections</strong> As discussed above, in <code>HTTP/1.0</code> there was only one request per connection and the connection was closed as soon as the request was fulfilled which resulted in accute performance hit and latency problems. <code>HTTP/1.1</code> introduced the persistent connections i.e. <strong>connections weren&#39;t closed by default</strong> and were kept open which allowed multiple sequential requests. To close the connections, the header <code>Connection: close</code> had to be available on the request. Clients usually send this header in the last request to safely close the connection.</p>
+</li>
+<li><p><strong>Pipelining</strong> It also introduced the support for pipelining, where the client could send multiple requests to the server without waiting for the response from server on the same connection and server had to send the response in the same sequence in which requests were received. But how does the client know that this is the point where first response download completes and the content for next response starts, you may ask! Well, to solve this, there must be <code>Content-Length</code> header present which clients can use to identify where the response ends and it can start waiting for the next response.</p>
+</li>
+</ul>
+<blockquote>
+<p>It should be noted that in order to benefit from persistent connections or pipelining, <code>Content-Length</code> header must be available on the response, because this would let the client know when the transmission completes and it can send the next request (in normal sequential way of sending requests) or start waiting for the the next response (when pipelining is enabled). </p>
+</blockquote>
+<blockquote>
+<p>But there was still an issue with this approach. And that is, what if the data is dynamic and server cannot find the content length before hand? Well in that case, you really can&#39;t benefit from persistent connections, could you?! In order to solve this <code>HTTP/1.1</code> introduced chunked encoding. In such cases server may omit content-Length in favor of chunked encoding (more to it in a moment). However, if none of them are available, then the connection must be closed at the end of request.</p>
+</blockquote>
+<ul>
+<li><p><strong>Chunked Transfers</strong> In case of dynamic content, when the server cannot really find out the <code>Content-Length</code> when the transmission starts, it may start sending the content in pieces (chunk by chunk) and add the <code>Content-Length</code> for each chunk when it is sent. And when all of the chunks are sent i.e. whole transmission has completed, it sends an empty chunk i.e. the one with <code>Content-Length</code> set to zero in order to identify the client that transmission has completed. In order to notify the client about the chunked transfer, server includes the header <code>Transfer-Encoding: chunked</code></p>
+</li>
+<li><p>Unlike <code>HTTP/1.0</code> which had Basic authentication only, <code>HTTP/1.1</code> included digest and proxy authentication</p>
+</li>
+<li><p>Caching</p>
+</li>
+<li><p>Byte Ranges</p>
+</li>
+<li><p>Character sets</p>
+</li>
+<li><p>Language negotiation</p>
+</li>
+<li><p>Client cookies</p>
+</li>
+<li><p>Enhanced compression support</p>
+</li>
+<li><p>New status codes</p>
+</li>
+<li><p>..and more</p>
+</li>
+</ul>
+<p>I am not going to dwell about all the <code>HTTP/1.1</code> features in this post as it is a topic in itself and you can already find a lot about it. The one such document that I would recommend you to read is <a href="http://www.ra.ethz.ch/cdstore/www8/data/2136/pdf/pd1.pdf">Key differences between <code>HTTP/1.0</code> and HTTP/1.1</a> and here is the link to <a href="https://tools.ietf.org/html/rfc2616">original RFC</a> for the overachievers.</p>
+<p><code>HTTP/1.1</code> was introduced in 1999 and it had been a standard for many years. Although, it improved alot over it&#39;s predecessor; with the web changing everyday, it started to show it&#39;s age. Loading a web page these days is more resource-intensive than it ever was. A simple webpage these days has to open more than 30 connections. Well <code>HTTP/1.1</code> has persistent connections, then why so many connections? you say! The reason is, in <code>HTTP/1.1</code> it can only have one outstanding connection at any moment of time. <code>HTTP/1.1</code> tried to fix this by introducing pipelining but it didn&#39;t completely address the issue because of the <strong>head-of-line blocking</strong> where a slow or heavy request may block the requests behind and once a request gets stuck in a pipeline, it will have to wait for the next requests to be fulfilled. To overcome these shortcomings of <code>HTTP/1.1</code>, the developers started implementing the workarounds, for example use of spritesheets, encoded images in CSS, single humungous CSS/Javascript files, <a href="https://www.maxcdn.com/one/visual-glossary/domain-sharding-2/">domain sharding</a> etc.</p>
+<h2>SPDY - 2009</h2>
+<p>Google went ahead and started experimenting with alternative protocols to make the web faster and improving web security while reducing the latency of web pages. In 2009, they announced <code>SPDY</code>. </p>
+<blockquote>
+<p><code>SPDY</code> is a trademark of Google and isn&#39;t an acronym.</p>
+</blockquote>
+<p>It was seen that if we keep increasing the bandwidth, the network performance increases in the beginning but a point comes when there is not much of a performance gain. But if you do the same with latency i.e. if we keep dropping the latency, there is a constant performance gain. This was the core idea for performance gain behind <code>SPDY</code>, decrease the latency to increase the network performance.</p>
+<blockquote>
+<p>For those who don&#39;t know the difference, latency is the delay i.e. how long it takes for data to travel between the source and destination (measured in milliseconds) and bandwidth is the amount of data transfered per second (bits per second).</p>
+</blockquote>
+<p>The features of <code>SPDY</code> included, multiplexing, compression, prioritization, security etc. I am not going to get into the details of SPDY, as you will get the idea when we get into the nitty gritty of <code>HTTP/2</code> in the next section as I said <code>HTTP/2</code> is mostly inspired from SPDY.</p>
+<p><code>SPDY</code> didn&#39;t really try to replace HTTP; it was a translation layer over HTTP which existed at the application layer and modified the request before sending it over to the wire. It started to become a defacto standards and majority of browsers started implementing it. </p>
+<p>In 2015, at Google, they didn&#39;t want to have two competing standards and so they decided to merge it into HTTP while giving birth to <code>HTTP/2</code> and deprecating SPDY. </p>
+<h2><code>HTTP/2</code> - 2015</h2>
+<p>By now, you must be convinced that why we needed another revision of the HTTP protocol. <code>HTTP/2</code> was  designed for low latency transport of content. The key features or differences from the old version of <code>HTTP/1.1</code> include</p>
+<ul>
+<li>Binary instead of Textual</li>
+<li>Multiplexing - Multiple asynchronous HTTP requests over a single connection</li>
+<li>Header compression using HPACK</li>
+<li>Server Push - Multiple responses for single request</li>
+<li>Request Prioritization</li>
+<li>Security</li>
+</ul>
+<p><img src="http://i.imgur.com/S85j8gg.png" alt=""></p>
+<h3>1. Binary Protocol</h3>
+<p><code>HTTP/2</code> tends to address the issue of increased latency that existed in HTTP/1.x by making it a binary protocol. Being a binary protocol, it easier to parse but unlike <code>HTTP/1.x</code> it is no longer readable by the human eye. The major building blocks of <code>HTTP/2</code> are Frames and Streams</p>
+<h4>Frames and Streams</h4>
+<p>HTTP messages are now composed of one or more frames. There is a <code>HEADERS</code> frame for the meta data and <code>DATA</code> frame for the payload and there exist several other types of frames (<code>HEADERS</code>, <code>DATA</code>, <code>RST_STREAM</code>, <code>SETTINGS</code>, <code>PRIORITY</code> etc) that you can check through <a href="https://http2.github.io/http2-spec/#FrameTypes">the <code>HTTP/2</code> specs</a>. </p>
+<p>Every <code>HTTP/2</code> request and response is given a unique stream ID and it is divided into frames. Frames are nothing but binary pieces of data. A collection of frames is called a Stream. Each frame has a stream id that identifies the stream to which it belongs and each frame has a common header. Also, apart from stream ID being unique, it is worth mentioning that, any request initiated by client uses odd numbers and the response from server has even numbers stream IDs.</p>
+<p>Apart from the <code>HEADERS</code> and <code>DATA</code>, another frame type that I think worth mentioning here is <code>RST_STREAM</code> which is a special frame type that is used to abort some stream i.e. client may send this frame to let the server know that I don&#39;t need this stream anymore. In <code>HTTP/1.1</code> the only way to make the server stop sending the response to client was closing the connection which resulted in increased latency because a new connection had to be opened for any consecutive requests. While in HTTP/2, client can use <code>RST_STREAM</code> and stop receiving a specific stream while the connection will still be open and the other streams will still be in play.</p>
+<h3>2. Multiplexing</h3>
+<p>Since <code>HTTP/2</code> is now a binary protocol and as I said above that it uses frames and streams for requests and responses, once a TCP connection is opened, all the streams are sent asynchronously through the same connection without opening any additional connections. And in turn, the server responds in the same asynchronous way i.e. the response has no order and the client uses the assigned stream id to identify the stream to which a specific packet belongs. This also solves the <strong>head-of-line blocking</strong> issue that existed in HTTP/1.x i.e. the client will not have to wait for the request that is taking time and other requests will still be getting processed.</p>
+<h3>3. HPACK Header Compression</h3>
+<p>It was part of a separate RFC which was specifically aimed at optimizing the sent headers. The essence of it is that when we are constantly accessing the server from a same client there is alot of redundant data that we are sending in the headers over and over, and sometimes there might be cookies increasing the headers size which results in bandwidth usage and increased latency. To overcome this, <code>HTTP/2</code> introduced header compression.</p>
+<p><img src="http://i.imgur.com/3IPWXvR.png" alt=""></p>
+<p>Unlike request and response, headers are not compressed in <code>gzip</code> or <code>compress</code> etc formats but there is a different mechanism in place for header compression which is literal values are encoded using Huffman code and a headers table is maintained by the client and server and both the client and server omit any repetitive headers (e.g. user agent etc) in the subsequent requests and reference them using the headers table maintained by both.</p>
+<p>While we are talking headers, let me add here that the headers are still the same as in HTTP/1.1, except for the addition of some pseudo headers i.e. <code>:method</code>, <code>:scheme</code>, <code>:host</code> and <code>:path</code></p>
+<h3>4. Server Push</h3>
+<p>Server push is another tremendous feature of <code>HTTP/2</code> where the server, knowing that the client is going to ask for a certain resource, can push it to the client without even client asking for it. For example, let&#39;s say a browser loads a web page, it parses the whole page to find out the remote content that it has to load from the server and then sends consequent requests to the server to get that content.</p>
+<p>Server push allows the server to decrease the roundtrips by pushing the data that it knows that client is going to demand. How it is done is, server sends a special frame called <code>PUSH_PROMISE</code> notifying the client that, &quot;Hey, I am about to send this resource to you! Do not ask me for it.&quot; The <code>PUSH_PROMISE</code> frame is associated with the stream that caused the push to happen and it contains the promised stream ID i.e. the stream on which the server will send the resource to be pushed.</p>
+<h3>5. Request Prioritization</h3>
+<p>A client can assign a priority to a stream by including the prioritization information in the <code>HEADERS</code> frame by which a stream is opened. At any other time, client can send a <code>PRIORITY</code> frame to change the priority of a stream.</p>
+<p>Without any priority information, server processes the requests asynchronously i.e. without any order. If there is priority assigned to a stream, then based on this prioritization information, server decides how much of the resources need to be given to process which request.</p>
+<h3>6. Security</h3>
+<p>There was extensive discussion on whether security (through <code>TLS</code>) should be made mandatory for <code>HTTP/2</code> or not. In the end, it was decided not to make it mandatory. However, most vendors stated that they will only support <code>HTTP/2</code> when it is used over <code>TLS</code>. So, although <code>HTTP/2</code> doesn&#39;t require encryption by specs but it has kind of become mandatory by default anyway. With that out of the way, <code>HTTP/2</code> when implemented over <code>TLS</code> does impose some requirementsi.e. <code>TLS</code> version <code>1.2</code> or higher must be used, there must be a certain level of minimum keysizes, ephemeral keys are required etc.</p>
+<p><code>HTTP/2</code> is here and it has already <a href="http://caniuse.com/#search=http2">surpassed SPDY in adaption</a> which is gradually increasing. <code>HTTP/2</code> has alot to offer in terms of performance gain and it is about time we should start using it. </p>
+<p>For anyone interested in further details here is the <a href="https://http2.github.io/http2-spec">link to specs</a> and a link <a href="http://www.http2demo.io/">demonstrating the performance benefits of <code>HTTP/2</code></a>. For any questions or comments, use the comments section below. Also, while reading, if you find any blatant lies; do point them out.</p>
+<p>And that about wraps it up. Until next time! stay tuned.</p>
+
+            </div>
+        </article>
+        
+        <!-- Navigation/Footer area within main -->
+        <div class="px-8 md:px-20 pb-20">
+             <div class="max-w-4xl mx-auto flex justify-between items-center pt-10 border-t border-[#494454]/15">
+                <a href="/" class="group flex items-center gap-2 text-primary font-headline text-xs uppercase tracking-widest">
+                    <span class="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform" data-icon="arrow_back">arrow_back</span>
+                    Back to Signals
+                </a>
+             </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full py-12 border-t border-[#494454]/15 bg-[#131318] flex flex-col items-center gap-6">
+        <div class="flex gap-12 text-[#e4e1e9]/30 font-headline text-[10px] tracking-[0.2em] uppercase">
+            <a class="hover:text-[#f8acff] hover:drop-shadow-[0_0_5px_rgba(248,172,255,0.5)] transition-all opacity-80 hover:opacity-100" href="#">Protocol</a>
+            <a class="hover:text-[#f8acff] hover:drop-shadow-[0_0_5px_rgba(248,172,255,0.5)] transition-all opacity-80 hover:opacity-100" href="#">Decrypt</a>
+            <a class="hover:text-[#f8acff] hover:drop-shadow-[0_0_5px_rgba(248,172,255,0.5)] transition-all opacity-80 hover:opacity-100" href="#">Contact</a>
+        </div>
+        <div class="flex items-center gap-4 mt-4">
+            <div class="w-8 h-[1px] bg-gradient-to-r from-transparent to-primary/30"></div>
+            <p class="font-headline text-[10px] tracking-[0.2em] text-[#e4e1e9]/30">© 2024 HYPER-DIGITAL. ALL RIGHTS OBSERVED.</p>
+            <div class="w-8 h-[1px] bg-gradient-to-l from-transparent to-primary/30"></div>
+        </div>
+    </footer>
+</body>
+</html>
