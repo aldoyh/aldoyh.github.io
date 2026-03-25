@@ -3,35 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Blog post">
-  <meta name="theme-color" content="#ffffff">
-  <title id="post-title">Get Better Note Taker</title>
+  <meta name="description" content="Blog post by Hasan Al Doy">
+  <title>Get Better Note Taker</title>
   <link rel="stylesheet" href="../static/style.css">
-  <link rel="canonical" href="https://aldoyh.github.io/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
   <a href="#main-content" class="sr-only">Skip to main content</a>
 
   <header class="site-header" role="banner">
-    <div class="header-container">
-      <div class="header-content">
-        <h1 id="site-title" class="site-title"></h1>
-        <p id="site-subtitle" class="site-subtitle"></p>
-      </div>
+    <div class="container header-inner">
+      <a href="../index.html" class="logo">Hasan Al Doy</a>
       <nav class="site-nav" aria-label="Primary navigation">
         <a href="../index.html" class="nav-link">Home</a>
-        <a href="../posts.html" class="nav-link">All Posts</a>
+        <a href="../posts.html" class="nav-link">Posts</a>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span aria-hidden="true" style="font-size:1.2rem;">☼</span>
+        </button>
       </nav>
     </div>
-    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-      <span aria-hidden="true">🌙</span>
-    </button>
   </header>
 
   <main id="main-content" class="container">
     <article class="post-article">
-      <h2 id="post-title-main" class="post-title">Get Better Note Taker</h2>
-      <div id="post-meta" class="post-meta">Posted on 2024-07-18</div>
+      <header class="article-header">
+        <h1 class="article-title">Get Better Note Taker</h1>
+        <div id="post-meta" class="article-meta">Posted on 2024-07-18</div>
+      </header>
       <div id="post-content" class="markdown-body"><p>Find the time to go through the top stories at hacker news or the relevant subreddits (e.g. /r/programming, /r/php, /r/javascript etc) on reddit, trending projects on Github (may be using some browser extension). Once again, follow the known-faces of your craft on twitter and on Github.</p>
 <h2>Have some side project</h2>
 <p>Side projects are great when it comes to experimenting the new stuff or the stuff that you don&#39;t know about. Keep some little time reserved for your side projects, either over the weekend or on daily basis. It could be anything i.e. something opensource or start that foolish idea that you have always wanted to start using the tools that you may never have worked with. This will help you get two-fold benefits; if it works, well in good, if it doesn&#39;t; never mind you learnt something new.</p>
@@ -56,15 +56,39 @@ Here&#39;s a summary of the advice given in the text:</p>
   </main>
 
   <footer class="site-footer" role="contentinfo">
-    <div class="footer-content">
-      <p>&copy; <span id="year"></span> Hasan Al Doy. All rights reserved.</p>
-      <nav class="footer-nav" aria-label="Footer navigation">
+    <div class="container">
+      <div class="footer-links">
         <a href="https://github.com/aldoyh" rel="noopener noreferrer" target="_blank">GitHub</a>
-        <a href="https://twitter.com" rel="noopener noreferrer" target="_blank">Twitter</a>
-        <a href="mailto:contact@example.com">Email</a>
-      </nav>
+        <a href="https://twitter.com/aldoyh" rel="noopener noreferrer" target="_blank">Twitter</a>
+        <a href="mailto:aldoyh@gmail.com">Email</a>
+      </div>
+      <p style="margin-top:1rem; opacity:0.6;">&copy; <span id="year"></span> Hasan Al Doy. All rights reserved.</p>
     </div>
   </footer>
 
-  
-</body></html>
+  <script>
+    const toggle = document.getElementById('theme-toggle');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    function setTheme(theme) {
+      document.body.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      toggle.innerHTML = theme === 'dark' ? '<span aria-hidden="true" style="font-size:1.2rem;">☼</span>' : '<span aria-hidden="true" style="font-size:1.2rem;">☾</span>';
+    }
+    
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      setTheme(savedTheme);
+    } else if (prefersDark.matches) {
+      setTheme('dark');
+    }
+    
+    toggle.addEventListener('click', () => {
+      const current = document.body.getAttribute('data-theme');
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

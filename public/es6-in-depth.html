@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>AETHER | Es6 In Depth</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries,typography"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary-fixed-dim": "#f8acff",
+                        "on-primary": "#450086",
+                        "on-secondary-fixed-variant": "#004884",
+                        "error": "#ffb4ab",
+                        "secondary-fixed": "#d4e3ff",
+                        "on-primary-container": "#3c0076",
+                        "secondary-fixed-dim": "#a4c9ff",
+                        "surface-dim": "#131318",
+                        "surface-bright": "#39383e",
+                        "tertiary-fixed": "#ffd6ff",
+                        "tertiary-container": "#d164e2",
+                        "primary-fixed": "#eedcff",
+                        "on-tertiary": "#570067",
+                        "outline-variant": "#494454",
+                        "on-primary-fixed": "#290055",
+                        "on-background": "#e4e1e9",
+                        "on-tertiary-fixed": "#350040",
+                        "surface-tint": "#d8b9ff",
+                        "on-tertiary-fixed-variant": "#7b0190",
+                        "primary-fixed-dim": "#d8b9ff",
+                        "on-surface": "#e4e1e9",
+                        "surface-container-highest": "#35343a",
+                        "secondary": "#a4c9ff",
+                        "primary-container": "#ae71ff",
+                        "on-primary-fixed-variant": "#6300bb",
+                        "primary": "#d8b9ff",
+                        "surface-container": "#1f1f24",
+                        "on-error": "#690005",
+                        "on-error-container": "#ffdad6",
+                        "inverse-primary": "#7d2dd9",
+                        "on-surface-variant": "#cbc3d7",
+                        "on-secondary-fixed": "#001c39",
+                        "tertiary": "#f8acff",
+                        "surface": "#131318",
+                        "surface-variant": "#35343a",
+                        "surface-container-high": "#2a292f",
+                        "on-tertiary-container": "#4c005a",
+                        "secondary-container": "#036ec6",
+                        "inverse-surface": "#e4e1e9",
+                        "inverse-on-surface": "#303035",
+                        "surface-container-low": "#1b1b20",
+                        "outline": "#958ea0",
+                        "on-secondary": "#00315d",
+                        "error-container": "#93000a",
+                        "background": "#131318",
+                        "surface-container-lowest": "#0e0e13",
+                        "on-secondary-container": "#eaf0ff"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background-color: #131318;
+            color: #e4e1e9;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(31, 31, 36, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .atmospheric-glow {
+            background: radial-gradient(circle at center, rgba(216, 185, 255, 0.08) 0%, transparent 70%);
+        }
+        .primary-gradient-text {
+            background: linear-gradient(135deg, #d8b9ff 0%, #ae71ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Prose customization for dark theme */
+        .prose h1, .prose h2, .prose h3, .prose h4 {
+            color: #d8b9ff; /* primary */
+            font-family: 'Space Grotesk', sans-serif;
+            text-transform: uppercase;
+        }
+        
+        .prose {
+             color: #e4e1e9;
+        }
+        
+        .prose strong {
+            color: #f8acff; /* tertiary */
+        }
+        
+        .prose a {
+            color: #a4c9ff; /* secondary */
+        }
+    </style>
+</head>
+<body class="bg-surface selection:bg-primary/30 selection:text-primary">
+    <!-- TopAppBar -->
+    <header class="fixed top-0 w-full z-50 bg-[#131318]/80 backdrop-blur-xl border-b border-[#494454]/15 flex justify-between items-center px-8 h-20 w-full max-w-none shadow-[0_8px_32px_rgba(139,92,246,0.1)]">
+        <div class="flex items-center gap-4">
+            <a href="/" class="flex items-center gap-4 text-decoration-none">
+                <img alt="AETHER Logo" class="h-10 w-10 drop-shadow-[0_0_8px_rgba(216,185,255,0.8)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEY0nGvQkgAw8TgWqVAURbjLSQfWwYUGw3yoF7xpdTCB6-3vlnkGHXvgRGNffKrwC_ztEdd_cDdMySuIc7yOSb8WHjZdYT7LfwzQMc1DU2YPCnuZ-WFsmJPvBQsg217Q54ziyXF4l94OMuA9W3g_71hK2AVdcIHwlnFSq8xy5uUXdkA_oIRHp6GwXF1MQXEi2E9v1OyhntdqYAH4MIDdSUUUH9Wdv-BsMW6n5L7m2NhprnSRhxyeree3cWI4dPtt2cZZ79yyKgu6rf"/>
+                <span class="text-2xl font-bold tracking-tighter text-[#d8b9ff] drop-shadow-[0_0_8px_rgba(216,185,255,0.8)] font-headline uppercase">AETHER</span>
+            </a>
+        </div>
+        <nav class="hidden md:flex gap-12 font-headline tracking-widest uppercase text-sm">
+            <a class="text-[#d8b9ff] border-b-2 border-[#d8b9ff] pb-1" href="/">Essays</a>
+            <a class="text-[#e4e1e9]/60 hover:text-[#e4e1e9] transition-all duration-300" href="#">Archive</a>
+            <a class="text-[#e4e1e9]/60 hover:text-[#e4e1e9] transition-all duration-300" href="#">Gallery</a>
+        </nav>
+        <div class="flex items-center gap-6">
+            <button class="text-[#e4e1e9]/60 hover:bg-[#35343a]/50 p-2 rounded-full transition-all duration-300 active:scale-90">
+                <span class="material-symbols-outlined" data-icon="blur_on">blur_on</span>
+            </button>
+            <button class="text-[#e4e1e9]/60 hover:bg-[#35343a]/50 p-2 rounded-full transition-all duration-300 active:scale-90">
+                <span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- SideNavBar (Contextual) -->
+    <aside class="fixed left-0 top-0 h-full w-64 z-40 bg-[#0e0e13]/90 backdrop-blur-2xl border-r border-[#494454]/15 hidden lg:flex flex-col pt-24 pb-8">
+        <div class="px-8 mb-12">
+            <h2 class="text-[#d8b9ff] font-bold font-headline tracking-tighter text-xl">AETHER_LOG</h2>
+            <p class="font-['Space_Grotesk'] text-[10px] uppercase text-[#e4e1e9]/40 tracking-widest mt-1">v2.0.4</p>
+        </div>
+        <nav class="flex flex-col gap-2">
+            <a class="flex items-center gap-4 px-8 py-4 text-[#d8b9ff] bg-[#35343a] rounded-r-full border-l-4 border-[#d8b9ff] transition-transform duration-200" href="/">
+                <span class="material-symbols-outlined text-lg" data-icon="auto_awesome">auto_awesome</span>
+                <span class="font-headline text-xs uppercase tracking-widest">Home</span>
+            </a>
+            <a class="flex items-center gap-4 px-8 py-4 text-[#e4e1e9]/40 hover:text-[#e4e1e9]/80 hover:translate-x-1 transition-all duration-200" href="#">
+                <span class="material-symbols-outlined text-lg" data-icon="terminal">terminal</span>
+                <span class="font-headline text-xs uppercase tracking-widest">Research</span>
+            </a>
+            <a class="flex items-center gap-4 px-8 py-4 text-[#e4e1e9]/40 hover:text-[#e4e1e9]/80 hover:translate-x-1 transition-all duration-200" href="#">
+                <span class="material-symbols-outlined text-lg" data-icon="layers">layers</span>
+                <span class="font-headline text-xs uppercase tracking-widest">Interface</span>
+            </a>
+            <a class="flex items-center gap-4 px-8 py-4 text-[#e4e1e9]/40 hover:text-[#e4e1e9]/80 hover:translate-x-1 transition-all duration-200" href="#">
+                <span class="material-symbols-outlined text-lg" data-icon="info">info</span>
+                <span class="font-headline text-xs uppercase tracking-widest">About</span>
+            </a>
+        </nav>
+        <div class="mt-auto px-8">
+            <div class="w-12 h-12 rounded-full border border-outline-variant/30 p-1">
+                <img alt="User avatar" class="w-full h-full rounded-full object-cover grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiDIfW09dB3OLUPZAsUMDxY3YgXV5qZelN_CFbN4ehR9Um3TwW04ZdvTA1njFQpJ0pJCGa0aZ_G8hXBh68JYBKpXcPzq9omJ-ockmgDNWswfiVw9zx-7nk0AJLhNh-hu5ZDcsMVQELs2goCd6hxJRiarNvbspzJwMyGATXcKGTvtWUGaZG4zAl2lrFZFvf0uU_Wh8YQXKvvcg4FzCw9djs25llRkFArqEvnszfJLpXc6SR4Fh9firyjdWST9gmCi6W0eI1kmkW8DMj"/>
+            </div>
+        </div>
+    </aside>
+
+    <main class="lg:ml-64 pt-20">
+        <!-- Article Hero Section -->
+        <section class="relative min-h-[40vh] flex flex-col justify-center px-8 md:px-20 overflow-hidden bg-surface-container-low/30 border-b border-[#494454]/15">
+            <div class="absolute inset-0 atmospheric-glow pointer-events-none"></div>
+            <div class="absolute -top-20 -right-20 w-64 h-64 bg-primary/5 blur-[80px] rounded-full"></div>
+            <div class="max-w-4xl relative z-10 pt-10">
+                <div class="flex gap-4 mb-6">
+                    <span class="font-headline text-[10px] text-primary px-3 py-1 rounded-full border border-primary/20 bg-primary/5 uppercase tracking-widest">Thought</span>
+                    <span class="font-headline text-[10px] text-on-surface/40 uppercase tracking-widest">Oct 2024</span>
+                </div>
+                <h1 class="text-4xl md:text-6xl font-headline font-bold tracking-tighter leading-tight mb-8 primary-gradient-text">
+                    Es6 In Depth
+                </h1>
+                <div class="h-[2px] w-24 bg-gradient-to-r from-primary to-transparent"></div>
+            </div>
+        </section>
+
+        <!-- Article Content -->
+        <article class="py-20 px-8 md:px-20">
+            <div class="prose prose-invert prose-lg max-w-4xl mx-auto glass-panel p-8 md:p-12 rounded-2xl border border-white/5">
+                <hr>
+<h2>title: ES6 Succinctly
+date: 2016-04-04
+permalink: /blog/2016/04/04/es6-in-depth/</h2>
+<p>ES6, ES2015 or Harmony has brought a number of interesting features to the table and this article is going to be a drill-down in <em>all</em> those new features that it has to offer. </p>
+<p>Agreed, ES6 is out since June 2015 and a lot has been written about the new features since then and you are better off without another article ..but it isn&#39;t going to stop me from writing it. Why? Because, one, it has been laying around incomplete in my disk for quite some time now, second, although I read a few articles about the topic, writing one myself will help better implant the idea into my brain. So the article is not only going to be <em>for you</em> but for me too. Seems fair? Alright, let&#39;s get started then.</p>
+<h2>Strict mode by default</h2>
+<ul>
+<li><strong>ES5</strong> &ndash; Manually enable it using <code>use strict</code></li>
+<li><strong>ES6</strong> &ndash; Enabled in modules by default</li>
+</ul>
+<p>ES5 introduced strict mode in Javascript that let&#39;s you make your javascript execute in a &quot;strict&quot; operating environment where <em>more</em> exceptions are thrown when you try to write sloppy code. For example, in strict mode you can&#39;t use a variable without declaration i.e. <code>foo = &quot;bar&quot;;</code>, where <code>foo</code> is not declared will fail etc. I won&#39;t get into the detail of <code>strict</code> mode and instead refer you to <a href="http://ejohn.org/blog/ecmascript-5-strict-mode-json-and-more/">this wonderful article on the topic</a>.</p>
+<p>ES6 has the <code>strict</code> mode enabled by default in it&#39;s modules i.e. you donot have to explicitly write <code>use strict</code> to enable it.</p>
+<h2>Block Scope</h2>
+<ul>
+<li><strong>ES5</strong> &ndash; Variables declared using <code>var</code> and having <code>function</code> scope</li>
+<li><strong>ES6</strong> &ndash; Declare block scoped variables using <code>let/const</code></li>
+</ul>
+<p>In ES5 we could declare variables only via <code>var</code> and these variables had the scope of function and the other way was to use it without even adding <code>var</code> which will put it in the global scope.</p>
+<p>Now we have two more constructs i.e. <code>let</code> and <code>const</code> which we can use to declare variables having the block level scope i.e. within the curly braces <code>{}</code>. The only difference between <code>let</code> and <code>const</code> is that <code>const</code> value cannot be changed once initialized also you have to initialize the <code>const</code> variable at the time of declaration.</p>
+<pre><code class="language-javascript">// Example: 
+// `let` and `const` declared variables will not be accessible
+// outside the if block
+function scopeExample() {
+
+    if (true) {
+        // `action` and `act` will only be accessible inside this `if` block
+	let action = &#39;Some action&#39;;
+	const act = &#39;Some act&#39;;
+
+	console.log(&#39;Doing: &#39; + action);		// Doing: Some Action
+	console.log(&#39;Now doing:&#39; + act);		// Now doing: Some act
+    }
+
+    console.log(act);  // Uncaught ReferenceError: &quot;act&quot; is not defined
+    console.log(action);  // Uncaught ReferenceError: &quot;action&quot; is not defined
+}
+
+// Example:
+// Value of the `const` variable cant be changed once assigned
+function constExample() {
+    const action = &#39;something&#39;;
+    action = &#39;Updated action&#39;;	// Uncaught TypeError: Assignment to constant variable.
+}
+</code></pre>
+<p>You may no longer need <a href="https://en.wikipedia.org/wiki/Immediately-invoked_function_expression">IIFEs</a>, and use a block <code>{}</code> with <code>let</code> and <code>const</code> variables inside</p>
+<h2>Template Literals</h2>
+<p>Previously, when you had a variable and you wanted to populate it&#39;s value in a string, you had to use concatenation operator to do that i.e.</p>
+<pre><code class="language-javascript">var name = &#39;John&#39;;
+console.log(&#39;Hello &#39; + name);
+</code></pre>
+<p>In ES6, there are template literals i.e. you can simply do:</p>
+<pre><code class="language-javascript">var name = &#39;John&#39;;
+console.log(`Hello ${name}`);
+</code></pre>
+<p>A few things to note here; for template literals, you must use backticks and the variables used in the template literal must be declared before the use of template literals.</p>
+<h2>Arrow functions</h2>
+<p>Arrow functions are an abbreviated syntax for anonymous functions where there is no <code>function</code> keyword and has implied <code>return</code> statement. Confused yet? Here are the examples:</p>
+<pre><code class="language-javascript">// ES5 example
+var sayHello = function(name) {
+    return &#39;Hello &#39; + name + &#39;!&#39;;
+};
+
+// Using ES6: 
+// Arrow function (The one liner)
+var sayHello = name =&gt; `Hello ${name}!`;	
+sayHello(&#39;World&#39;); // Hello World
+
+// With block in case multiple statements are involved
+var sayHello = name =&gt; {
+    // Say hello to world in case no name provided
+    name = name || &#39;World&#39;;
+    return `Hello ${name}!`;
+};
+
+sayHello();	// Hello World!
+sayHello(&#39;Jim&#39;); // Hello Jim!
+
+// Without parameters
+var sayHello = () =&gt; {
+    return &#39;Hello World!&#39;;
+};
+sayHello(); // Hello World!
+
+// With multiple parameters
+var greet = (greeting, name) =&gt; `${greeting} ${name}!`;
+// or with block
+var greet = (greeting, name) =&gt; {
+    return `${greeting} ${name}!`;
+};
+
+greet(&#39;Hello&#39;, &#39;World&#39;);	// Hello World
+</code></pre>
+<h2>Destructuring</h2>
+<p>If you are coming from PHP, you might be aware of a language construct called <code>list</code> the similar can be achieved in Javascript now. Here are a few examples to demonstrate it better.</p>
+<p>You can apply it on arrays</p>
+<pre><code class="language-javascript">var parts = &#39;2010-11-11&#39;.split(&#39;-&#39;),
+    year = parts[0],
+    month = parts[1],
+    day = parts[2];
+
+console.log()
+</code></pre>
+<p>Here is a one liner in ES6</p>
+<pre><code class="language-javascript">var [year, month, day] = &#39;2010-10-11&#39;.split(&#39;-&#39;);
+console.log(year);	// 2010
+console.log(month);	// 10
+console.log(day);	// 11
+</code></pre>
+<p>You can leave some values as well if you want i.e. from the above example</p>
+<pre><code class="language-javascript">// Only take the month and day
+var [, month, day] = &#39;2010-10-11&#39;.split(&#39;-&#39;);
+console.log(month);	// 10
+console.log(day);	// 11
+
+// Only take the year and day
+var [year, , day] = &#39;2010-10-11&#39;.split(&#39;-&#39;);
+console.log(year);	// 2010
+console.log(day);	// 11
+</code></pre>
+<p>Also, you can set default values i.e. if some variable wasn&#39;t able to get filled the default value will be used i.e.</p>
+<pre><code class="language-javascript">// Assume that date is going to be optional and if it is not found, we would like to use `1` then
+var [year, month, date=1] = &#39;2010-10&#39;.split(&#39;-&#39;);
+console.log(year);  // 2010
+console.log(month); // 10
+console.log(date);  // 1
+
+var [year, month, date=1] = &#39;2010-10-11&#39;.split(&#39;-&#39;);
+console.log(year);  // 2010
+console.log(month); // 10
+console.log(date);  // 11
+</code></pre>
+<p>It works for the objectcs as well</p>
+<pre><code class="language-javascript">var person = { name: &#39;John Doe&#39;, age: 23, gender: &#39;male&#39; };
+var {name, age, gender} = person;
+console.log(name); // John Doe
+console.log(age);	// 23
+console.log(gender); // male
+</code></pre>
+<p><strong>Aliasing</strong> From the above example, you must have noticed that I have used the same variable names for the properties i.e. <code>name</code>, <code>age</code> and <code>gender</code> in <code>var {name, age, gender}</code>. But what if, I want to store the <code>person.name</code> in <code>tag</code> and <code>person.gender</code> in <code>sex</code>?! Well in that case you can easily use the aliases:</p>
+<pre><code class="language-javascript">var person = { name: &#39;John Doe&#39;, age: 23, gender: &#39;male&#39; };
+var {name:tag, age, gender:sex} = person;
+console.log(tag); // John Doe
+console.log(age); // 23
+console.log(sex); // male
+</code></pre>
+<p>Also, you can have default values as well i.e. for example if you we wanted to get the default gender for <code>male</code> i.e. if the <code>gender</code> isn&#39;t there use <code>male</code>, you can do that by following:</p>
+<pre><code class="language-javascript">var person = { name: &#39;John Doe&#39;, age: 23};
+var {name, age, gender = &#39;male&#39;} = person;
+console.log(name); // John Doe
+console.log(age); // 23
+console.log(gender); // male
+
+// Alias and default value at the same time
+var person = { name: &#39;John Doe&#39;, age: 23};
+var {name, age, gender:sex = &#39;male&#39;} = person;
+console.log(name); // John Doe
+console.log(age); // 23
+console.log(sex); // male
+</code></pre>
+<p>And here is another example</p>
+<pre><code class="language-javascript">// Returning object/multiple values from a function call
+function getLocation() {
+    return {
+        latitude: 23.4125,
+	longitude: 45.128
+    };
+}
+
+var {latitude:lat, longitude:long} = getLocation();
+console.log(lat);  //23.4125
+console.log(long); //45.128
+</code></pre>
+<p>Check <a href="https://gist.github.com/mikaelbr/9900818">this gist for a whole lot of examples</a></p>
+<h2>The mighty <code>for...of</code></h2>
+<p>Previously in order to iterate arrays, you might have used <code>for</code> or <code>forEach</code>. <code>for</code> allows you to break out of the loop but isn&#39;t concise, while <code>forEach</code> doesn&#39;t allow you to break out of the loop but is concise. Meet <code>for...of</code> which is both concise and supports breaking out of the loop. Here is how you can use it to iterate throught the arrays:</p>
+<pre><code class="language-javascript">var numbers = [10, 20, 30, 40, 50, 60, 70, 80, 90];
+for(let number of numbers) {
+    console.log(number)
+}
+
+// You can break out of it as well
+var numbers = [10, 20, 30, 40, 50, 60, 70, 80, 90];
+for(let number of numbers) {
+    if (number === 50) {
+        break;
+    }
+
+    console.log(number);
+}
+</code></pre>
+<p>Let me put another example here using a mix of destructuring and <code>for...of</code></p>
+<pre><code class="language-javascript">var guests = [{name: &#39;John Doe&#39;, title: &#39;Mr&#39;}, {name: &#39;Jane Doe&#39;, title: &#39;Ms&#39;}];
+for(let {name} of guests) {
+    console.log(&#39;Hello &#39; + name + &#39;!&#39;);
+}
+
+// Hello John Doe!
+// Hello Jane Doe!
+</code></pre>
+<h2>Default Parameter Values</h2>
+<p>In ES6, you can have the default parameter values for example previously you might have done the following to achieve that:</p>
+<pre><code class="language-javascript">function greet(greet, name) {
+    greet = greet || &#39;Hi&#39;;
+    name = name || &#39;John Doe&#39;;
+
+    console.log(greet + &#39; &#39; + name);
+}
+</code></pre>
+<p>Well, now you can do the following</p>
+<pre><code class="language-javascript">function greet(greet=&#39;Hi&#39;, name=&#39;John Doe&#39;) {
+    console.log(greet + &#39; &#39; + name);
+}
+</code></pre>
+<p>Plus unlike the first example, where the default value will get assigned on any falsy value, the latter one will work when there is an undefined value for some argument. Also the default values work for object arguments as well i.e.</p>
+<h2>Spread operator <code>...</code></h2>
+<p>Previously when you needed an unknown number of parameters, you would have used special variable called <code>arguments</code>. </p>
+<pre><code class="language-javascript">function populateBucket() {
+    var bucket = [];
+    for (var itemCounter = 0; itemCounter &lt; arguments.length; itemCounter++) {
+        bucket.push(arguments[itemCounter]);
+    }
+}
+</code></pre>
+<p>And you might have noticed that it already has started to get messy. In ES-6 you can use spread operator i.e.</p>
+<pre><code class="language-javascript">function populateBucket(...items) {
+    var bucket = [];
+    for(item of items) {
+        bucket.push(item);
+    }
+}
+</code></pre>
+<p>You can also use it to merge arrays e.g.</p>
+<pre><code class="language-javascript">var a = [1,2,3],
+    b = [4,5,6],
+    merged = [];
+
+// What used to be the following for merging arrays
+merged = a.concat(b);
+
+// Can now be written as
+merged = [...a, ...b];
+</code></pre>
+<h2>Classes</h2>
+<p>Remember how we used to create <em>classes</em> using constructor functions, ES-6 introduces some syntactic sugar to make it more pleasant. Now you can create classes like below:</p>
+<pre><code class="language-javascript">class Person {
+
+    // Will be called when instnatiating person
+    constructor(name) {
+        this.name = name;
+        console.log(&#39;A person named &quot;&#39; + name + &#39;&quot; is born&#39;);
+    }
+
+    // No need to write function keyword
+    sayHello() {
+        console.log(this.name + &#39; says hello&#39;);
+    }
+}
+</code></pre>
+<p>Also you can extend classes without having to touch <code>prototype</code> now</p>
+<pre><code class="language-javascript">class Employee extends Person {
+    constructor(name) {
+        super(name);
+	console.log(this.name + &#39; has been employed&#39;);
+    }
+}
+</code></pre>
+<h2>Maps</h2>
+<p>A new data structure has been introduced called map which holds key value pairs.</p>
+<pre><code class="language-javascript">var map = new Map();
+map.set(&#39;spec&#39;, &#39;2015&#39;);
+map.set(&#39;year&#39;, &#39;2015&#39;);
+
+// use `.get()` to retrieve items
+console.log(map.get(&#39;spec&#39;)); // 2015
+</code></pre>
+<p>You can also iterate the maps</p>
+<pre><code class="language-javascript">for (var [key, value] of map) {
+   console.log(key + &#39;: &#39; + value);
+}
+</code></pre>
+<p>Also there are some helper functions to manipulate maps</p>
+<pre><code class="language-javascript">map.entries(); 		 // Gives you all the entries in map
+map.keys(); 		 // Gives you all the keys in map
+map.values(); 		 // Gets you the values stored in map
+map.has(keyName); 	 // Checks if a map has specified key or not
+map.delete(keyName); // Replaces the value having the provided key
+map.size;			 // Gives you the size of map
+map.clear();		 // Clears all the collection
+</code></pre>
+<h2>WeakMaps</h2>
+<p>Like <code>Map</code>, <code>WeakMap</code> is a collection of key/value pairs where the keys must be objects or in other words they must be reference types and not value types like numbers, symbols or strings etc and the values can be arbitrary values. If there is no other reference to the key stored in the <code>WeakMap</code>, they can be garbage collected. It means they are good for keeping metadata around for the objects while they are still being used. Let&#39;s look at the example that I have <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/WeakMap">stolen from mozilla JS reference</a> to make it more clear</p>
+<pre><code class="language-javascript">var wm1 = new WeakMap(),
+    wm2 = new WeakMap(),
+    wm3 = new WeakMap();
+var o1 = {},
+    o2 = function(){},
+    o3 = window;
+
+wm1.set(o1, 37);
+wm1.set(o2, &quot;azerty&quot;);
+wm2.set(o1, o2); // a value can be anything, including an object or a function
+wm2.set(o3, undefined);
+wm2.set(wm1, wm2); // keys and values can be any objects. Even WeakMaps!
+
+wm1.get(o2); // &quot;azerty&quot;
+wm2.get(o2); // undefined, because there is no value for o2 on wm2
+wm2.get(o3); // undefined, because that is the set value
+
+wm1.has(o2); // true
+wm2.has(o2); // false
+wm2.has(o3); // true (even if the value itself is &#39;undefined&#39;)
+
+wm3.set(o1, 37);
+wm3.get(o1); // 37
+
+wm1.has(o1); // true
+wm1.delete(o1);
+wm1.has(o1); // false
+</code></pre>
+<h2>Sets</h2>
+<p>Sets are the collection of <em>unique</em> values. Any duplicate values will be ignored. The values could be also a primitives or object references.</p>
+<pre><code class="language-javascript">let set = new Set();
+set.add(1);
+set.add(&#39;1&#39;);
+set.add({ key: &#39;value&#39; });
+console.log(set); // Set {1, &#39;1&#39;, Object {key: &#39;value&#39;}}
+
+// Delete values
+set.delete(2);
+
+// Check size
+console.log(set.size);
+</code></pre>
+<p>Like a map, set allows to create collection by passing an array to its constructor:</p>
+<pre><code class="language-javascript">let set = new Set([1, &#39;1&#39;, { key: &#39;value&#39; }]);
+console.log(set); // Set {1, &#39;1&#39;, Object {key: &#39;value&#39;}}
+</code></pre>
+<p>To iterate over sets we have the same two options — built-in forEach function or for..of structure:</p>
+<pre><code class="language-javascript">// forEach
+let set = new Set([1, &#39;1&#39;, { key: &#39;value&#39; }]);
+set.forEach(function (value) {
+  console.log(value);
+  // 1
+  // &#39;1&#39;
+  // Object {key: &#39;value&#39;}
+});
+
+// for..of
+let set = new Set([1, &#39;1&#39;, { key: &#39;value&#39; }]);
+for (let value of set) {
+  console.log(value);
+  // 1
+  // &#39;1&#39;
+  // Object {key: &#39;value&#39;}
+};
+</code></pre>
+<h2>Weaksets</h2>
+<p>In contrast to the <code>Set</code> which can be a collection of anything, <code>Weakset</code> is only a collection of objects and not of arbitrary values of any type. The <code>WeakSet</code> is weak: References to objects in the collection are held weakly. If there is no other reference to an object stored in the <code>WeakSet</code>, they can be garbage collected. Also, <code>WeakSets</code> are not enumerable and so you don’t get enumeration methods like <code>.forEach</code>, <code>.clear</code> etc.</p>
+<pre><code class="language-javascript">var ws = new WeakSet();
+var obj = {};
+var foo = {};
+
+ws.add(window);
+ws.add(obj);
+
+ws.has(window); // true
+ws.has(foo);    // false, foo has not been added to the set
+
+ws.delete(window); // removes window from the set
+ws.has(window);    // false, window has been removed
+</code></pre>
+<h2>New String Functions</h2>
+<p>Several new String methods have been introduced to make our lives easy. Remember how we used to use <code>indexOf</code> to check the existence of a string inside another, or to check if a string starts/ends with a specific character, no more folks</p>
+<pre><code class="language-javascript">var message = &#39;Hello World&#39;;
+message.startsWith(&#39;H&#39;); // instead of message.indexOf(&#39;H&#39;) === 0
+message.endsWith(&#39;d&#39;); 	 // instead of whatever ¯\_(ツ)_/¯
+
+message.includes(&#39;or&#39;);  // instead of message.indexOf(&#39;or&#39;) &gt;= 0
+</code></pre>
+<p>Also, there is a helper for repeating character <code>n</code> times.</p>
+<pre><code class="language-javascript">// Previously you would have done
+new Array(3+1) * &#39;*&#39;
+
+// Now you can simply do
+&#39;*&#39;.repeat(3); // Will generate ***
+</code></pre>
+<h2>New Array Functions</h2>
+<p>There are some new array functions. <code>Array.from</code> let&#39;s you create arrays from array like objects. For example:</p>
+<pre><code class="language-javascript">// Array-like object (arguments) to Array
+function fooBar() {
+  return Array.from(arguments);
+}
+
+fooBar(1, 2, 3, 5);	// [1, 2, 3, 5];
+
+// Any iterable object...
+// Set
+var s = new Set([&quot;foo&quot;, window]);
+Array.from(s);   
+// [&quot;foo&quot;, window]
+
+// Map
+var m = new Map([[1, 2], [2, 4], [4, 8]]);
+Array.from(m);                          
+// [[1, 2], [2, 4], [4, 8]]  
+
+// Using an arrow function as the map function to
+// manipulate the elements
+Array.from([1, 2, 3], x =&gt; x + x);      
+// [2, 4, 6]
+</code></pre>
+<p><code>Array.fill</code> allows you to replace all the elements of an array with the passed element</p>
+<pre><code class="language-javascript">var randomNumbers = [1, 5, 7, 77, 12, 3];
+randomNumbers.fill(&#39;*&#39;);	// [&#39;*&#39;, &#39;*&#39;, &#39;*&#39;, &#39;*&#39;, &#39;*&#39;, &#39;*&#39;];
+</code></pre>
+<p><code>Array.find</code> receives a callback and returns the first element satisfying the condition in callback</p>
+<pre><code class="language-javascript">var users = [{name: &#39;John Doe&#39;, age: 23}, {name: &#39;Jane Doe&#39;, age: 25}, {name: &#39;Kane Doe&#39;, age: 30}];
+users.find(user =&gt; user.age &gt; 25); 	// {name: &#39;Kane Doe&#39;, age: 30}
+</code></pre>
+<p>Also a similar function is <code>Array.findIndex</code> which works the same but returns the index of the matching element instead.</p>
+<h2>Modules</h2>
+<p>ES was missing native modules support for a long time. People came up with things like AMD, CommonJS or Modular pattern for that matter and other similar work arounds. ES6 finally has the support for modules natively now. Let&#39;s scratch the surface a bit.</p>
+<p>By default anything that you declare in a file is not going to be visible outside, unless you <code>export</code> it. </p>
+<p>Take the example of a <code>User</code> module below</p>
+<pre><code class="language-javascript">// user.js
+
+var localVariable = 123;  // not visible outside this file
+
+export default function User(age) {
+  this.age = age;
+}; // can be imported by other files
+</code></pre>
+<p>And now if we want to use this</p>
+<pre><code class="language-javascript">// user-details.js
+
+import User from &#39;user&#39;;
+
+var user = new User(24);
+</code></pre>
+<p>There is a lot more to it. Please have a look at <a href="https://ponyfoo.com/articles/es6-modules-in-depth">this article for further details</a></p>
+<h2>Final Words</h2>
+<p>Although ES6 has been finalized, there still is dangling support for it in the browsers. But, there are <a href="https://github.com/addyosmani/es6-tools">tons of tools in the wild</a> to help us use ES6 today. The most popular one is <a href="https://babeljs.io/">BabelJS</a> which can either be run as a standalone tool or be used with your build system. They have <a href="http://babeljs.io/docs/setup/">plugins</a> available for Grunt, Gulp etc.</p>
+<p>Okay folks, that about wraps it up. There are still some noteworthy and mind-bending features which haven&#39;t been mentioned here Generators, Promises, Proxy and Symbols to name a few. But, the things covered in this article are enough to get you up and started. However I would highly recommend <a href="https://ponyfoo.com/articles/tagged/es6-in-depth">this series of articles</a> and <a href="https://leanpub.com/understandinges6">this book if you can</a> ..and <a href="http://wiki.ecmascript.org/doku.php?id=harmony:specification_drafts">the specs maybe</a> for the overachievers. Until next time, stay tuned.</p>
+
+            </div>
+        </article>
+        
+        <!-- Navigation/Footer area within main -->
+        <div class="px-8 md:px-20 pb-20">
+             <div class="max-w-4xl mx-auto flex justify-between items-center pt-10 border-t border-[#494454]/15">
+                <a href="/" class="group flex items-center gap-2 text-primary font-headline text-xs uppercase tracking-widest">
+                    <span class="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform" data-icon="arrow_back">arrow_back</span>
+                    Back to Signals
+                </a>
+             </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full py-12 border-t border-[#494454]/15 bg-[#131318] flex flex-col items-center gap-6">
+        <div class="flex gap-12 text-[#e4e1e9]/30 font-headline text-[10px] tracking-[0.2em] uppercase">
+            <a class="hover:text-[#f8acff] hover:drop-shadow-[0_0_5px_rgba(248,172,255,0.5)] transition-all opacity-80 hover:opacity-100" href="#">Protocol</a>
+            <a class="hover:text-[#f8acff] hover:drop-shadow-[0_0_5px_rgba(248,172,255,0.5)] transition-all opacity-80 hover:opacity-100" href="#">Decrypt</a>
+            <a class="hover:text-[#f8acff] hover:drop-shadow-[0_0_5px_rgba(248,172,255,0.5)] transition-all opacity-80 hover:opacity-100" href="#">Contact</a>
+        </div>
+        <div class="flex items-center gap-4 mt-4">
+            <div class="w-8 h-[1px] bg-gradient-to-r from-transparent to-primary/30"></div>
+            <p class="font-headline text-[10px] tracking-[0.2em] text-[#e4e1e9]/30">© 2024 HYPER-DIGITAL. ALL RIGHTS OBSERVED.</p>
+            <div class="w-8 h-[1px] bg-gradient-to-l from-transparent to-primary/30"></div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -5,6 +5,18 @@
       "claimToken": "5ee1da2edff8bcd8771140a2723dc07664d4d14186c226d0ebcfadda04915c1e",
       "claimUrl": "https://here.now/claim?slug=waxen-portal-8sgp&token=5ee1da2edff8bcd8771140a2723dc07664d4d14186c226d0ebcfadda04915c1e",
       "expiresAt": "2026-03-26T03:34:38.745Z"
+    },
+    "solar-garnet-b86a": {
+      "siteUrl": "https://solar-garnet-b86a.here.now/",
+      "claimToken": "accd64ca1a06358e1c045157fd5d5ad156a34521849826d8e07d42dbc75d0ff9",
+      "claimUrl": "https://here.now/claim?slug=solar-garnet-b86a&token=accd64ca1a06358e1c045157fd5d5ad156a34521849826d8e07d42dbc75d0ff9",
+      "expiresAt": "2026-03-26T03:47:49.990Z"
+    },
+    "lemon-diner-3knb": {
+      "siteUrl": "https://lemon-diner-3knb.here.now/",
+      "claimToken": "8197fe394eda8a927901e3bb38bc9d709f4816fb1bb917cad47c79f24610767d",
+      "claimUrl": "https://here.now/claim?slug=lemon-diner-3knb&token=8197fe394eda8a927901e3bb38bc9d709f4816fb1bb917cad47c79f24610767d",
+      "expiresAt": "2026-03-26T03:52:22.867Z"
     }
   }
 }

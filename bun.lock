@@ -1,0 +1,15 @@
+{
+  "lockfileVersion": 1,
+  "configVersion": 0,
+  "workspaces": {
+    "": {
+      "name": "aldoyh-github-io",
+      "dependencies": {
+        "marked": "^17.0.5",
+      },
+    },
+  },
+  "packages": {
+    "marked": ["marked@17.0.5", "", { "bin": "bin/marked.js" }, "sha512-6hLvc0/JEbRjRgzI6wnT2P1XuM1/RrrDEX0kPt0N7jGm1133g6X7DlxFasUIx+72aKAr904GTxhSLDrd5DIlZg=="],
+  }
+}

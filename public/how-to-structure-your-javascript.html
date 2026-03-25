@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>AETHER | Javascript Modules</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries,typography"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary-fixed-dim": "#f8acff",
+                        "on-primary": "#450086",
+                        "on-secondary-fixed-variant": "#004884",
+                        "error": "#ffb4ab",
+                        "secondary-fixed": "#d4e3ff",
+                        "on-primary-container": "#3c0076",
+                        "secondary-fixed-dim": "#a4c9ff",
+                        "surface-dim": "#131318",
+                        "surface-bright": "#39383e",
+                        "tertiary-fixed": "#ffd6ff",
+                        "tertiary-container": "#d164e2",
+                        "primary-fixed": "#eedcff",
+                        "on-tertiary": "#570067",
+                        "outline-variant": "#494454",
+                        "on-primary-fixed": "#290055",
+                        "on-background": "#e4e1e9",
+                        "on-tertiary-fixed": "#350040",
+                        "surface-tint": "#d8b9ff",
+                        "on-tertiary-fixed-variant": "#7b0190",
+                        "primary-fixed-dim": "#d8b9ff",
+                        "on-surface": "#e4e1e9",
+                        "surface-container-highest": "#35343a",
+                        "secondary": "#a4c9ff",
+                        "primary-container": "#ae71ff",
+                        "on-primary-fixed-variant": "#6300bb",
+                        "primary": "#d8b9ff",
+                        "surface-container": "#1f1f24",
+                        "on-error": "#690005",
+                        "on-error-container": "#ffdad6",
+                        "inverse-primary": "#7d2dd9",
+                        "on-surface-variant": "#cbc3d7",
+                        "on-secondary-fixed": "#001c39",
+                        "tertiary": "#f8acff",
+                        "surface": "#131318",
+                        "surface-variant": "#35343a",
+                        "surface-container-high": "#2a292f",
+                        "on-tertiary-container": "#4c005a",
+                        "secondary-container": "#036ec6",
+                        "inverse-surface": "#e4e1e9",
+                        "inverse-on-surface": "#303035",
+                        "surface-container-low": "#1b1b20",
+                        "outline": "#958ea0",
+                        "on-secondary": "#00315d",
+                        "error-container": "#93000a",
+                        "background": "#131318",
+                        "surface-container-lowest": "#0e0e13",
+                        "on-secondary-container": "#eaf0ff"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background-color: #131318;
+            color: #e4e1e9;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(31, 31, 36, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .atmospheric-glow {
+            background: radial-gradient(circle at center, rgba(216, 185, 255, 0.08) 0%, transparent 70%);
+        }
+        .primary-gradient-text {
+            background: linear-gradient(135deg, #d8b9ff 0%, #ae71ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Prose customization for dark theme */
+        .prose h1, .prose h2, .prose h3, .prose h4 {
+            color: #d8b9ff; /* primary */
+            font-family: 'Space Grotesk', sans-serif;
+            text-transform: uppercase;
+        }
+        
+        .prose {
+             color: #e4e1e9;
+        }
+        
+        .prose strong {
+            color: #f8acff; /* tertiary */
+        }
+        
+        .prose a {
+            color: #a4c9ff; /* secondary */
+        }
+    </style>
+</head>
+<body class="bg-surface selection:bg-primary/30 selection:text-primary">
+    <!-- TopAppBar -->
+    <header class="fixed top-0 w-full z-50 bg-[#131318]/80 backdrop-blur-xl border-b border-[#494454]/15 flex justify-between items-center px-8 h-20 w-full max-w-none shadow-[0_8px_32px_rgba(139,92,246,0.1)]">
+        <div class="flex items-center gap-4">
+            <a href="/" class="flex items-center gap-4 text-decoration-none">
+                <img alt="AETHER Logo" class="h-10 w-10 drop-shadow-[0_0_8px_rgba(216,185,255,0.8)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEY0nGvQkgAw8TgWqVAURbjLSQfWwYUGw3yoF7xpdTCB6-3vlnkGHXvgRGNffKrwC_ztEdd_cDdMySuIc7yOSb8WHjZdYT7LfwzQMc1DU2YPCnuZ-WFsmJPvBQsg217Q54ziyXF4l94OMuA9W3g_71hK2AVdcIHwlnFSq8xy5uUXdkA_oIRHp6GwXF1MQXEi2E9v1OyhntdqYAH4MIDdSUUUH9Wdv-BsMW6n5L7m2NhprnSRhxyeree3cWI4dPtt2cZZ79yyKgu6rf"/>
+                <span class="text-2xl font-bold tracking-tighter text-[#d8b9ff] drop-shadow-[0_0_8px_rgba(216,185,255,0.8)] font-headline uppercase">AETHER</span>
+            </a>
+        </div>
+        <nav class="hidden md:flex gap-12 font-headline tracking-widest uppercase text-sm">
+            <a class="text-[#d8b9ff] border-b-2 border-[#d8b9ff] pb-1" href="/">Essays</a>
+            <a class="text-[#e4e1e9]/60 hover:text-[#e4e1e9] transition-all duration-300" href="#">Archive</a>
+            <a class="text-[#e4e1e9]/60 hover:text-[#e4e1e9] transition-all duration-300" href="#">Gallery</a>
+        </nav>
+        <div class="flex items-center gap-6">
+            <button class="text-[#e4e1e9]/60 hover:bg-[#35343a]/50 p-2 rounded-full transition-all duration-300 active:scale-90">
+                <span class="material-symbols-outlined" data-icon="blur_on">blur_on</span>
+            </button>
+            <button class="text-[#e4e1e9]/60 hover:bg-[#35343a]/50 p-2 rounded-full transition-all duration-300 active:scale-90">
+                <span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- SideNavBar (Contextual) -->
+    <aside class="fixed left-0 top-0 h-full w-64 z-40 bg-[#0e0e13]/90 backdrop-blur-2xl border-r border-[#494454]/15 hidden lg:flex flex-col pt-24 pb-8">
+        <div class="px-8 mb-12">
+            <h2 class="text-[#d8b9ff] font-bold font-headline tracking-tighter text-xl">AETHER_LOG</h2>
+            <p class="font-['Space_Grotesk'] text-[10px] uppercase text-[#e4e1e9]/40 tracking-widest mt-1">v2.0.4</p>
+        </div>
+        <nav class="flex flex-col gap-2">
+            <a class="flex items-center gap-4 px-8 py-4 text-[#d8b9ff] bg-[#35343a] rounded-r-full border-l-4 border-[#d8b9ff] transition-transform duration-200" href="/">
+                <span class="material-symbols-outlined text-lg" data-icon="auto_awesome">auto_awesome</span>
+                <span class="font-headline text-xs uppercase tracking-widest">Home</span>
+            </a>
+            <a class="flex items-center gap-4 px-8 py-4 text-[#e4e1e9]/40 hover:text-[#e4e1e9]/80 hover:translate-x-1 transition-all duration-200" href="#">
+                <span class="material-symbols-outlined text-lg" data-icon="terminal">terminal</span>
+                <span class="font-headline text-xs uppercase tracking-widest">Research</span>
+            </a>
+            <a class="flex items-center gap-4 px-8 py-4 text-[#e4e1e9]/40 hover:text-[#e4e1e9]/80 hover:translate-x-1 transition-all duration-200" href="#">
+                <span class="material-symbols-outlined text-lg" data-icon="layers">layers</span>
+                <span class="font-headline text-xs uppercase tracking-widest">Interface</span>
+            </a>
+            <a class="flex items-center gap-4 px-8 py-4 text-[#e4e1e9]/40 hover:text-[#e4e1e9]/80 hover:translate-x-1 transition-all duration-200" href="#">
+                <span class="material-symbols-outlined text-lg" data-icon="info">info</span>
+                <span class="font-headline text-xs uppercase tracking-widest">About</span>
+            </a>
+        </nav>
+        <div class="mt-auto px-8">
+            <div class="w-12 h-12 rounded-full border border-outline-variant/30 p-1">
+                <img alt="User avatar" class="w-full h-full rounded-full object-cover grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiDIfW09dB3OLUPZAsUMDxY3YgXV5qZelN_CFbN4ehR9Um3TwW04ZdvTA1njFQpJ0pJCGa0aZ_G8hXBh68JYBKpXcPzq9omJ-ockmgDNWswfiVw9zx-7nk0AJLhNh-hu5ZDcsMVQELs2goCd6hxJRiarNvbspzJwMyGATXcKGTvtWUGaZG4zAl2lrFZFvf0uU_Wh8YQXKvvcg4FzCw9djs25llRkFArqEvnszfJLpXc6SR4Fh9firyjdWST9gmCi6W0eI1kmkW8DMj"/>
+            </div>
+        </div>
+    </aside>
+
+    <main class="lg:ml-64 pt-20">
+        <!-- Article Hero Section -->
+        <section class="relative min-h-[40vh] flex flex-col justify-center px-8 md:px-20 overflow-hidden bg-surface-container-low/30 border-b border-[#494454]/15">
+            <div class="absolute inset-0 atmospheric-glow pointer-events-none"></div>
+            <div class="absolute -top-20 -right-20 w-64 h-64 bg-primary/5 blur-[80px] rounded-full"></div>
+            <div class="max-w-4xl relative z-10 pt-10">
+                <div class="flex gap-4 mb-6">
+                    <span class="font-headline text-[10px] text-primary px-3 py-1 rounded-full border border-primary/20 bg-primary/5 uppercase tracking-widest">Thought</span>
+                    <span class="font-headline text-[10px] text-on-surface/40 uppercase tracking-widest">Oct 2024</span>
+                </div>
+                <h1 class="text-4xl md:text-6xl font-headline font-bold tracking-tighter leading-tight mb-8 primary-gradient-text">
+                    Javascript Modules
+                </h1>
+                <div class="h-[2px] w-24 bg-gradient-to-r from-primary to-transparent"></div>
+            </div>
+        </section>
+
+        <!-- Article Content -->
+        <article class="py-20 px-8 md:px-20">
+            <div class="prose prose-invert prose-lg max-w-4xl mx-auto glass-panel p-8 md:p-12 rounded-2xl border border-white/5">
+                <hr>
+<h2>title: How to structure your Javascript
+date: 2014-08-07
+permalink: /blog/2014/08/07/how-to-structure-your-javascript/</h2>
+<p>Being a full stack web developer, I have been toying around with pretty intensive jquery and ajax based web applications since the time I first started in web development. At Digitalsofts I developed a web based ERP system, along with it’s several versions for different domains, that made a heavy use of Javascript and Ajax and now at Strategic Systems International, I have been working upon an intensive health care application that again makes an intensive use of Javascript/Jquery and Ajax. Apart from the above mentioned projects, I have developed several other Javascript heavy applications e.g. <a href="http://goo.gl/5zfLa2">GCUF News Caster</a> and <a href="https://github.com/kamranahmedse/angularjs-todo">Toodloo</a> etc.</p>
+<p>From my experience in Javascript, I have come to the point that it gives you a free hand and doesn’t enforce a particular structure on you. Now it is up to you to either make a unmanageable mess out of it, maintaining which would be a nightmare, or you can write a well structured code, maintaining which would be a breeze. It is important that you structure your Javascript, because:</p>
+<ul>
+<li>It’ll make your code clean and consistent, so you’ll know where to find what.</li>
+<li>Done right, it would make your code easier to understand for others and of course for yourself as well when you’ll revisit it later.</li>
+<li>It will make your code testable.</li>
+<li>Later on it’ll make you feel proud ;-) …and you’ll feel compelled to use the best practices.</li>
+</ul>
+<p>So, let me start with how I structured my Javascript in ther ERP system that we talked about.</p>
+<blockquote>
+<p>Please note that, there are several patterns to structure your Javascript, but I use Modular Pattern most of the time and that’s what I am going to explain in this article.</p>
+</blockquote>
+<h1>Javascript Modules</h1>
+<p>In layman terms, I would explain the Javascript module as:</p>
+<blockquote>
+<p>A chunk of related code having it’s own distinct meaning.</p>
+</blockquote>
+<p>For now, let’s keep it to that and I’d explain it a bit more later in the article. Now you may disagree with me, but that’s what I think of a Javascript module. Though, I’d love to hear your conflicting thoughts regarding Javascript Modules, if any, through your comments.</p>
+<h1>Decision of Modules</h1>
+<p>While developing the ERP system. The first step, that I took was the <strong>Decision of Modules.</strong> There were several usecases that were related to each other. Let’s take the example of <strong>Sale Transaction,</strong> for sale transaction there was a single voucher on which the <strong>New Transaction, Update Transaction, Remove Sale Transaction</strong> were being handled, So I thought to create a <em>module</em> called <strong>Sale</strong>. Another example would be, there was <strong>Sale Report</strong> that allowed the user to check the sales in some given date range and view the results that are grouped by <strong>item</strong>, <strong>voucher number</strong>, <strong>customer</strong> or <strong>date</strong> etc. Also in each grouping, a user can check a specific <strong>item</strong>, <strong>voucher</strong> or <strong>customer</strong>’s sale record and there was a search filter as well to allow the user to do a fuzzy search through the sales in each grouping etc. This all was to be handled on a single page, so I thought to create a <em>module</em> called <strong>SaleReport</strong>. In the same way, there were other modules in the application. You may say that Javascript modules that I decided were based upon the idea that related functionalities were to be kep in a single module, as I gave the examples of <strong>Sale</strong> and <strong>SaleReport</strong> module above.</p>
+<h1>Modular Pattern Explained</h1>
+<p>Enough of the theory, let’s just dive into some Javascript to understand what exactly is the Modular Pattern and how can we use it to structure our code. A modular pattern can be implemented using many different variations, let’s get ourselves familiar with a really basic one.</p>
+<p>It would be better, if we use some real world example in our explanation. So I’m going to use the example of a simple feed reader that reads and parses XML feed of some site. A module looks like the following:</p>
+<pre><code class="language-javascript">var FeedReader = {
+ 
+};
+</code></pre>
+<p>Just a simple Javascript object, which you are probably already familiar with. For consistency in my code, I follow some conventions i.e. name of module to be written in Pascal Case and for variables etc, I prefer camel case. Now that we have a module to work with, the next is some settings that we’ll define for this module.</p>
+<pre><code class="language-javascript">var FeedReader = {
+ 
+    settings: {
+        feedItemsCount: 10,
+        url: &#39;http://someurl.com/news/feed/&#39;,
+        feedListing: $(&#39;div#feedListing&#39;),
+        loadFeedButton: $(&#39;a.loadFeed&#39;)
+    }
+};
+</code></pre>
+<p>We usually define <code>settings</code> property in each of our modules that holds some common settings for our module so that we can use them to modify some certain behavior of our module actions. For example, as you can see from the settings that I have defined, <code>feedItemsCount</code> holds the number of feed items that we want to fetch in a single Ajax request. <code>url</code> is the url from which we want to read the feed. <code>feedListing</code> is the reference to DOM element to which the fetched feeds will be appended and <code>loadFeedButton</code> is the button which will fetch feed from the url.</p>
+<p>The next most commong thing for a module is <code>init</code> function.</p>
+<pre><code class="language-javascript">var FeedReader = {
+ 
+    settings: {
+        feedItemsCount: 10,
+        url: &#39;http://someurl.com/news/feed/&#39;,
+        feedListing: $(&#39;div#feedListing&#39;),
+        loadFeedButton: $(&#39;a.loadFeed&#39;)
+    },
+ 
+    init: function () {
+        FeedReader.showErrorIfSourceDead();
+    },
+ 
+    showErrorIfSourceDead : function () {
+        if ( FeedReader.isSourceAlive( FeedReader.settings.url ) === false ) {
+            alert(&quot;The URL provided can&#39;t be used to fetch feed.&quot;);
+        }
+    },
+ 
+    isSourceAlive: function () {
+        // ...
+    }
+};
+</code></pre>
+<p><code>init</code> is the function that gets everything started. You may call some setup functions here, for examples notice the function call <code>FeedReader.showErrorIfSourceDead();</code> that would show an error to the user stating that the website is not alive and to stop further processing. Now in the function <code>showErrorIfSourceDead();</code> notice the function call <code>FeedReader.isSourceAlive();</code>. As you can, see how managed the code is.</p>
+<p>Next is, <code>bindUI</code> function to bind the user interface i.e. the place where all the event bindings take place.</p>
+<pre><code class="language-javascript">var FeedReader = {
+ 
+    settings: {
+        feedItemsCount: 10,
+        url: &#39;http://someurl.com/news/feed/&#39;,
+        feedListing: $(&#39;div#feedListing&#39;),
+        loadFeedButton: $(&#39;a.loadFeed&#39;)
+    },
+ 
+    init: function () {
+        FeedReader.showErrorIfSourceDead();
+        FeedReader.bindUI();
+    },
+ 
+    bindUI: function () {
+        FeedReader.settings.loadFeedButton.on(&#39;click&#39;, function ( e ) {
+            e.preventDefault();
+            FeedReader.fetchFeed();
+        });
+    },
+ 
+    showErrorIfSourceDead: function () {
+        if ( FeedReader.isSourceAlive( FeedReader.settings.url ) === false ) {
+            alert(&quot;The URL provided can&#39;t be used to fetch feed.&quot;);
+        }
+    },
+ 
+    isSourceAlive: function () {
+       // ...
+    },
+ 
+    fetchFeed: function () {
+        // Fetch feed from the `FeedReader.settings.url`
+        // Append the feed to the `FeedReader.settings.feedListing`
+    }
+};
+</code></pre>
+<p>You’ll most commonly see the <code>bindUI</code> called in the <code>init</code> function of the module, as it is one of the most important part of the application as it sets up the event bindings etc that lets us interact with our application. As you can see in this example, we have fetched the <code>FeedReader.settings.loadFeed</code> button from the settings of the module and attached the <code>event</code> to this button. And then in click event we have called the <code>fetchFeed</code> function of the module that fetches feed from the <code>FeedReader.settings.url</code> and attaches the returned feed to <code>FeedReader.settings.feedListing</code> container.</p>
+<p>In the same way, you can put all your functionality in a module.</p>
+<h1>Placement of Modules</h1>
+<p>Instead of putting your Javascript code mudded with the HTML, place each of your module in a seaparate Javascript file with the name of the file same as the name of the module that it contains. For example, the <strong>Sale</strong> module will be placed in <strong>Sale.js</strong> and in the same way, <strong>SaleReport</strong> module will be placed in the <strong>SaleReport.js</strong> file. And each of the script will be included only the page where it will be needed.</p>
+<p>Now that you have got the idea that you should have only one module per file, next step is the placement of these files i.e. where should these module files be placed. What I prefer is put them in my assets folder of my project. For example, usually my assets folder looks like:</p>
+<p><img src="http://i.imgur.com/x6W43tn.png" alt="File Structure"></p>
+<p>Notice the js folder. All the plain javascript files will be placed in the root of <code>js</code> folder. Plugins and frameworks etc for example, twitter bootstrap, jquery etc will be placed in the <code>js/lib</code> folder. And Modules will be placed in the <code>js/modules</code> folder. Now it should be noted that the modules in the <code>js/modules</code> folder are further organized into sub folders. For example all the <code>Sale</code> related modules will be placed in <code>js/modules/sale</code> folder i.e. there would be <code>js/modules/sale/Sale.js</code> and <code>js/modules/sale/SaleReport.js</code> etc. In the same way the <code>Purchase</code> related modules will be placed in <code>js/modules/purchase</code> folder.</p>
+<p>Now, the examples regarding and <code>Sales</code> and <code>Purchases</code> etc might seem daunting to you, so let me just quote a simple Blog related examples. There would be two folders inside the module i.e. <code>js/modules/blog</code> folder to hold all the blog related javascript modules and <code>js/modules/user</code> to hold all the users related javascript modules. For Example there can be <code>js/modules/blog/Post.js</code>, <code>js/modules/blog/Comment.js</code> etc in the <code>js/modules/blog</code> folder and <code>js/modules/user/User.js</code> etc in the <code>js/modules/user</code> folder.</p>
+<h1>Using the created Modules</h1>
+<p>Now that we have created our module, it’s time to understand how to use it in our application. It’s as simple as the following:</p>
+<pre><code class="language-html">&amp;lt;html&amp;gt;
+    &amp;lt;!--- All of your markup --&amp;gt;
+ 
+    &amp;lt;!-- Include your modules in this HTML page. For Example --&amp;gt;
+    &amp;lt;script src=&quot;js/modules/FeedReader.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+    &amp;lt;script src=&quot;js/modules/SomeOtherModule.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+ 
+    &amp;lt;!-- Fire your module --&amp;gt;
+ 
+    &amp;lt;script&amp;gt;
+        (function ( ) {
+            FeedReader.init();
+            SomeOtherModule.init();
+        }());
+    &amp;lt;/script&amp;gt;
+&amp;lt;/html&amp;gt;
+</code></pre>
+<h1>Conclusion</h1>
+<p>From our discussion above, I expect that you have understood how and why should we structure our Javascript. And as we discussed above:</p>
+<ul>
+<li>Our code is clean and consistent. All the settings are at a separate place, event bindings have their own place etc.</li>
+<li>Our code is easily understandable. As you can see, we can start through the init function and can easily see what’s happening.</li>
+<li>It will make your code testable. Well we haven’t discussed much regarding this but I promise to cover it in some article later.</li>
+<li>And for the last point “Later on it’ll make you feel proud …and compelled to use the best practices.”. Well, believe me, I am feeling proud right now ;-) Go build something great using what you have learnt and see if you feel proud of what you just wrote ;-)</li>
+</ul>
+<p>And, as I already said.. We have just scratched the surface of it. For further detail of Modular Patter, I’ll refer you to <a href="http://addyosmani.com/resources/essentialjsdesignpatterns/book/#modulepatternjavascript">this topic of Addy Osmani&#39;s Book</a> - <a href="http://addyosmani.com/resources/essentialjsdesignpatterns/book/">Essential JS Design Patterns</a></p>
+
+            </div>
+        </article>
+        
+        <!-- Navigation/Footer area within main -->
+        <div class="px-8 md:px-20 pb-20">
+             <div class="max-w-4xl mx-auto flex justify-between items-center pt-10 border-t border-[#494454]/15">
+                <a href="/" class="group flex items-center gap-2 text-primary font-headline text-xs uppercase tracking-widest">
+                    <span class="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform" data-icon="arrow_back">arrow_back</span>
+                    Back to Signals
+                </a>
+             </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full py-12 border-t border-[#494454]/15 bg-[#131318] flex flex-col items-center gap-6">
+        <div class="flex gap-12 text-[#e4e1e9]/30 font-headline text-[10px] tracking-[0.2em] uppercase">
+            <a class="hover:text-[#f8acff] hover:drop-shadow-[0_0_5px_rgba(248,172,255,0.5)] transition-all opacity-80 hover:opacity-100" href="#">Protocol</a>
+            <a class="hover:text-[#f8acff] hover:drop-shadow-[0_0_5px_rgba(248,172,255,0.5)] transition-all opacity-80 hover:opacity-100" href="#">Decrypt</a>
+            <a class="hover:text-[#f8acff] hover:drop-shadow-[0_0_5px_rgba(248,172,255,0.5)] transition-all opacity-80 hover:opacity-100" href="#">Contact</a>
+        </div>
+        <div class="flex items-center gap-4 mt-4">
+            <div class="w-8 h-[1px] bg-gradient-to-r from-transparent to-primary/30"></div>
+            <p class="font-headline text-[10px] tracking-[0.2em] text-[#e4e1e9]/30">© 2024 HYPER-DIGITAL. ALL RIGHTS OBSERVED.</p>
+            <div class="w-8 h-[1px] bg-gradient-to-l from-transparent to-primary/30"></div>
+        </div>
+    </footer>
+</body>
+</html>

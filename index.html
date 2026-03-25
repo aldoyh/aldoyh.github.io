@@ -1,54 +1,260 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="dark" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Personal blog and portfolio">
-  <meta name="theme-color" content="#ffffff">
-  <title>Hasan Al Doy</title>
-  <link rel="stylesheet" href="static/style.css">
-  <link rel="canonical" href="https://aldoyh.github.io/">
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>AETHER | Hyper-Digital Minimalism</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary-fixed-dim": "#f8acff",
+                        "on-primary": "#450086",
+                        "on-secondary-fixed-variant": "#004884",
+                        "error": "#ffb4ab",
+                        "secondary-fixed": "#d4e3ff",
+                        "on-primary-container": "#3c0076",
+                        "secondary-fixed-dim": "#a4c9ff",
+                        "surface-dim": "#131318",
+                        "surface-bright": "#39383e",
+                        "tertiary-fixed": "#ffd6ff",
+                        "tertiary-container": "#d164e2",
+                        "primary-fixed": "#eedcff",
+                        "on-tertiary": "#570067",
+                        "outline-variant": "#494454",
+                        "on-primary-fixed": "#290055",
+                        "on-background": "#e4e1e9",
+                        "on-tertiary-fixed": "#350040",
+                        "surface-tint": "#d8b9ff",
+                        "on-tertiary-fixed-variant": "#7b0190",
+                        "primary-fixed-dim": "#d8b9ff",
+                        "on-surface": "#e4e1e9",
+                        "surface-container-highest": "#35343a",
+                        "secondary": "#a4c9ff",
+                        "primary-container": "#ae71ff",
+                        "on-primary-fixed-variant": "#6300bb",
+                        "primary": "#d8b9ff",
+                        "surface-container": "#1f1f24",
+                        "on-error": "#690005",
+                        "on-error-container": "#ffdad6",
+                        "inverse-primary": "#7d2dd9",
+                        "on-surface-variant": "#cbc3d7",
+                        "on-secondary-fixed": "#001c39",
+                        "tertiary": "#f8acff",
+                        "surface": "#131318",
+                        "surface-variant": "#35343a",
+                        "surface-container-high": "#2a292f",
+                        "on-tertiary-container": "#4c005a",
+                        "secondary-container": "#036ec6",
+                        "inverse-surface": "#e4e1e9",
+                        "inverse-on-surface": "#303035",
+                        "surface-container-low": "#1b1b20",
+                        "outline": "#958ea0",
+                        "on-secondary": "#00315d",
+                        "error-container": "#93000a",
+                        "background": "#131318",
+                        "surface-container-lowest": "#0e0e13",
+                        "on-secondary-container": "#eaf0ff"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background-color: #131318;
+            color: #e4e1e9;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(31, 31, 36, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .atmospheric-glow {
+            background: radial-gradient(circle at center, rgba(216, 185, 255, 0.08) 0%, transparent 70%);
+        }
+        .primary-gradient-text {
+            background: linear-gradient(135deg, #d8b9ff 0%, #ae71ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
 </head>
-<body>
-  <a href="#main-content" class="sr-only">Skip to main content</a>
+<body class="bg-surface selection:bg-primary/30 selection:text-primary">
+    <!-- TopAppBar -->
+    <header class="fixed top-0 w-full z-50 bg-[#131318]/80 backdrop-blur-xl border-b border-[#494454]/15 flex justify-between items-center px-8 h-20 w-full max-w-none shadow-[0_8px_32px_rgba(139,92,246,0.1)]">
+        <div class="flex items-center gap-4">
+            <a href="/" class="flex items-center gap-4 text-decoration-none">
+                <img alt="AETHER Logo" class="h-10 w-10 drop-shadow-[0_0_8px_rgba(216,185,255,0.8)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEY0nGvQkgAw8TgWqVAURbjLSQfWwYUGw3yoF7xpdTCB6-3vlnkGHXvgRGNffKrwC_ztEdd_cDdMySuIc7yOSb8WHjZdYT7LfwzQMc1DU2YPCnuZ-WFsmJPvBQsg217Q54ziyXF4l94OMuA9W3g_71hK2AVdcIHwlnFSq8xy5uUXdkA_oIRHp6GwXF1MQXEi2E9v1OyhntdqYAH4MIDdSUUUH9Wdv-BsMW6n5L7m2NhprnSRhxyeree3cWI4dPtt2cZZ79yyKgu6rf"/>
+                <span class="text-2xl font-bold tracking-tighter text-[#d8b9ff] drop-shadow-[0_0_8px_rgba(216,185,255,0.8)] font-headline uppercase">AETHER</span>
+            </a>
+        </div>
+        <nav class="hidden md:flex gap-12 font-headline tracking-widest uppercase text-sm">
+            <a class="text-[#d8b9ff] border-b-2 border-[#d8b9ff] pb-1" href="/">Essays</a>
+            <a class="text-[#e4e1e9]/60 hover:text-[#e4e1e9] transition-all duration-300" href="#">Archive</a>
+            <a class="text-[#e4e1e9]/60 hover:text-[#e4e1e9] transition-all duration-300" href="#">Gallery</a>
+        </nav>
+        <div class="flex items-center gap-6">
+            <button class="text-[#e4e1e9]/60 hover:bg-[#35343a]/50 p-2 rounded-full transition-all duration-300 active:scale-90">
+                <span class="material-symbols-outlined" data-icon="blur_on">blur_on</span>
+            </button>
+            <button class="text-[#e4e1e9]/60 hover:bg-[#35343a]/50 p-2 rounded-full transition-all duration-300 active:scale-90">
+                <span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+            </button>
+        </div>
+    </header>
 
-  <header class="site-header" role="banner">
-    <div class="header-container">
-      <div class="header-content">
-        <h1 id="site-title" class="site-title"></h1>
-        <p id="site-subtitle" class="site-subtitle"></p>
-      </div>
-      <nav class="site-nav" aria-label="Primary navigation">
-        <a href="#recent-posts" class="nav-link">Latest</a>
-        <a href="posts.html" class="nav-link">All Posts</a>
-      </nav>
-    </div>
-    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-      <span aria-hidden="true">🌙</span>
-    </button>
-  </header>
+    <!-- SideNavBar (Contextual) -->
+    <aside class="fixed left-0 top-0 h-full w-64 z-40 bg-[#0e0e13]/90 backdrop-blur-2xl border-r border-[#494454]/15 hidden lg:flex flex-col pt-24 pb-8">
+        <div class="px-8 mb-12">
+            <h2 class="text-[#d8b9ff] font-bold font-headline tracking-tighter text-xl">AETHER_LOG</h2>
+            <p class="font-['Space_Grotesk'] text-[10px] uppercase text-[#e4e1e9]/40 tracking-widest mt-1">v2.0.4</p>
+        </div>
+        <nav class="flex flex-col gap-2">
+            <a class="flex items-center gap-4 px-8 py-4 text-[#d8b9ff] bg-[#35343a] rounded-r-full border-l-4 border-[#d8b9ff] transition-transform duration-200" href="/">
+                <span class="material-symbols-outlined text-lg" data-icon="auto_awesome">auto_awesome</span>
+                <span class="font-headline text-xs uppercase tracking-widest">Home</span>
+            </a>
+            <a class="flex items-center gap-4 px-8 py-4 text-[#e4e1e9]/40 hover:text-[#e4e1e9]/80 hover:translate-x-1 transition-all duration-200" href="#">
+                <span class="material-symbols-outlined text-lg" data-icon="terminal">terminal</span>
+                <span class="font-headline text-xs uppercase tracking-widest">Research</span>
+            </a>
+            <a class="flex items-center gap-4 px-8 py-4 text-[#e4e1e9]/40 hover:text-[#e4e1e9]/80 hover:translate-x-1 transition-all duration-200" href="#">
+                <span class="material-symbols-outlined text-lg" data-icon="layers">layers</span>
+                <span class="font-headline text-xs uppercase tracking-widest">Interface</span>
+            </a>
+            <a class="flex items-center gap-4 px-8 py-4 text-[#e4e1e9]/40 hover:text-[#e4e1e9]/80 hover:translate-x-1 transition-all duration-200" href="#">
+                <span class="material-symbols-outlined text-lg" data-icon="info">info</span>
+                <span class="font-headline text-xs uppercase tracking-widest">About</span>
+            </a>
+        </nav>
+        <div class="mt-auto px-8">
+            <div class="w-12 h-12 rounded-full border border-outline-variant/30 p-1">
+                <img alt="User avatar" class="w-full h-full rounded-full object-cover grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiDIfW09dB3OLUPZAsUMDxY3YgXV5qZelN_CFbN4ehR9Um3TwW04ZdvTA1njFQpJ0pJCGa0aZ_G8hXBh68JYBKpXcPzq9omJ-ockmgDNWswfiVw9zx-7nk0AJLhNh-hu5ZDcsMVQELs2goCd6hxJRiarNvbspzJwMyGATXcKGTvtWUGaZG4zAl2lrFZFvf0uU_Wh8YQXKvvcg4FzCw9djs25llRkFArqEvnszfJLpXc6SR4Fh9firyjdWST9gmCi6W0eI1kmkW8DMj"/>
+            </div>
+        </div>
+    </aside>
 
-  <main id="main-content" class="container">
-    <section id="recent-posts" class="recent-posts">
-      <div class="section-header">
-        <h2>Latest Posts</h2>
-        <a href="posts.html" class="view-all-link">View all →</a>
-      </div>
-      <ul id="posts-list" class="posts-list" role="list"></ul>
-    </section>
-  </main>
+    <main class="lg:ml-64 pt-20">
+        <!-- Hero Section -->
+        <section class="relative min-h-[921px] flex flex-col justify-center px-8 md:px-20 overflow-hidden">
+            <div class="absolute inset-0 atmospheric-glow pointer-events-none"></div>
+            <div class="absolute -top-40 -right-40 w-96 h-96 bg-primary/5 blur-[120px] rounded-full"></div>
+            <div class="max-w-4xl relative z-10">
+                <p class="font-headline text-secondary font-medium tracking-[0.5em] uppercase mb-6 text-sm">Transmitting from the digital ether</p>
+                <h1 class="text-6xl md:text-8xl font-headline font-bold tracking-tighter leading-none mb-8 primary-gradient-text">
+                    DESIGNING <br/> THE BEYOND.
+                </h1>
+                <div class="flex flex-col md:flex-row md:items-end gap-12">
+                    <p class="text-on-surface-variant text-lg md:text-xl font-light leading-relaxed max-w-xl">
+                        A repository of thoughts at the intersection of high-end aesthetics, emerging tech, and the human condition. Explored through the lens of hyper-minimalism.
+                    </p>
+                    <div class="flex flex-col gap-4">
+                        <span class="font-headline text-[10px] text-primary tracking-[0.3em] uppercase opacity-60">Status: Active</span>
+                        <div class="h-[2px] w-24 bg-gradient-to-r from-primary to-transparent"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-30">
+                <span class="font-headline text-[10px] uppercase tracking-widest">Explore Scroll</span>
+                <div class="w-[1px] h-12 bg-on-surface"></div>
+            </div>
+        </section>
 
-  <footer class="site-footer" role="contentinfo">
-    <div class="footer-content">
-      <p>&copy; <span id="year"></span> Hasan Al Doy. All rights reserved.</p>
-      <nav class="footer-nav" aria-label="Footer navigation">
-        <a href="https://github.com/aldoyh" rel="noopener noreferrer" target="_blank">GitHub</a>
-        <a href="https://twitter.com" rel="noopener noreferrer" target="_blank">Twitter</a>
-        <a href="mailto:contact@example.com">Email</a>
-      </nav>
-    </div>
-  </footer>
+        <!-- Manifesto Section (Asymmetric) -->
+        <section class="py-32 px-8 md:px-20 bg-surface-container-low/30">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+                <div class="md:col-span-7">
+                    <h2 class="font-headline text-3xl font-bold mb-12 flex items-center gap-4">
+                        <span class="text-primary text-5xl">01</span>
+                        MANIFESTO
+                    </h2>
+                    <div class="space-y-8 text-on-surface/80 text-lg md:text-xl font-light">
+                        <p>I believe that interfaces should not just be tools, but ethereal atmospheres. The digital world has become cluttered with noise; my mission is to find the signal through silence.</p>
+                        <p class="pl-8 border-l-2 border-primary/20 italic text-on-surface">"Complexity is easy, but achieving a state of weightless precision is where the true alchemy happens."</p>
+                    </div>
+                </div>
+                <div class="md:col-span-5 flex justify-end items-center">
+                    <div class="relative w-full aspect-square max-w-sm">
+                        <div class="absolute inset-0 glass-panel rounded-full border border-white/5 animate-pulse"></div>
+                        <div class="absolute inset-4 rounded-full overflow-hidden grayscale contrast-125">
+                            <img alt="Abstract Art" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYMsOpU_6XQMech9Dh8FOpEE-mGWsrxLt-1sCjaovdr3J_z0ba8NjDlb7KwfYRyWlSygL70trssd9MVeKLQklmv1qlNSCYZoScjZHmo5KV-nH3qZ9QEmK9IciFhvll8QUMrDR1jIMbB_JYzsoxyk3qHz-BA1K8GvF9V_YbtjWC6fOAp6NGmbzshmq7QH_R9Vb_MPwlYalruyo4DnrVSchXvZUT7qPglOT7OoE0xE5jtEWWVqhyWIoAhsWCVNz2W5_2rOB4jlFyYtGH"/>
+                        </div>
+                        <div class="absolute top-0 right-0 p-4 bg-primary text-on-primary rounded-full font-headline text-[10px] font-bold tracking-widest uppercase -rotate-12">
+                            Signal_001
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <!-- JavaScript removed. PHP now handles post rendering. -->
+        <!-- Featured Thoughts (Bento Grid) -->
+        <section class="py-32 px-8 md:px-20">
+            <div class="flex justify-between items-end mb-16">
+                <div>
+                    <span class="font-headline text-[10px] text-secondary tracking-[0.4em] uppercase block mb-2">Selected Works</span>
+                    <h2 class="text-4xl font-headline font-bold">LATEST_SIGNALS</h2>
+                </div>
+                <a class="font-headline text-xs text-primary uppercase tracking-widest flex items-center gap-2 group" href="#">
+                    View Archive
+                    <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+                </a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- POSTS_GRID_START -->
+                <!-- Dynamic post content will be injected here by build script -->
+                <!-- POSTS_GRID_END -->
+            </div>
+        </section>
+
+        <!-- Newsletter / Contact -->
+        <section class="py-32 px-8 md:px-20 relative">
+            <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full atmospheric-glow opacity-50 -z-10"></div>
+            <div class="max-w-3xl mx-auto glass-panel p-12 md:p-20 rounded-2xl border border-white/5 text-center">
+                <h2 class="text-4xl font-headline font-bold mb-6">JOIN THE PROTOCOL</h2>
+                <p class="text-on-surface/60 font-light mb-12">Receive a monthly synthesis of research, design signals, and philosophical fragments directly to your terminal.</p>
+                <form class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-grow relative">
+                        <input class="w-full bg-surface-container-low border-b-2 border-outline-variant/30 focus:border-secondary transition-all outline-none py-4 px-6 font-headline text-xs tracking-widest placeholder:text-on-surface/20" placeholder="YOUR_EMAIL_ADDRESS" type="email"/>
+                    </div>
+                    <button class="bg-gradient-to-r from-primary to-primary-container text-on-primary font-headline text-xs font-bold uppercase tracking-widest py-4 px-12 rounded-xl transition-transform active:scale-95 shadow-[0_0_20px_rgba(216,185,255,0.3)]">
+                        Subscribe
+                    </button>
+                </form>
+                <p class="mt-8 font-headline text-[10px] text-on-surface/20 uppercase tracking-[0.3em]">No cookies. No tracking. Pure signal.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full py-12 border-t border-[#494454]/15 bg-[#131318] flex flex-col items-center gap-6">
+        <div class="flex gap-12 text-[#e4e1e9]/30 font-headline text-[10px] tracking-[0.2em] uppercase">
+            <a class="hover:text-[#f8acff] hover:drop-shadow-[0_0_5px_rgba(248,172,255,0.5)] transition-all opacity-80 hover:opacity-100" href="#">Protocol</a>
+            <a class="hover:text-[#f8acff] hover:drop-shadow-[0_0_5px_rgba(248,172,255,0.5)] transition-all opacity-80 hover:opacity-100" href="#">Decrypt</a>
+            <a class="hover:text-[#f8acff] hover:drop-shadow-[0_0_5px_rgba(248,172,255,0.5)] transition-all opacity-80 hover:opacity-100" href="#">Contact</a>
+        </div>
+        <div class="flex items-center gap-4 mt-4">
+            <div class="w-8 h-[1px] bg-gradient-to-r from-transparent to-primary/30"></div>
+            <p class="font-headline text-[10px] tracking-[0.2em] text-[#e4e1e9]/30">© 2024 HYPER-DIGITAL. ALL RIGHTS OBSERVED.</p>
+            <div class="w-8 h-[1px] bg-gradient-to-l from-transparent to-primary/30"></div>
+        </div>
+    </footer>
 </body>
 </html>

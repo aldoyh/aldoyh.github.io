@@ -3,35 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Blog post">
-  <meta name="theme-color" content="#ffffff">
-  <title id="post-title">ES6 Succinctly</title>
+  <meta name="description" content="Blog post by Hasan Al Doy">
+  <title>ES6 Succinctly</title>
   <link rel="stylesheet" href="../static/style.css">
-  <link rel="canonical" href="https://aldoyh.github.io/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
   <a href="#main-content" class="sr-only">Skip to main content</a>
 
   <header class="site-header" role="banner">
-    <div class="header-container">
-      <div class="header-content">
-        <h1 id="site-title" class="site-title"></h1>
-        <p id="site-subtitle" class="site-subtitle"></p>
-      </div>
+    <div class="container header-inner">
+      <a href="../index.html" class="logo">Hasan Al Doy</a>
       <nav class="site-nav" aria-label="Primary navigation">
         <a href="../index.html" class="nav-link">Home</a>
-        <a href="../posts.html" class="nav-link">All Posts</a>
+        <a href="../posts.html" class="nav-link">Posts</a>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span aria-hidden="true" style="font-size:1.2rem;">☼</span>
+        </button>
       </nav>
     </div>
-    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-      <span aria-hidden="true">🌙</span>
-    </button>
   </header>
 
   <main id="main-content" class="container">
     <article class="post-article">
-      <h2 id="post-title-main" class="post-title">ES6 Succinctly</h2>
-      <div id="post-meta" class="post-meta">Posted on 2016-04-04</div>
+      <header class="article-header">
+        <h1 class="article-title">ES6 Succinctly</h1>
+        <div id="post-meta" class="article-meta">Posted on 2016-04-04</div>
+      </header>
       <div id="post-content" class="markdown-body"><p>ES6, ES2015 or Harmony has brought a number of interesting features to the table and this article is going to be a drill-down in <em>all</em> those new features that it has to offer. </p>
 <p>Agreed, ES6 is out since June 2015 and a lot has been written about the new features since then and you are better off without another article ..but it isn&#39;t going to stop me from writing it. Why? Because, one, it has been laying around incomplete in my disk for quite some time now, second, although I read a few articles about the topic, writing one myself will help better implant the idea into my brain. So the article is not only going to be <em>for you</em> but for me too. Seems fair? Alright, let&#39;s get started then.</p>
 <h2>Strict mode by default</h2>
@@ -477,15 +477,39 @@ var user = new User(24);
   </main>
 
   <footer class="site-footer" role="contentinfo">
-    <div class="footer-content">
-      <p>&copy; <span id="year"></span> Hasan Al Doy. All rights reserved.</p>
-      <nav class="footer-nav" aria-label="Footer navigation">
+    <div class="container">
+      <div class="footer-links">
         <a href="https://github.com/aldoyh" rel="noopener noreferrer" target="_blank">GitHub</a>
-        <a href="https://twitter.com" rel="noopener noreferrer" target="_blank">Twitter</a>
-        <a href="mailto:contact@example.com">Email</a>
-      </nav>
+        <a href="https://twitter.com/aldoyh" rel="noopener noreferrer" target="_blank">Twitter</a>
+        <a href="mailto:aldoyh@gmail.com">Email</a>
+      </div>
+      <p style="margin-top:1rem; opacity:0.6;">&copy; <span id="year"></span> Hasan Al Doy. All rights reserved.</p>
     </div>
   </footer>
 
-  
-</body></html>
+  <script>
+    const toggle = document.getElementById('theme-toggle');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    function setTheme(theme) {
+      document.body.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      toggle.innerHTML = theme === 'dark' ? '<span aria-hidden="true" style="font-size:1.2rem;">☼</span>' : '<span aria-hidden="true" style="font-size:1.2rem;">☾</span>';
+    }
+    
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      setTheme(savedTheme);
+    } else if (prefersDark.matches) {
+      setTheme('dark');
+    }
+    
+    toggle.addEventListener('click', () => {
+      const current = document.body.getAttribute('data-theme');
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

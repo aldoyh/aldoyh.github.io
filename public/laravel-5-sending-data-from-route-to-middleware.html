@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>AETHER | Laravel 5 Sending Data From Route To Middleware</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries,typography"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary-fixed-dim": "#f8acff",
+                        "on-primary": "#450086",
+                        "on-secondary-fixed-variant": "#004884",
+                        "error": "#ffb4ab",
+                        "secondary-fixed": "#d4e3ff",
+                        "on-primary-container": "#3c0076",
+                        "secondary-fixed-dim": "#a4c9ff",
+                        "surface-dim": "#131318",
+                        "surface-bright": "#39383e",
+                        "tertiary-fixed": "#ffd6ff",
+                        "tertiary-container": "#d164e2",
+                        "primary-fixed": "#eedcff",
+                        "on-tertiary": "#570067",
+                        "outline-variant": "#494454",
+                        "on-primary-fixed": "#290055",
+                        "on-background": "#e4e1e9",
+                        "on-tertiary-fixed": "#350040",
+                        "surface-tint": "#d8b9ff",
+                        "on-tertiary-fixed-variant": "#7b0190",
+                        "primary-fixed-dim": "#d8b9ff",
+                        "on-surface": "#e4e1e9",
+                        "surface-container-highest": "#35343a",
+                        "secondary": "#a4c9ff",
+                        "primary-container": "#ae71ff",
+                        "on-primary-fixed-variant": "#6300bb",
+                        "primary": "#d8b9ff",
+                        "surface-container": "#1f1f24",
+                        "on-error": "#690005",
+                        "on-error-container": "#ffdad6",
+                        "inverse-primary": "#7d2dd9",
+                        "on-surface-variant": "#cbc3d7",
+                        "on-secondary-fixed": "#001c39",
+                        "tertiary": "#f8acff",
+                        "surface": "#131318",
+                        "surface-variant": "#35343a",
+                        "surface-container-high": "#2a292f",
+                        "on-tertiary-container": "#4c005a",
+                        "secondary-container": "#036ec6",
+                        "inverse-surface": "#e4e1e9",
+                        "inverse-on-surface": "#303035",
+                        "surface-container-low": "#1b1b20",
+                        "outline": "#958ea0",
+                        "on-secondary": "#00315d",
+                        "error-container": "#93000a",
+                        "background": "#131318",
+                        "surface-container-lowest": "#0e0e13",
+                        "on-secondary-container": "#eaf0ff"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background-color: #131318;
+            color: #e4e1e9;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(31, 31, 36, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .atmospheric-glow {
+            background: radial-gradient(circle at center, rgba(216, 185, 255, 0.08) 0%, transparent 70%);
+        }
+        .primary-gradient-text {
+            background: linear-gradient(135deg, #d8b9ff 0%, #ae71ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Prose customization for dark theme */
+        .prose h1, .prose h2, .prose h3, .prose h4 {
+            color: #d8b9ff; /* primary */
+            font-family: 'Space Grotesk', sans-serif;
+            text-transform: uppercase;
+        }
+        
+        .prose {
+             color: #e4e1e9;
+        }
+        
+        .prose strong {
+            color: #f8acff; /* tertiary */
+        }
+        
+        .prose a {
+            color: #a4c9ff; /* secondary */
+        }
+    </style>
+</head>
+<body class="bg-surface selection:bg-primary/30 selection:text-primary">
+    <!-- TopAppBar -->
+    <header class="fixed top-0 w-full z-50 bg-[#131318]/80 backdrop-blur-xl border-b border-[#494454]/15 flex justify-between items-center px-8 h-20 w-full max-w-none shadow-[0_8px_32px_rgba(139,92,246,0.1)]">
+        <div class="flex items-center gap-4">
+            <a href="/" class="flex items-center gap-4 text-decoration-none">
+                <img alt="AETHER Logo" class="h-10 w-10 drop-shadow-[0_0_8px_rgba(216,185,255,0.8)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEY0nGvQkgAw8TgWqVAURbjLSQfWwYUGw3yoF7xpdTCB6-3vlnkGHXvgRGNffKrwC_ztEdd_cDdMySuIc7yOSb8WHjZdYT7LfwzQMc1DU2YPCnuZ-WFsmJPvBQsg217Q54ziyXF4l94OMuA9W3g_71hK2AVdcIHwlnFSq8xy5uUXdkA_oIRHp6GwXF1MQXEi2E9v1OyhntdqYAH4MIDdSUUUH9Wdv-BsMW6n5L7m2NhprnSRhxyeree3cWI4dPtt2cZZ79yyKgu6rf"/>
+                <span class="text-2xl font-bold tracking-tighter text-[#d8b9ff] drop-shadow-[0_0_8px_rgba(216,185,255,0.8)] font-headline uppercase">AETHER</span>
+            </a>
+        </div>
+        <nav class="hidden md:flex gap-12 font-headline tracking-widest uppercase text-sm">
+            <a class="text-[#d8b9ff] border-b-2 border-[#d8b9ff] pb-1" href="/">Essays</a>
+            <a class="text-[#e4e1e9]/60 hover:text-[#e4e1e9] transition-all duration-300" href="#">Archive</a>
+            <a class="text-[#e4e1e9]/60 hover:text-[#e4e1e9] transition-all duration-300" href="#">Gallery</a>
+        </nav>
+        <div class="flex items-center gap-6">
+            <button class="text-[#e4e1e9]/60 hover:bg-[#35343a]/50 p-2 rounded-full transition-all duration-300 active:scale-90">
+                <span class="material-symbols-outlined" data-icon="blur_on">blur_on</span>
+            </button>
+            <button class="text-[#e4e1e9]/60 hover:bg-[#35343a]/50 p-2 rounded-full transition-all duration-300 active:scale-90">
+                <span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- SideNavBar (Contextual) -->
+    <aside class="fixed left-0 top-0 h-full w-64 z-40 bg-[#0e0e13]/90 backdrop-blur-2xl border-r border-[#494454]/15 hidden lg:flex flex-col pt-24 pb-8">
+        <div class="px-8 mb-12">
+            <h2 class="text-[#d8b9ff] font-bold font-headline tracking-tighter text-xl">AETHER_LOG</h2>
+            <p class="font-['Space_Grotesk'] text-[10px] uppercase text-[#e4e1e9]/40 tracking-widest mt-1">v2.0.4</p>
+        </div>
+        <nav class="flex flex-col gap-2">
+            <a class="flex items-center gap-4 px-8 py-4 text-[#d8b9ff] bg-[#35343a] rounded-r-full border-l-4 border-[#d8b9ff] transition-transform duration-200" href="/">
+                <span class="material-symbols-outlined text-lg" data-icon="auto_awesome">auto_awesome</span>
+                <span class="font-headline text-xs uppercase tracking-widest">Home</span>
+            </a>
+            <a class="flex items-center gap-4 px-8 py-4 text-[#e4e1e9]/40 hover:text-[#e4e1e9]/80 hover:translate-x-1 transition-all duration-200" href="#">
+                <span class="material-symbols-outlined text-lg" data-icon="terminal">terminal</span>
+                <span class="font-headline text-xs uppercase tracking-widest">Research</span>
+            </a>
+            <a class="flex items-center gap-4 px-8 py-4 text-[#e4e1e9]/40 hover:text-[#e4e1e9]/80 hover:translate-x-1 transition-all duration-200" href="#">
+                <span class="material-symbols-outlined text-lg" data-icon="layers">layers</span>
+                <span class="font-headline text-xs uppercase tracking-widest">Interface</span>
+            </a>
+            <a class="flex items-center gap-4 px-8 py-4 text-[#e4e1e9]/40 hover:text-[#e4e1e9]/80 hover:translate-x-1 transition-all duration-200" href="#">
+                <span class="material-symbols-outlined text-lg" data-icon="info">info</span>
+                <span class="font-headline text-xs uppercase tracking-widest">About</span>
+            </a>
+        </nav>
+        <div class="mt-auto px-8">
+            <div class="w-12 h-12 rounded-full border border-outline-variant/30 p-1">
+                <img alt="User avatar" class="w-full h-full rounded-full object-cover grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiDIfW09dB3OLUPZAsUMDxY3YgXV5qZelN_CFbN4ehR9Um3TwW04ZdvTA1njFQpJ0pJCGa0aZ_G8hXBh68JYBKpXcPzq9omJ-ockmgDNWswfiVw9zx-7nk0AJLhNh-hu5ZDcsMVQELs2goCd6hxJRiarNvbspzJwMyGATXcKGTvtWUGaZG4zAl2lrFZFvf0uU_Wh8YQXKvvcg4FzCw9djs25llRkFArqEvnszfJLpXc6SR4Fh9firyjdWST9gmCi6W0eI1kmkW8DMj"/>
+            </div>
+        </div>
+    </aside>
+
+    <main class="lg:ml-64 pt-20">
+        <!-- Article Hero Section -->
+        <section class="relative min-h-[40vh] flex flex-col justify-center px-8 md:px-20 overflow-hidden bg-surface-container-low/30 border-b border-[#494454]/15">
+            <div class="absolute inset-0 atmospheric-glow pointer-events-none"></div>
+            <div class="absolute -top-20 -right-20 w-64 h-64 bg-primary/5 blur-[80px] rounded-full"></div>
+            <div class="max-w-4xl relative z-10 pt-10">
+                <div class="flex gap-4 mb-6">
+                    <span class="font-headline text-[10px] text-primary px-3 py-1 rounded-full border border-primary/20 bg-primary/5 uppercase tracking-widest">Thought</span>
+                    <span class="font-headline text-[10px] text-on-surface/40 uppercase tracking-widest">Oct 2024</span>
+                </div>
+                <h1 class="text-4xl md:text-6xl font-headline font-bold tracking-tighter leading-tight mb-8 primary-gradient-text">
+                    Laravel 5 Sending Data From Route To Middleware
+                </h1>
+                <div class="h-[2px] w-24 bg-gradient-to-r from-primary to-transparent"></div>
+            </div>
+        </section>
+
+        <!-- Article Content -->
+        <article class="py-20 px-8 md:px-20">
+            <div class="prose prose-invert prose-lg max-w-4xl mx-auto glass-panel p-8 md:p-12 rounded-2xl border border-white/5">
+                <hr>
+<h2>title: Laravel 5 - Sending data from route to middleware
+date: 2015-03-15
+permalin: /blog/2015/03/15/laravel-5-sending-data-from-route-to-middleware/</h2>
+<blockquote>
+<p><strong>Update</strong> <a href="https://laravel.com/docs/5.1/middleware#middleware-parameters">Laravel 5.1 and onwards has a support for this by default now now</a></p>
+</blockquote>
+<p>Middlewares in Laravel 5 come real handy when you want to perform some actions before or after the route is accessed. I have been working upon a Laravel 5 project in which I recently came across this code in which some session variables were being set in almost every controller&#39;s constructor to keep track of the module for which the route was called. And from the looks of it, it would have made a perfect usecase for the middleware, so I set myself to refactor that and port that stuff to a common place i.e. middleware. Now what I thought was to pass the module name to the middleware from route and do all that session stuff in there, but Laravel 5.0 doesn&#39;t provide any functionality to send data from the route to middleware out of the box and so I ended up implementing the following work around.</p>
+<p>In my route, I stated the middleware as well as a key through which I wanted to send the data to middleware <code>moduleName</code> for example. Below is the route group that I created:</p>
+<pre><code class="language-php">// User related route group
+Route::group([ &#39;prefix&#39; =&gt; &#39;user&#39;, &#39;middleware&#39; =&gt; &#39;tracker&#39;, &#39;moduleName&#39; =&gt; &#39;users&#39; ], function () {
+    // User routes
+});
+</code></pre>
+<p>As you can see, I have middleware called <code>tracker</code> attached to this route group and I have specified the data that I wanted to send to my middleware in the <code>moduleName</code> key, you may name it whatever you want. And then in my middleware&#39;s <code>handle</code> function, I did something like the following to access the <code>moduleName</code> property of the route. Below is what I mean:</p>
+<pre><code class="language-php">// The middleware `PerformerMiddleware`
+public function handle($request, Closure $next)
+{
+    // Access the route
+    $currAction = $request-&gt;route()-&gt;getAction();
+	   
+    // Access the key, I wanted to access
+    $currModule = $currAction[&#39;moduleName&#39;];
+	   
+    // You may add as many keys onto the route and access them 
+    // the same way I accessed `moduleName`
+	   
+    //...
+}
+</code></pre>
+<p>So to sum it up, in order to pass data from route to the middleware you have to do the following:</p>
+<ul>
+<li>In the route, specify the middleware as well as the key/value pair of the data that you want to send to middleware</li>
+<li>Then in the middleware, access the route by using <code>getAction</code> method which will return an associative array consisting of the route&#39;s properties by which, you may access any route property you want.</li>
+</ul>
+
+            </div>
+        </article>
+        
+        <!-- Navigation/Footer area within main -->
+        <div class="px-8 md:px-20 pb-20">
+             <div class="max-w-4xl mx-auto flex justify-between items-center pt-10 border-t border-[#494454]/15">
+                <a href="/" class="group flex items-center gap-2 text-primary font-headline text-xs uppercase tracking-widest">
+                    <span class="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform" data-icon="arrow_back">arrow_back</span>
+                    Back to Signals
+                </a>
+             </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full py-12 border-t border-[#494454]/15 bg-[#131318] flex flex-col items-center gap-6">
+        <div class="flex gap-12 text-[#e4e1e9]/30 font-headline text-[10px] tracking-[0.2em] uppercase">
+            <a class="hover:text-[#f8acff] hover:drop-shadow-[0_0_5px_rgba(248,172,255,0.5)] transition-all opacity-80 hover:opacity-100" href="#">Protocol</a>
+            <a class="hover:text-[#f8acff] hover:drop-shadow-[0_0_5px_rgba(248,172,255,0.5)] transition-all opacity-80 hover:opacity-100" href="#">Decrypt</a>
+            <a class="hover:text-[#f8acff] hover:drop-shadow-[0_0_5px_rgba(248,172,255,0.5)] transition-all opacity-80 hover:opacity-100" href="#">Contact</a>
+        </div>
+        <div class="flex items-center gap-4 mt-4">
+            <div class="w-8 h-[1px] bg-gradient-to-r from-transparent to-primary/30"></div>
+            <p class="font-headline text-[10px] tracking-[0.2em] text-[#e4e1e9]/30">© 2024 HYPER-DIGITAL. ALL RIGHTS OBSERVED.</p>
+            <div class="w-8 h-[1px] bg-gradient-to-l from-transparent to-primary/30"></div>
+        </div>
+    </footer>
+</body>
+</html>

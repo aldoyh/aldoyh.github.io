@@ -1,160 +1,173 @@
 const fs = require('fs');
 const path = require('path');
-// Check if marked is available
-let marked;
-try {
-  marked = require('./marked.js');
-} catch (e) {
-  console.error('marked.js not found');
-  process.exit(1);
+const marked = require('./marked');
+
+// Use current working directory + posts
+const POSTS_DIR = path.join(process.cwd(), 'posts');
+const PUBLIC_DIR = path.join(process.cwd(), 'public');
+const POST_TEMPLATE_PATH = path.join(POSTS_DIR, 'post-template.html');
+
+console.log('Building static site...');
+
+if (!fs.existsSync(PUBLIC_DIR)) {
+    fs.mkdirSync(PUBLIC_DIR);
 }
 
-const rootDir = path.resolve(__dirname, '..');
-const postsDir = path.join(rootDir, 'posts');
-const publicDir = path.join(rootDir, 'public');
-const publicPostsDir = path.join(publicDir, 'posts');
-const staticDir = path.join(rootDir, 'static');
+// Ensure public has static assets if needed, but we are using inline styles/scripts or CDN mostly now.
+// For now, let's copy style.css if it exists just in case, but the new template relies on Tailwind CDN.
 
-// Create directories
-if (!fs.existsSync(publicDir)) fs.mkdirSync(publicDir);
-if (!fs.existsSync(publicPostsDir)) fs.mkdirSync(publicPostsDir);
-const publicStaticDir = path.join(publicDir, 'static');
-if (!fs.existsSync(publicStaticDir)) fs.mkdirSync(publicStaticDir);
+// Read templates
+const indexTemplate = fs.readFileSync(path.join(process.cwd(), 'index.html'), 'utf8');
+const postTemplate = fs.existsSync(POST_TEMPLATE_PATH)
+    ? fs.readFileSync(POST_TEMPLATE_PATH, 'utf8')
+    : null;
 
-// Copy static assets
-function copyDir(src, dest) {
-  if (!fs.existsSync(src)) return;
-  const entries = fs.readdirSync(src, { withFileTypes: true });
-  if (!fs.existsSync(dest)) fs.mkdirSync(dest);
-  for (let entry of entries) {
-    const srcPath = path.join(src, entry.name);
-    const destPath = path.join(dest, entry.name);
-    if (entry.isDirectory()) {
-      copyDir(srcPath, destPath);
-    } else {
-      fs.copyFileSync(srcPath, destPath);
-    }
-  }
+// Clean PHP garbage from templates if present (legacy)
+function cleanTemplate(template) {
+    if(!template) return "";
+    return template.replace(/<\?php.*?\?>/gs, '')
+                   .replace(/{{ date }}/g, '{{{date}}}')
+                   .replace(/{{ title }}/g, '{{{title}}}')
+                   .replace(/{{ content }}/g, '{{{content}}}');
 }
-copyDir(staticDir, publicStaticDir);
-console.log('Copied static assets.');
 
-// Process Posts
-const files = fs.readdirSync(postsDir).filter(f => f.endsWith('.md'));
+const cleanIndexTemplate = cleanTemplate(indexTemplate);
+const cleanPostTemplate = cleanTemplate(postTemplate);
+
+// Read all markdown files
+const files = fs.readdirSync(POSTS_DIR).filter(file => file.endsWith('.md'));
+console.log(`Found ${files.length} posts.`);
+
+// Store post metadata for the index
 const posts = [];
 
 files.forEach(file => {
-  const content = fs.readFileSync(path.join(postsDir, file), 'utf8');
-  const parts = content.split('---');
-  let body = content;
-  let metadata = {};
+    const rawContent = fs.readFileSync(path.join(POSTS_DIR, file), 'utf8');
 
-  if (parts.length >= 3) {
-    const rawMeta = parts[1];
-    body = parts.slice(2).join('---').trim();
-    rawMeta.split('\n').forEach(line => {
-      const colIdx = line.indexOf(':');
-      if (colIdx > 0) {
-        const key = line.slice(0, colIdx).trim();
-        const val = line.slice(colIdx + 1).trim();
-        metadata[key] = val;
-      }
+    // Simple frontmatter parsing (assuming line based)
+    const lines = rawContent.split('\n');
+    let title = 'Untitled';
+    let date = 'Unknown Date';
+    let contentStartIndex = 0;
+
+    // Heuristic: Check for title/date in first few lines
+    // Or just grab the first # header as title
+
+    // Removing the PHP style comments if any
+    const content = rawContent.replace(/<\?php.*?\?>/gs, '');
+
+    // Find Title (first H1)
+    const titleMatch = content.match(/^# (.*$)/m);
+    if (titleMatch) {
+         title = titleMatch[1];
+    } else {
+        // Fallback to filename
+        title = file.replace('.md', '').split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    }
+
+    // Attempt to extract date from filename or content?
+    // Let's use file creation time if no date found, or just a placeholder.
+    // Kamran's repo seems to have dates in filenames? No, just slugs.
+    // Let's just use "Oct 2024" style placeholder or current date for now as we don't have real metadata.
+    date = "Oct 2024";
+
+    const htmlContent = marked.parse(content);
+
+    const slug = file.replace('.md', '');
+    const permalink = `/${slug}.html`;
+
+    posts.push({
+        title,
+        date,
+        slug,
+        permalink,
+        summary: content.substring(0, 150).replace(/#|\[|\]|\(|\)/g, '') + '...' // plain text summary roughly
     });
-  }
 
-  const slug = file.replace('.md', '');
-  metadata.slug = slug;
-  if (!metadata.title) metadata.title = slug;
+    // Generate individual post HTML
+    if (cleanPostTemplate) {
+        let postHtml = cleanPostTemplate
+            .replace(/{{{title}}}/g, title)
+            .replace(/{{{date}}}/g, date)
+            .replace(/{{{content}}}/g, htmlContent);
 
-  // Format date if available
-  if (metadata.date) {
-      try {
-          const date = new Date(metadata.date);
-          metadata.date = date.toISOString().split('T')[0];
-      } catch (e) {
-          metadata.date = 'Unknown Date';
-      }
-  } else {
-      metadata.date = 'Unknown Date';
-  }
-
-  posts.push({ ...metadata, body, slug });
+        fs.writeFileSync(path.join(PUBLIC_DIR, `${slug}.html`), postHtml);
+    }
 });
 
-posts.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+// Generate Index HTML with Bento Grid
+// Logic: First post is "Large Card", others are "Small Card"
 
-console.log(`Found ${posts.length} posts.`);
+let postsHtml = '';
 
-// Generate individual post pages
-const postTemplateFile = fs.readFileSync(path.join(postsDir, 'post-template.html'), 'utf8');
+// Default fallback image
+const genericImage = "https://lh3.googleusercontent.com/aida-public/AB6AXuBTY0fTrOlUa2KWmh41KsBdaxZFSc359x06uXKzWPUVKJqa1uyzErAQquBHKfG8wIEFDegtjp2TJEFqc5hU3sdLJROxcuAk8DEWihpLdMeDYKmL6FYw8XTwjAP3xLx4x0fRO5qi-B2IRjyP8FZ5h17aQ3_DYSf1_roZKkMkYw28kNaztklECODM6QSwyjfxjip7nCrQEk8N0cms8oG7psVFkKuo-Aks9psR66HaqATHG0ccUV5-3aIR80TI_gO6RP9Vf7vi8ZO_A0en";
 
-posts.forEach(post => {
-  const htmlBody = marked.parse(post.body);
-  let html = postTemplateFile;
+// Helper for Large Card
+function createLargeCard(post, index) {
+    return `
+    <div onclick="window.location.href='${post.permalink}'" class="md:col-span-2 md:row-span-2 group cursor-pointer relative overflow-hidden rounded-xl border border-outline-variant/10 surface-container-low transition-all duration-500 hover:border-primary/30">
+        <div class="aspect-video w-full overflow-hidden">
+            <img alt="${post.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="${genericImage}"/>
+        </div>
+        <div class="p-8 relative">
+            <div class="flex gap-4 mb-4">
+                <span class="font-headline text-[10px] text-primary px-3 py-1 rounded-full border border-primary/20 bg-primary/5 uppercase tracking-widest">Engineering</span>
+                <span class="font-headline text-[10px] text-on-surface/40 uppercase tracking-widest">${post.date}</span>
+            </div>
+            <h3 class="text-3xl font-headline font-bold mb-4 group-hover:text-primary transition-colors">${post.title}</h3>
+            <p class="text-on-surface/60 font-light line-clamp-2">${post.summary}</p>
+            <div class="mt-8 flex justify-between items-center">
+                <span class="font-headline text-[10px] text-on-surface/30 uppercase tracking-[0.2em]">Read Article</span>
+                <div class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container-highest transition-all group-hover:bg-primary group-hover:text-on-primary">
+                    <span class="material-symbols-outlined" data-icon="north_east">north_east</span>
+                </div>
+            </div>
+        </div>
+    </div>`;
+}
 
-  html = html.replace(/Loading.../g, post.title);
-  html = html.replace('<div id="post-meta" class="post-meta"></div>', `<div id="post-meta" class="post-meta">Posted on ${post.date}</div>`);
-  html = html.replace('<div id="post-content" class="markdown-body"></div>', `<div id="post-content" class="markdown-body">${htmlBody}</div>`);
+// Helper for Small Card
+function createSmallCard(post, index) {
+    // Alternate category colors or styles just for variety if we wanted
+    const category = "Logic";
+    return `
+    <div onclick="window.location.href='${post.permalink}'" class="group cursor-pointer glass-panel p-8 rounded-xl border border-outline-variant/10 flex flex-col transition-all duration-300 hover:bg-surface-bright">
+        <span class="font-headline text-[10px] text-tertiary mb-6 uppercase tracking-widest">${category}</span>
+        <h3 class="text-xl font-headline font-bold mb-4">${post.title}</h3>
+        <p class="text-on-surface/60 text-sm font-light mb-auto line-clamp-3">${post.summary}</p>
+        <div class="mt-8 flex items-center gap-3">
+             <div class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></div>
+             <span class="font-headline text-[10px] uppercase tracking-widest opacity-40">Read</span>
+        </div>
+    </div>`;
+}
 
-  // Clean up template garbage
-  if (html.includes('<!-- JavaScript removed. PHP now handles post rendering. -->')) {
-    html = html.split('<!-- JavaScript removed. PHP now handles post rendering. -->')[0] + '\n</body></html>';
-  } else {
-      // If template doesn't have comment, assume it's good or check for body close
-      if (!html.includes('</body>')) {
-          html += '</body></html>';
-      }
-  }
+// Limit the number of posts on the homepage Bento Grid to avoid layout breakage or huge page
+// The grid has 3 columns.
+// Large card takes 2x2 (4 cells).
+// Slots remaining in that 2-row height: 2 cells (col 3 row 1, col 3 row 2).
+// So first 3 posts fit perfectly in a 2-row block.
+// 1 [Large 2x2]
+// 2 [Small]
+// 3 [Small]
+// ... subsequent posts?
+// To keep the bento grid nice, let's just render the first 7 posts perhaps, or loop through all but formatted as small cards after the first one.
 
-  fs.writeFileSync(path.join(publicPostsDir, `${post.slug}.html`), html);
+posts.forEach((post, index) => {
+    if (index === 0) {
+        postsHtml += createLargeCard(post, index);
+    } else {
+        postsHtml += createSmallCard(post, index);
+    }
 });
 
-// Helper for list item
-function createListItem(p) {
-    return `<li>
-    <article class="post-preview">
-      <a href="posts/${p.slug}.html">
-        <h3 class="post-title">${p.title}</h3>
-      </a>
-      <div class="post-meta"><time>${p.date}</time></div>
-    </article>
-  </li>`;
-}
+let finalIndexHtml = cleanIndexTemplate;
+finalIndexHtml = finalIndexHtml.replace(
+    /<!-- POSTS_GRID_START -->[\s\S]*<!-- POSTS_GRID_END -->/,
+    postsHtml
+);
 
-// Generate index.html (Limit 5)
-const recentPosts = posts.slice(0, 5);
-const recentListHtml = recentPosts.map(createListItem).join('\n');
+fs.writeFileSync(path.join(PUBLIC_DIR, 'index.html'), finalIndexHtml);
 
-let indexHtmlRaw = fs.readFileSync(path.join(rootDir, 'index.html'), 'utf8');
-let indexHtml = indexHtmlRaw.replace('<ul id="posts-list" class="posts-list" role="list"></ul>', `<ul id="posts-list" class="posts-list" role="list">${recentListHtml}</ul>`);
-
-// Clean JS garbage in index.html
-if (indexHtml.includes('<!-- JavaScript removed. PHP now handles post rendering. -->')) {
-    indexHtml = indexHtml.split('<!-- JavaScript removed. PHP now handles post rendering. -->')[0] + '</body></html>';
-}
-fs.writeFileSync(path.join(publicDir, 'index.html'), indexHtml);
-
-// Generate posts.html using index.html as base (All Posts)
-let postsHtml = indexHtmlRaw;
-
-// Change Title in Head
-postsHtml = postsHtml.replace(/<title>.*?<\/title>/, '<title>All Posts - Hasan Al Doy</title>');
-
-// Change Section Header "Latest Posts" -> "All Posts"
-postsHtml = postsHtml.replace('>Latest Posts<', '>All Posts<');
-
-// Remove "View all" link
-postsHtml = postsHtml.replace(/<a[^>]*href="posts\.html"[^>]*>View all.*?<\/a>/i, '');
-
-// Inject All Posts
-const allPostsListHtml = posts.map(createListItem).join('\n');
-
-postsHtml = postsHtml.replace('<ul id="posts-list" class="posts-list" role="list"></ul>', `<ul id="posts-list" class="posts-list" role="list">${allPostsListHtml}</ul>`);
-
-// Clean JS garbage
-if (postsHtml.includes('<!-- JavaScript removed. PHP now handles post rendering. -->')) {
-    postsHtml = postsHtml.split('<!-- JavaScript removed. PHP now handles post rendering. -->')[0] + '</body></html>';
-}
-
-fs.writeFileSync(path.join(publicDir, 'posts.html'), postsHtml);
 console.log('Build complete.');

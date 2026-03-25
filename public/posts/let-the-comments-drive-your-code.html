@@ -3,35 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Blog post">
-  <meta name="theme-color" content="#ffffff">
-  <title id="post-title">Let the comments drive your code</title>
+  <meta name="description" content="Blog post by Hasan Al Doy">
+  <title>Let the comments drive your code</title>
   <link rel="stylesheet" href="../static/style.css">
-  <link rel="canonical" href="https://aldoyh.github.io/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
   <a href="#main-content" class="sr-only">Skip to main content</a>
 
   <header class="site-header" role="banner">
-    <div class="header-container">
-      <div class="header-content">
-        <h1 id="site-title" class="site-title"></h1>
-        <p id="site-subtitle" class="site-subtitle"></p>
-      </div>
+    <div class="container header-inner">
+      <a href="../index.html" class="logo">Hasan Al Doy</a>
       <nav class="site-nav" aria-label="Primary navigation">
         <a href="../index.html" class="nav-link">Home</a>
-        <a href="../posts.html" class="nav-link">All Posts</a>
+        <a href="../posts.html" class="nav-link">Posts</a>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span aria-hidden="true" style="font-size:1.2rem;">☼</span>
+        </button>
       </nav>
     </div>
-    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-      <span aria-hidden="true">🌙</span>
-    </button>
   </header>
 
   <main id="main-content" class="container">
     <article class="post-article">
-      <h2 id="post-title-main" class="post-title">Let the comments drive your code</h2>
-      <div id="post-meta" class="post-meta">Posted on 2016-01-21</div>
+      <header class="article-header">
+        <h1 class="article-title">Let the comments drive your code</h1>
+        <div id="post-meta" class="article-meta">Posted on 2016-01-21</div>
+      </header>
       <div id="post-content" class="markdown-body"><p>Whenever, I am coding some large or complicated usecase or something where things might escalate quickly out of the hand, I tend to sketch out the steps or pseudo-code <em>everything</em> using comments. Of course, we are talking about coding the simple usecases here and not about the designing and architecturing of the system, for which of course you are going to need much more than comments.</p>
 <p>I was doing the same thing when a friend of mine noticed and pointed out that what I was actually doing is called Comment Driven development. That&#39;s when I found that this &quot;Comment First&quot; thing actually is a practice and is termed as <a href="https://en.wikipedia.org/wiki/Comment_programming">Comment Driven Development or Comment Programming</a>; where you think the task through and write down the steps in the form of code comments and when everything is clear, you start turning those steps in comments to the actual code.</p>
 <p>You might even be doing the same thing without noticing the fact that what you are actually doing is CDD. Let me explain it with an example of how I go about coding some thing, or in other words what Comment Driven Development is, by using an example.</p>
@@ -91,15 +91,39 @@
   </main>
 
   <footer class="site-footer" role="contentinfo">
-    <div class="footer-content">
-      <p>&copy; <span id="year"></span> Hasan Al Doy. All rights reserved.</p>
-      <nav class="footer-nav" aria-label="Footer navigation">
+    <div class="container">
+      <div class="footer-links">
         <a href="https://github.com/aldoyh" rel="noopener noreferrer" target="_blank">GitHub</a>
-        <a href="https://twitter.com" rel="noopener noreferrer" target="_blank">Twitter</a>
-        <a href="mailto:contact@example.com">Email</a>
-      </nav>
+        <a href="https://twitter.com/aldoyh" rel="noopener noreferrer" target="_blank">Twitter</a>
+        <a href="mailto:aldoyh@gmail.com">Email</a>
+      </div>
+      <p style="margin-top:1rem; opacity:0.6;">&copy; <span id="year"></span> Hasan Al Doy. All rights reserved.</p>
     </div>
   </footer>
 
-  
-</body></html>
+  <script>
+    const toggle = document.getElementById('theme-toggle');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    function setTheme(theme) {
+      document.body.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      toggle.innerHTML = theme === 'dark' ? '<span aria-hidden="true" style="font-size:1.2rem;">☼</span>' : '<span aria-hidden="true" style="font-size:1.2rem;">☾</span>';
+    }
+    
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      setTheme(savedTheme);
+    } else if (prefersDark.matches) {
+      setTheme('dark');
+    }
+    
+    toggle.addEventListener('click', () => {
+      const current = document.body.getAttribute('data-theme');
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
