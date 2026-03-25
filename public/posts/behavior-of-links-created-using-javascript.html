@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Blog post">
+  <meta name="theme-color" content="#ffffff">
+  <title id="post-title">Behavior of links created using Javascript</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="canonical" href="https://aldoyh.github.io/">
+</head>
+<body>
+  <a href="#main-content" class="sr-only">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="header-container">
+      <div class="header-content">
+        <h1 id="site-title" class="site-title"></h1>
+        <p id="site-subtitle" class="site-subtitle"></p>
+      </div>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="../index.html" class="nav-link">Home</a>
+        <a href="../posts.html" class="nav-link">All Posts</a>
+      </nav>
+    </div>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <span aria-hidden="true">🌙</span>
+    </button>
+  </header>
+
+  <main id="main-content" class="container">
+    <article class="post-article">
+      <h2 id="post-title-main" class="post-title">Behavior of links created using Javascript</h2>
+      <div id="post-meta" class="post-meta">Posted on 2014-09-03</div>
+      <div id="post-content" class="markdown-body"><p>Most of the times, I find my self binding the anchor elements such that when they are clicked I open some window using Javascript i.e. some thing like the following:</p>
+<pre><code class="language-javascript">// &amp;lt;a href=&quot;#&quot; class=&quot;someLink&quot;&gt;Some Link&amp;lt;/a&amp;gt;
+ 
+$(&#39;.someLink&#39;).on(&#39;click&#39;, function () {
+    window.location = &#39;http://somelink.com/&#39;;
+});
+</code></pre>
+<p>Of course it works, but the problem with this approach is, <code>CTRL + click</code> which is normally used to open the link in the the new tab/window turns out opening the link in the same window and thus poor user experience. So to avoid this i.e. forcing it to open the link in the new tab instead of the current tab, you may want to modify your event as following:</p>
+<pre><code class="language-javascript">$(&#39;.someLink&#39;).on(&#39;click&#39;, function(e) {
+ 
+    if(e.metaKey || e.ctrlKey || e.button === 1) {
+        window.open(&#39;http://somelink.com/&#39;);
+    }
+    else {
+        window.location = &#39;http://somelink.com/&#39;;
+    }
+ 
+});
+</code></pre>
+<p>It’s a little check and can greatly improve the user experience.</p>
+</div>
+    </article>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-content">
+      <p>&copy; <span id="year"></span> Hasan Al Doy. All rights reserved.</p>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="https://github.com/aldoyh" rel="noopener noreferrer" target="_blank">GitHub</a>
+        <a href="https://twitter.com" rel="noopener noreferrer" target="_blank">Twitter</a>
+        <a href="mailto:contact@example.com">Email</a>
+      </nav>
+    </div>
+  </footer>
+
+  
+</body></html>

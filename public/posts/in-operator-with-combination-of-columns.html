@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Blog post">
+  <meta name="theme-color" content="#ffffff">
+  <title id="post-title">SQL - `IN` operator with combination of columns</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="canonical" href="https://aldoyh.github.io/">
+</head>
+<body>
+  <a href="#main-content" class="sr-only">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="header-container">
+      <div class="header-content">
+        <h1 id="site-title" class="site-title"></h1>
+        <p id="site-subtitle" class="site-subtitle"></p>
+      </div>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="../index.html" class="nav-link">Home</a>
+        <a href="../posts.html" class="nav-link">All Posts</a>
+      </nav>
+    </div>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <span aria-hidden="true">🌙</span>
+    </button>
+  </header>
+
+  <main id="main-content" class="container">
+    <article class="post-article">
+      <h2 id="post-title-main" class="post-title">SQL - `IN` operator with combination of columns</h2>
+      <div id="post-meta" class="post-meta">Posted on 2015-06-02</div>
+      <div id="post-content" class="markdown-body"><p>If you write SQL queries often, you should have probably used the <code>IN</code> operator which determines if a specified value matches any value in a list or a subquery. Below is the most simple use-case with single value, for examle:</p>
+<pre><code class="language-sql">SELECT	* 
+FROM 	`students`
+WHERE 	id NOT IN (1,5,6,3)
+</code></pre>
+<p>But one thing that you might not know is that you can use that for a combination of values as well. For example lets take a table where there are student names and subjects</p>
+<p><img src="http://i.imgur.com/q7VZHxk.png" alt="Students Table"></p>
+<p>And there are some user and subject combinations that we do not want, lets say below are the ones that we do not want:</p>
+<p><img src="http://i.imgur.com/L0dK0DR.png" alt="Not Required Columns"></p>
+<p>In that case, our SQL would look like the following:</p>
+<pre><code class="language-sql">SELECT * 
+FROM   students 
+WHERE 
+	( name, subject )
+NOT IN 
+	(
+		(&#39;Jane Doe&#39;, &#39;Analysis of Algorithms&#39;),
+		(&#39;John Doe&#39;, &#39;Software Engineering - II&#39;),
+		(&#39;Jane Doe&#39;, &#39;Professional Practices&#39;)
+	);
+</code></pre>
+<p>The list used in <code>NOT IN</code> might be provided in the form of list i.e. the way it is provided in the above example or it might be returned from some subquery.</p>
+</div>
+    </article>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-content">
+      <p>&copy; <span id="year"></span> Hasan Al Doy. All rights reserved.</p>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="https://github.com/aldoyh" rel="noopener noreferrer" target="_blank">GitHub</a>
+        <a href="https://twitter.com" rel="noopener noreferrer" target="_blank">Twitter</a>
+        <a href="mailto:contact@example.com">Email</a>
+      </nav>
+    </div>
+  </footer>
+
+  
+</body></html>

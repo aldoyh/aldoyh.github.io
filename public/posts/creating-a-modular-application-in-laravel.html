@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Blog post">
+  <meta name="theme-color" content="#ffffff">
+  <title id="post-title">Creating a Modular Application in Laravel 5.1</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="canonical" href="https://aldoyh.github.io/">
+</head>
+<body>
+  <a href="#main-content" class="sr-only">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="header-container">
+      <div class="header-content">
+        <h1 id="site-title" class="site-title"></h1>
+        <p id="site-subtitle" class="site-subtitle"></p>
+      </div>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="../index.html" class="nav-link">Home</a>
+        <a href="../posts.html" class="nav-link">All Posts</a>
+      </nav>
+    </div>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <span aria-hidden="true">🌙</span>
+    </button>
+  </header>
+
+  <main id="main-content" class="container">
+    <article class="post-article">
+      <h2 id="post-title-main" class="post-title">Creating a Modular Application in Laravel 5.1</h2>
+      <div id="post-meta" class="post-meta">Posted on 2015-12-03</div>
+      <div id="post-content" class="markdown-body"><p>Instead of having a giant mammoth of code, having your application divided into small meaningful modules can make the development of a giant site more manageable and enjoyable. </p>
+<p>I have just started working upon a new project in Laravel 5.1 that is going to be huge in terms of functionality. Considering the scale of application, the different modules that it was going to have, instead of jumbling every thing up (controllers, models and views etc) in the existing directories that Laravel provides, I decided to implement modules such that each of the modules will have everything, (it&#39;s controllers, models, views, middlewares, any helpers etc) separated. Now there might be several ways to approach this, but here is how I structured it.</p>
+<pre><code class="language-php">config\
+    module.php
+    ...
+    ...
+app\
+    ...
+    ...
+    Modules\
+        ModuleOne\
+            Controllers\
+            Models\
+            Views\
+            routes.php
+        ModuleTwo\
+            Controllers\
+            Models\
+            Views\
+            routes.php
+        ModulesServiceProvider.php
+    ...
+</code></pre>
+<p>You can follow the steps stated below to achieve a similar structure:</p>
+<h2>Setting up the Structure</h2>
+<p>Create a file called <code>module.php</code> inside the <code>config</code> directory. This file is going to hold the module names that we want to load and other configuration related to the modules. For now, lets keep it simple and just have the module names that we want to load. The file might look like below. (Note that the <code>User</code>, <code>Employee</code> are the module names that we want to load. And for every new module that you would want to create, you will have to add the name for it in this <code>modules</code> array.)</p>
+<pre><code class="language-php&lt;?php"># config/module.php
+
+return  [
+    &#39;modules&#39; =&gt; [
+       &#39;User&#39;,
+       &#39;Employee&#39;,
+    ]
+]
+</code></pre>
+<p>Create a directory called <code>Modules</code> inside the <code>app</code> directory. This directory is going to have a separate folder for each of the modules. For example, there can be a folder called <code>User</code>, one called <code>Employee</code> so on and so forth.</p>
+<p>Let&#39;s say that we want to create an <code>Employee</code> module. In that case, create an <code>Employee</code> directory at <code>app\Modules\</code>. And in this new directory create three directories namely <code>Controllers</code>, <code>Models</code> and <code>Views</code> and a file called <code>routes.php</code>. There is nothing special with the module, I mean the <code>routes.php</code> file is going to be used exactly how we use the outer <code>routes.php</code> file, controllers and models will be same as well. The only thing that you will have to take care about is the namespacing. You will have to make sure that you give proper namespaces to each controller/model that you create. In this case, the controllers will be having the namespace of <code>App\Modules\Employee\Controllers</code> and for any model, it would be <code>App\Modules\Employee\Models</code>. The final directory structure may look like the following:</p>
+<pre><code class="language-bash">app\
+    Modules\
+        Employee\
+            Controllers\
+            Models\
+            Views\
+            routes.php
+        User\
+            Controllers\
+            Models\
+            Views\
+            routes.php
+</code></pre>
+<p>Please note that you are not bound to have only the above stated directory structure, you are free to structure it however you want (but you have to make sure that you use proper namespacing). Without any doubt, you can add anything related to your module here as well for example form requests, helpers etc.</p>
+<h2>Creating the Service Provider</h2>
+<p>Now again, head to the <code>Modules</code> directory and add a file called <code>ModulesServiceProvider</code>. What we are going to do is make this Service provider inform Laravel that we are going to use these modules and you have to load each of the module&#39;s <code>routes</code> and <code>views</code> from these modules as well. So that when a <code>route</code> or <code>view</code> will be looked up, Laravel will look into these folders as well. Below is how the service provider might look like: </p>
+<pre><code class="language-php">&lt;?php namespace App\Modules;
+ 
+/**
+* ServiceProvider
+*
+* The service provider for the modules. After being registered
+* it will make sure that each of the modules are properly loaded
+* i.e. with their routes, views etc.
+*
+* @author Kamran Ahmed &lt;kamranahmed.se@gmail.com&gt;
+* @package App\Modules
+*/
+class ModulesServiceProvider extends \Illuminate\Support\ServiceProvider
+{
+    /**
+     * Will make sure that the required modules have been fully loaded
+     * @return void
+     */
+    public function boot()
+    {
+        // For each of the registered modules, include their routes and Views
+        $modules = config(&quot;module.modules&quot;);
+
+        while (list(,$module) = each($modules)) {
+
+            // Load the routes for each of the modules
+            if(file_exists(__DIR__.&#39;/&#39;.$module.&#39;/routes.php&#39;)) {
+                include __DIR__.&#39;/&#39;.$module.&#39;/routes.php&#39;;
+            }
+
+            // Load the views
+            if(is_dir(__DIR__.&#39;/&#39;.$module.&#39;/Views&#39;)) {
+                $this-&gt;loadViewsFrom(__DIR__.&#39;/&#39;.$module.&#39;/Views&#39;, $module);
+            }
+        }
+    }
+
+    public function register() {}
+
+}
+</code></pre>
+<p>Now the next thing is registering this service provider with the Laravel. And for that, open up the file <code>config/app.php</code> and add &#39;App\Modules\ModulesServiceProvider&#39; to the end of the providers array.</p>
+<pre><code class="language-php">#config/app.php
+
+&#39;providers&#39; =&gt; [
+    ...
+    ...
+    App\Modules\ModulesServiceProvider::class,
+]
+</code></pre>
+<h2>Adding Modules</h2>
+<p>Everything is setup now. In order to add a new module, all you have to do is create a folder for the module inside the <code>App\Modules\</code> directory, place your controllers, models, views and routes in this directory, register this module name in the <code>config\module.php</code> and your module has been registered with Laravel. Using the controllers and models is the same that is how you use any outer controller or model i.e. by specifying the correct namespace. But for loading views, what you have to do is call a view like: <code>ModuleName::viewname</code> e.g.</p>
+<pre><code class="language-php">return view(&#39;Employee::dummy&#39;);
+</code></pre>
+<p>And that sums it up. Do you have any techniques of your own? How do you structure your modules in Laravel? Do not forget to share it with everyone in the comments section below.</p>
+<p><strong>Note:</strong> Please note that, during the process, if you come across any <strong>Class not found</strong> exceptions and you haven&#39;t done anything wrong, just run <code>composer dump-autoload</code>.</p>
+<p>Source code can be found through this <a href="https://github.com/kamranahmedse/laravel-modular-boilerplate">Github repository</a></p>
+</div>
+    </article>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-content">
+      <p>&copy; <span id="year"></span> Hasan Al Doy. All rights reserved.</p>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="https://github.com/aldoyh" rel="noopener noreferrer" target="_blank">GitHub</a>
+        <a href="https://twitter.com" rel="noopener noreferrer" target="_blank">Twitter</a>
+        <a href="mailto:contact@example.com">Email</a>
+      </nav>
+    </div>
+  </footer>
+
+  
+</body></html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Blog post">
+  <meta name="theme-color" content="#ffffff">
+  <title id="post-title">MySQL - Pretty dates using date_format()</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="canonical" href="https://aldoyh.github.io/">
+</head>
+<body>
+  <a href="#main-content" class="sr-only">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="header-container">
+      <div class="header-content">
+        <h1 id="site-title" class="site-title"></h1>
+        <p id="site-subtitle" class="site-subtitle"></p>
+      </div>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="../index.html" class="nav-link">Home</a>
+        <a href="../posts.html" class="nav-link">All Posts</a>
+      </nav>
+    </div>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <span aria-hidden="true">🌙</span>
+    </button>
+  </header>
+
+  <main id="main-content" class="container">
+    <article class="post-article">
+      <h2 id="post-title-main" class="post-title">MySQL - Pretty dates using date_format()</h2>
+      <div id="post-meta" class="post-meta">Posted on 2014-06-10</div>
+      <div id="post-content" class="markdown-body"><p>I use dates on daily basis. For example in the ERP system that I have been working upon, dates are the most crucial part e.g. transactions, user logs, stock records, payments records etc. in fact each and every action that any user performs is governed by a date. So it won’t be wrong to say that, I use DATE and DATETIME datatypes as much as I use VARCHAR. The default format used by MySQL to store date and time is:</p>
+<pre><code class="language-sql">YYYY-MM-DD HH:MM:SS # e.g. 2014-06-10 06:11:00
+</code></pre>
+<p>Although this format works fine, I don’t consider it fair to put the user into thinking over it. The date time should be such that the user understands it in a glimpse. To format the dates, I use this nice MySQL function to format dates called <code>DATE_FORMAT()</code>. Example below shows, how you may use it:</p>
+<pre><code class="language-sql">DATE_FORMAT(NOW(),&#39;%M %e, %Y @ %h:%i %p&#39;)
+#generates &#39;June 10, 2014 @ 06:52 PM&#39;
+</code></pre>
+<p>For further detail, let me refer you to the <a href="http://dev.mysql.com/doc/refman/5.5/en/date-and-time-functions.html#function_date-format">official documentation for <code>DATE_FORMAT()</code></a></p>
+</div>
+    </article>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-content">
+      <p>&copy; <span id="year"></span> Hasan Al Doy. All rights reserved.</p>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="https://github.com/aldoyh" rel="noopener noreferrer" target="_blank">GitHub</a>
+        <a href="https://twitter.com" rel="noopener noreferrer" target="_blank">Twitter</a>
+        <a href="mailto:contact@example.com">Email</a>
+      </nav>
+    </div>
+  </footer>
+
+  
+</body></html>

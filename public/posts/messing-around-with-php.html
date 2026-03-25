@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Blog post">
+  <meta name="theme-color" content="#ffffff">
+  <title id="post-title">Messing around with PHP</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="canonical" href="https://aldoyh.github.io/">
+</head>
+<body>
+  <a href="#main-content" class="sr-only">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="header-container">
+      <div class="header-content">
+        <h1 id="site-title" class="site-title"></h1>
+        <p id="site-subtitle" class="site-subtitle"></p>
+      </div>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="../index.html" class="nav-link">Home</a>
+        <a href="../posts.html" class="nav-link">All Posts</a>
+      </nav>
+    </div>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <span aria-hidden="true">🌙</span>
+    </button>
+  </header>
+
+  <main id="main-content" class="container">
+    <article class="post-article">
+      <h2 id="post-title-main" class="post-title">Messing around with PHP</h2>
+      <div id="post-meta" class="post-meta">Posted on 2015-01-30</div>
+      <div id="post-content" class="markdown-body"><p>When it comes to variables, you might be aware of the fact that in PHP, variable names can only start with an underscore <code>_</code> or a character and there cannot be anything else but yet there is <em>nothing</em> wrong with the code below and it would work just fine.</p>
+<pre><code class="language-php">${&#39;*put whatever you w@nt + in here&#39;} =  &#39;Gotcha!!&#39;;
+echo ${&#39;*put whatever you w@nt + in here&#39;}; // prints `Gotcha!!`
+</code></pre>
+<p>The reason why it didn&#39;t cause any problems is because the afore mentioned rules do not apply to variable variables. However, <strong>I would never recommend adopting this approach</strong> as it would result in ugly and unmaintainable code.</p>
+<p>Another gotcha; while using ternary operators if you avoid the truthy part, it will return the result of the expression on the left side i.e.</p>
+<pre><code class="language-php">$lang = &#39;PHP&#39;;
+$lang = $lang ?: &#39;Javascript&#39;;
+
+echo $lang; // prints `PHP`
+</code></pre>
+</div>
+    </article>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-content">
+      <p>&copy; <span id="year"></span> Hasan Al Doy. All rights reserved.</p>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="https://github.com/aldoyh" rel="noopener noreferrer" target="_blank">GitHub</a>
+        <a href="https://twitter.com" rel="noopener noreferrer" target="_blank">Twitter</a>
+        <a href="mailto:contact@example.com">Email</a>
+      </nav>
+    </div>
+  </footer>
+
+  
+</body></html>
