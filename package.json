@@ -4,7 +4,8 @@
   "description": "Personal blog and portfolio static site",
   "main": "index.js",
   "scripts": {
-    "generate:posts": "node scripts/generate_post_pages.js"
+    "generate:posts": "node scripts/generate_post_pages.js",
+    "build:static": "node scripts/build_static.js"
   },
   "author": "Hasan Al Doy",
   "license": "MIT",
