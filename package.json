@@ -10,6 +10,6 @@
   "author": "Hasan Al Doy",
   "license": "MIT",
   "dependencies": {
-    "marked": "^17.0.5"
+    "marked": "^17.0.6"
   }
 }
